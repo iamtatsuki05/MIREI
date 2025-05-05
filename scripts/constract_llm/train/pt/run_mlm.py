@@ -224,6 +224,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
             token=model_args.token,
             trust_remote_code=model_args.trust_remote_code,
             torch_dtype=torch_dtype,
+            attn_implementation=model_args.attn_implementation,
             low_cpu_mem_usage=model_args.low_cpu_mem_usage,
         )
     else:
