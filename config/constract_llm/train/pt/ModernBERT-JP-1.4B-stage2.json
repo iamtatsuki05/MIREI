@@ -47,5 +47,6 @@
     "fp16_full_eval": true,
     "bf16": false,
     "bf16_full_eval": false,
+    "attn_implementation": "flash_attention_2",
     "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2_tp.json"
 }
