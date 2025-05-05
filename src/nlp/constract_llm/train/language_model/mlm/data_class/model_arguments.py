@@ -75,10 +75,10 @@ class ModelArguments:
         ),
     )
     attn_implementation: str = Field(
-        default="sdpa",
+        default='sdpa',
         metadata={
-            "help": ("The attention implementation to use in the model."),
-            "choices": ["eager", "sdpa", "flash_attention_2"],
+            'help': ('The attention implementation to use in the model.'),
+            'choices': ['eager', 'sdpa', 'flash_attention_2'],
         },
     )
 
