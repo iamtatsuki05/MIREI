@@ -43,10 +43,10 @@
     "report_to": "all",
     "include_num_input_tokens_seen": true,
     "include_tokens_per_second": true,
-    "fp16": true,
-    "fp16_full_eval": true,
-    "bf16": false,
-    "bf16_full_eval": false,
+    "fp16": false,
+    "fp16_full_eval": false,
+    "bf16": true,
+    "bf16_full_eval": true,
     "attn_implementation": "flash_attention_2",
     "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2_tp.json"
 }

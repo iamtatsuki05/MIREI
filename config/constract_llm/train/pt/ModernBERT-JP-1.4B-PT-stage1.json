@@ -1,7 +1,7 @@
 {
     "model_name_or_path": "iamtatsuki05/ModernBERT-JP-1.4B-init",
     "dataset_name": "hotchpotch/fineweb-2-edu-japanese",
-    "dataset_config_name": "sample_10BT",
+    "dataset_config_name": "default",
     "preprocessing_num_workers": 8,
     "max_train_samples": null,
     "max_eval_samples": 1000,
@@ -45,8 +45,8 @@
     "include_tokens_per_second": true,
     "fp16": false,
     "fp16_full_eval": false,
-    "bf16": false,
-    "bf16_full_eval": false,
+    "bf16": true,
+    "bf16_full_eval": true,
     "attn_implementation": "flash_attention_2",
     "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2_tp.json"
 }

@@ -43,7 +43,7 @@
     "include_tokens_per_second": true,
     "fp16": false,
     "fp16_full_eval": false,
-    "bf16": false,
-    "bf16_full_eval": false,
+    "bf16": true,
+    "bf16_full_eval": true,
     "deepspeed": null
 }
