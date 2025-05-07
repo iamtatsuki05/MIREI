@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List, Union
-
 import torch
 from peft import PeftModel
 from torch import nn
@@ -33,7 +31,7 @@ class SentenceEncoderMixin:
 
     @staticmethod
     def _tokenize_with_instruction(
-        sentences: Union[str, List[str]],
+        sentences: str | list[str],
         tokenizer: AutoTokenizer,
         instruction: str = '',
         max_length: int | None = None,
@@ -101,7 +99,7 @@ class SentenceEncoderMixin:
     @torch.no_grad()
     def encode(
         self,
-        sentences: Union[str, List[str]],
+        sentences: str | list[str],
         tokenizer: AutoTokenizer,
         *,
         instruction: str = '',
@@ -143,7 +141,7 @@ class LlamaBiModel(LlamaModel, SentenceEncoderMixin):
 
     def _update_causal_mask(
         self,
-        attention_mask: Union[torch.Tensor, 'BlockMask'],
+        attention_mask: 'BlockMask' | torch.Tensor,
         input_tensor: torch.Tensor,
         cache_position: torch.Tensor,
         past_key_values: Cache,
@@ -254,7 +252,7 @@ class LlamaBiModel(LlamaModel, SentenceEncoderMixin):
 
     def encode_document(
         self,
-        sentences: Union[str, List[str]],
+        sentences: str | list[str],
         tokenizer: AutoTokenizer,
         instruction: str = '',
         max_length: int | None = None,
@@ -263,7 +261,7 @@ class LlamaBiModel(LlamaModel, SentenceEncoderMixin):
 
     def encode_query(
         self,
-        sentences: Union[str, List[str]],
+        sentences: str | list[str],
         tokenizer: AutoTokenizer,
         instruction: str = '',
         max_length: int | None = None,
@@ -300,7 +298,7 @@ class LlamaBiForMNTP(LlamaForCausalLM):
     @torch.no_grad()
     def encode(
         self,
-        sentences: Union[str, List[str]],
+        sentences: str | list[str],
         tokenizer: AutoTokenizer,
         *,
         instruction: str = '',
