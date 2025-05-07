@@ -21,7 +21,6 @@ import logging
 import math
 import os
 import sys
-import warnings
 from itertools import chain
 from pathlib import Path
 
@@ -78,18 +77,6 @@ def main(config_file_path: str | Path | None = None, **kwargs) -> None:
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments, CustomArguments))
     model_args, data_args, training_args, custom_args = parser.parse_dict(load_cli_config(config_file_path, **kwargs))
 
-    if training_args.gradient_checkpointing:
-        training_args.gradient_checkpointing_kwargs = {'use_reentrant': False}
-
-    if model_args.use_auth_token is not None:
-        warnings.warn(
-            'The `use_auth_token` argument is deprecated and will be removed in v4.34. Please use `token` instead.',
-            FutureWarning,
-        )
-        if model_args.token is not None:
-            raise ValueError('`token` and `use_auth_token` are both specified. Please set only the argument `token`.')
-        model_args.token = model_args.use_auth_token
-
     # Setup logging
     _setup_logging(training_args)
 
@@ -129,7 +116,7 @@ def main(config_file_path: str | Path | None = None, **kwargs) -> None:
             token=model_args.token,
             streaming=data_args.streaming,
         )
-        if 'validation' not in raw_datasets.keys():
+        if 'validation' not in raw_datasets.keys() and training_args.do_eval:
             raw_datasets['validation'] = load_dataset(
                 data_args.dataset_name,
                 data_args.dataset_config_name,
@@ -164,7 +151,7 @@ def main(config_file_path: str | Path | None = None, **kwargs) -> None:
         )
 
         # If no validation data is there, validation_split_percentage will be used to divide the dataset.
-        if 'validation' not in raw_datasets.keys():
+        if 'validation' not in raw_datasets.keys() and training_args.do_eval:
             raw_datasets['validation'] = load_dataset(
                 extension,
                 data_files=data_files,
