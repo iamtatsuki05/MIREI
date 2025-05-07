@@ -138,7 +138,10 @@ def save_custom_model(
             if cls is None:
                 return ''
             name = cls.__name__
-            return name if is_transformers_class(cls) else f'{repo_id}--{src.stem}.{name}'
+            if is_transformers_class(cls):
+                return ''
+            else:
+                return f'{repo_id}--{src.stem}.{name}'
 
         config_cls = cfg.get('config_class') if cfg else model.config.__class__
         base_cls = cfg.get('base_class') if cfg else None
