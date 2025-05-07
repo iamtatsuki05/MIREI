@@ -5,10 +5,6 @@ from transformers.utils.versions import require_version
 
 @dataclass
 class DataTrainingArguments:
-    """
-    Arguments pertaining to what data we are going to input our model for training and eval.
-    """
-
     dataset_name: str | None = Field(None, description='The name of the dataset to use (via the datasets library).')
     dataset_config_name: str | None = Field(
         None,
