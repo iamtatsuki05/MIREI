@@ -166,6 +166,7 @@ def main(config_file_path: str | Path | None = None, **kwargs) -> None:
                 cache_dir=model_args.cache_dir,
                 token=model_args.token,
             )
+    logger.info(f'Raw datasets: {raw_datasets}')
 
     logger.info('Loading Model and Tokenizer...')
     config_kwargs = {
@@ -374,6 +375,7 @@ def main(config_file_path: str | Path | None = None, **kwargs) -> None:
         if data_args.max_train_samples is not None:
             max_train_samples = min(len(train_dataset), data_args.max_train_samples)
             train_dataset = train_dataset.select(range(max_train_samples))
+        logger.info(f'train dataset: {train_dataset}')
 
     if training_args.do_eval:
         if 'validation' not in tokenized_datasets:
@@ -382,6 +384,7 @@ def main(config_file_path: str | Path | None = None, **kwargs) -> None:
         if data_args.max_eval_samples is not None:
             max_eval_samples = min(len(eval_dataset), data_args.max_eval_samples)
             eval_dataset = eval_dataset.select(range(max_eval_samples))
+        logger.info(f'eval dataset: {eval_dataset}')
 
         def preprocess_logits_for_metrics(logits, labels):
             if isinstance(logits, tuple):
