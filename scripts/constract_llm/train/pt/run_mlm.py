@@ -81,6 +81,18 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     model_args, data_args, training_args = parser.parse_dict(load_cli_config(config_file_path, **kwargs))
 
+    if training_args.gradient_checkpointing:
+        training_args.gradient_checkpointing_kwargs = {'use_reentrant': False}
+
+    if model_args.use_auth_token is not None:
+        warnings.warn(
+            'The `use_auth_token` argument is deprecated and will be removed in v4.34. Please use `token` instead.',
+            FutureWarning,
+        )
+        if model_args.token is not None:
+            raise ValueError('`token` and `use_auth_token` are both specified. Please set only the argument `token`.')
+        model_args.token = model_args.use_auth_token
+
     # Setup logging
     _setup_logging(training_args)
 
@@ -230,6 +242,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
     else:
         logger.info('Training new model from scratch')
         model = AutoModelForMaskedLM.from_config(config, trust_remote_code=model_args.trust_remote_code)
+    logger.info(f'Using model {model.__class__.__name__}.')
 
     # We resize the embeddings only when necessary to avoid index errors. If you are creating a model from scratch
     # on a small vocab and want a smaller embedding size, remove this test.
