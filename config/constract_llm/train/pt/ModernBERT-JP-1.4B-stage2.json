@@ -23,7 +23,7 @@
     "per_device_eval_batch_size": 32,
     "gradient_accumulation_steps": 2,
     "eval_accumulation_steps": 1,
-    "max_seq_length": 1024,
+    "max_seq_length": 8192,
     "mlm_probability": 0.3,
     "weight_decay": 1e-5,
     "adam_beta1": 0.9,
