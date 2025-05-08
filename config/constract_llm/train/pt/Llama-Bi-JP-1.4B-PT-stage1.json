@@ -4,6 +4,7 @@
     "dataset_name": "hotchpotch/fineweb-2-edu-japanese",
     "dataset_config_name": "sample_10BT",
     "preprocessing_num_workers": 8,
+    "dataloader_num_workers": 8,
     "max_train_samples": null,
     "max_eval_samples": 1000,
     "text_column_name": "text",
@@ -20,9 +21,9 @@
     "lr_scheduler_type": "constant_with_warmup",
     "learning_rate": 5e-4,
     "warmup_ratio": 0.1,
-    "per_device_train_batch_size": 32,
-    "per_device_eval_batch_size": 32,
-    "gradient_accumulation_steps": 16,
+    "per_device_train_batch_size": 16,
+    "per_device_eval_batch_size": 16,
+    "gradient_accumulation_steps": 32,
     "eval_accumulation_steps": 1,
     "mask_token_type": "blank",
     "data_collator_type": "default",
@@ -51,5 +52,5 @@
     "bf16": true,
     "bf16_full_eval": true,
     "attn_implementation": "flash_attention_2",
-    "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2_tp.json"
+    "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json"
 }

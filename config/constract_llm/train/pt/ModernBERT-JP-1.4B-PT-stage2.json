@@ -2,6 +2,7 @@
     "model_name_or_path": "iamtatsuki05/ModernBERT-JP-1.4B-PT-stage1",
     "dataset_name": "fujiki/wiki40b_ja",
     "preprocessing_num_workers": 8,
+    "dataloader_num_workers": 8,
     "max_train_samples": null,
     "max_eval_samples": 1000,
     "dataset_config_name": null,
@@ -19,9 +20,9 @@
     "lr_scheduler_type": "constant_with_warmup",
     "learning_rate": 5e-5,
     "warmup_ratio": 0.1,
-    "per_device_train_batch_size": 32,
-    "per_device_eval_batch_size": 32,
-    "gradient_accumulation_steps": 2,
+    "per_device_train_batch_size": 8,
+    "per_device_eval_batch_size": 8,
+    "gradient_accumulation_steps": 8,
     "eval_accumulation_steps": 1,
     "max_seq_length": 8192,
     "mlm_probability": 0.3,
@@ -48,5 +49,5 @@
     "bf16": true,
     "bf16_full_eval": true,
     "attn_implementation": "flash_attention_2",
-    "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2_tp.json"
+    "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json"
 }
