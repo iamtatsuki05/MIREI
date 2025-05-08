@@ -1,6 +1,6 @@
 {
     "model_name_or_path": "iamtatsuki05/Llama-Bi-JP-1.4B-init",
-    "trust_remote_code": false,
+    "trust_remote_code": true,
     "dataset_name": "cl-nagoya/ruri-dataset-v2-pt",
     "use_all_subset": true,
     "use_subsets": null,
