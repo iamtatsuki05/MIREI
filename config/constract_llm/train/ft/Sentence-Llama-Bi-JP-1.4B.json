@@ -13,9 +13,9 @@
     "anchor_column_name": "anc",
     "positive_column_name": "pos",
     "negative_column_name": "neg",
-    "run_name": "Sentence-ModernBERT-JP-1.4B",
-    "output_dir": "./data/outputs/Sentence-ModernBERT-JP-1.4B",
-    "logging_dir": "./data/outputs/Sentence-ModernBERT-JP-1.4B/logs",
+    "run_name": "Sentence-Llama-Bi-JP-1.4B",
+    "output_dir": "./data/outputs/Sentence-Llama-Bi-JP-1.4B",
+    "logging_dir": "./data/outputs/Sentence-Llama-Bi-JP-1.4B/logs",
     "save_only_model": false,
     "overwrite_output_dir": true,
     "do_train": true,
@@ -54,7 +54,7 @@
     "bf16": true,
     "bf16_full_eval": true,
     "attn_implementation": "flash_attention_2",
-    "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json",
+    "deepspeed": null,
     "evaluator_type": "triplet",
     "batch_sampler": "group_by_label"
 }
