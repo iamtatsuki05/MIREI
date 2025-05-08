@@ -308,7 +308,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             load_from_cache_file=not data_args.overwrite_cache,
             remove_columns=remove_columns,
             desc='Running preprocessing on train dataset',
-        )
+        ).select_columns(required)
 
     if training_args.do_eval:
         eval_dataset = raw_datasets['validation'].map(
@@ -318,7 +318,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             load_from_cache_file=not data_args.overwrite_cache,
             remove_columns=remove_columns,
             desc='Running preprocessing on validation dataset',
-        )
+        ).select_columns(required)
 
         def preprocess_logits_for_metrics(logits, labels):
             if isinstance(logits, tuple):
