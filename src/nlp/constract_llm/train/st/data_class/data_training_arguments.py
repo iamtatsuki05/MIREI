@@ -73,9 +73,35 @@ class DataTrainingArguments:
         default=None,
         metadata={'help': 'The name of the column containing the negative text.'},
     )
+    label_column_name: str | None = Field(
+        default=None,
+        metadata={'help': 'The name of the column containing the label text.'},
+    )
     evaluator_type: str = Field(
         default='triplet',
         metadata={'help': 'The type of evaluator to use. Options: triplet, ...'},
+    )
+    use_all_subset: bool = Field(
+        default=False,
+        metadata={
+            'help': (
+                'Whether to use all the subsets of the dataset. '
+                'If True, the dataset will be concatenated with all the subsets.'
+            )
+        },
+    )
+    use_subsets: list[str] | None = Field(
+        default=None,
+        metadata={'help': ('The subsets of the dataset to use. If not specified, all the subsets will be used.')},
+    )
+    max_subset_samples: int | None = Field(
+        default=None,
+        metadata={
+            'help': (
+                'The maximum number of samples to use from each subset. '
+                'If not specified, all the samples will be used.'
+            )
+        },
     )
 
     def __post_init__(self):

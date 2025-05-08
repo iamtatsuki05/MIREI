@@ -8,7 +8,15 @@ import datasets
 import fire
 import torch
 import transformers
-from datasets import load_dataset
+from datasets import (
+    ClassLabel,
+    DatasetDict,
+    IterableDatasetDict,
+    concatenate_datasets,
+    get_dataset_config_names,
+    interleave_datasets,
+    load_dataset,
+)
 from sentence_transformers import (
     SentenceTransformer,
     SentenceTransformerTrainer,
@@ -42,6 +50,143 @@ def _setup_logging(training_args: SentenceTransformerTrainingArguments) -> None:
     transformers.utils.logging.set_verbosity(log_level)
     transformers.utils.logging.enable_default_handler()
     transformers.utils.logging.enable_explicit_format()
+
+
+def _add_subset_label(
+    ds: datasets.Dataset | datasets.IterableDataset,
+    label_id: int,
+    num_proc: int | None = None,
+) -> datasets.Dataset | datasets.IterableDataset:
+    return ds.map(
+        lambda batch: {'label': [label_id] * len(batch[list(batch.keys())[0]])},
+        batched=True,
+        num_proc=num_proc,
+        desc='Adding subset label',
+    )
+
+
+def _trim_split(
+    ds_split: datasets.Dataset | datasets.IterableDataset,
+    max_samples: int | None,
+    streaming: bool,
+    seed: int = 42,
+):
+    if max_samples is None:
+        return ds_split
+
+    max_samples = min(len(ds_split), max_samples)
+
+    if streaming:
+        buffer_size = max(max_samples * 2, 10_000)
+        return ds_split.shuffle(buffer_size=buffer_size, seed=seed).take(max_samples)
+    else:
+        return ds_split.shuffle(seed=seed).select(range(max_samples))
+
+
+def load_raw_datasets(
+    data_args: DataTrainingArguments,
+    model_args: ModelArguments,
+    training_args: SentenceTransformerTrainingArguments,
+) -> DatasetDict | IterableDatasetDict:
+    if data_args.dataset_name is None:
+        data_files: dict[str, str] = {}
+        if data_args.train_file:
+            data_files['train'] = data_args.train_file
+            extension = data_args.train_file.split('.')[-1]
+        if data_args.validation_file:
+            data_files['validation'] = data_args.validation_file
+            extension = data_args.validation_file.split('.')[-1]
+        if extension == 'txt':
+            extension = 'text'
+        return load_dataset(
+            extension,
+            data_files=data_files,
+            cache_dir=model_args.cache_dir,
+            token=model_args.token,
+        )
+
+    if data_args.use_all_subset:
+        subset_names = get_dataset_config_names(
+            data_args.dataset_name,
+            token=model_args.token,
+            cache_dir=model_args.cache_dir,
+        )
+    elif data_args.use_subsets:
+        subset_names = list(data_args.use_subsets)
+    else:
+        subset_names = [data_args.dataset_config_name]
+
+    label_feature = ClassLabel(names=subset_names)
+    train_parts, valid_parts = [], []
+
+    for cfg in subset_names:
+        ds = load_dataset(
+            data_args.dataset_name,
+            cfg,
+            cache_dir=model_args.cache_dir,
+            token=model_args.token,
+            streaming=data_args.streaming,
+        )
+        label_id = label_feature.str2int(cfg)
+
+        ds = {k: _add_subset_label(v, label_id, data_args.preprocessing_num_workers) for k, v in ds.items()}
+
+        if 'validation' not in ds and training_args.do_eval:
+            val_split = f'train[:{data_args.validation_split_percentage}%]'
+            train_split = f'train[{data_args.validation_split_percentage}%:]'
+
+            ds['validation'] = _add_subset_label(
+                load_dataset(
+                    data_args.dataset_name,
+                    cfg,
+                    split=val_split,
+                    cache_dir=model_args.cache_dir,
+                    token=model_args.token,
+                    streaming=data_args.streaming,
+                ),
+                label_id,
+                data_args.preprocessing_num_workers,
+            )
+            ds['train'] = _add_subset_label(
+                load_dataset(
+                    data_args.dataset_name,
+                    cfg,
+                    split=train_split,
+                    cache_dir=model_args.cache_dir,
+                    token=model_args.token,
+                    streaming=data_args.streaming,
+                ),
+                label_id,
+                data_args.preprocessing_num_workers,
+            )
+
+        for split_name in ('train', 'validation'):
+            if split_name in ds and data_args.max_subset_samples is not None:
+                ds[split_name] = _trim_split(
+                    ds[split_name],
+                    data_args.max_subset_samples,
+                    data_args.streaming,
+                    seed=training_args.seed,
+                )
+
+        train_parts.append(ds['train'])
+        if training_args.do_eval and 'validation' in ds:
+            valid_parts.append(ds['validation'])
+
+    if data_args.streaming:
+        data_dict = {'train': interleave_datasets(train_parts)}
+        if valid_parts:
+            data_dict['validation'] = interleave_datasets(valid_parts)
+        raw_datasets = IterableDatasetDict(data_dict)
+        for split in raw_datasets:
+            raw_datasets[split] = raw_datasets[split].cast_column('label', label_feature)
+    else:
+        data_dict = {'train': concatenate_datasets(train_parts)}
+        if valid_parts:
+            data_dict['validation'] = concatenate_datasets(valid_parts)
+        raw_datasets = DatasetDict(data_dict).cast_column('label', label_feature)
+
+    return raw_datasets
 
 
 def get_evaluator(
@@ -110,65 +255,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     set_seed(training_args.seed)
 
     logger.info('Loading datasets...')
-    if data_args.dataset_name is not None:
-        # Downloading and loading a dataset from the hub.
-        raw_datasets = load_dataset(
-            data_args.dataset_name,
-            data_args.dataset_config_name,
-            cache_dir=model_args.cache_dir,
-            token=model_args.token,
-            streaming=data_args.streaming,
-        )
-        if 'validation' not in raw_datasets.keys() and training_args.do_eval:
-            raw_datasets['validation'] = load_dataset(
-                data_args.dataset_name,
-                data_args.dataset_config_name,
-                split=f'train[:{data_args.validation_split_percentage}%]',
-                cache_dir=model_args.cache_dir,
-                token=model_args.token,
-                streaming=data_args.streaming,
-            )
-            raw_datasets['train'] = load_dataset(
-                data_args.dataset_name,
-                data_args.dataset_config_name,
-                split=f'train[{data_args.validation_split_percentage}%:]',
-                cache_dir=model_args.cache_dir,
-                token=model_args.token,
-                streaming=data_args.streaming,
-            )
-    else:
-        data_files = {}
-        if data_args.train_file is not None:
-            data_files['train'] = data_args.train_file
-            extension = data_args.train_file.split('.')[-1]
-        if data_args.validation_file is not None:
-            data_files['validation'] = data_args.validation_file
-            extension = data_args.validation_file.split('.')[-1]
-        if extension == 'txt':
-            extension = 'text'
-        raw_datasets = load_dataset(
-            extension,
-            data_files=data_files,
-            cache_dir=model_args.cache_dir,
-            token=model_args.token,
-        )
-
-        # If no validation data is there, validation_split_percentage will be used to divide the dataset.
-        if 'validation' not in raw_datasets.keys() and training_args.do_eval:
-            raw_datasets['validation'] = load_dataset(
-                extension,
-                data_files=data_files,
-                split=f'train[:{data_args.validation_split_percentage}%]',
-                cache_dir=model_args.cache_dir,
-                token=model_args.token,
-            )
-            raw_datasets['train'] = load_dataset(
-                extension,
-                data_files=data_files,
-                split=f'train[{data_args.validation_split_percentage}%:]',
-                cache_dir=model_args.cache_dir,
-                token=model_args.token,
-            )
+    raw_datasets = load_raw_datasets(data_args, model_args, training_args)
     logger.info(f'Raw datasets: {raw_datasets}')
 
     logger.info('Loading model...')
@@ -202,12 +289,16 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             'anchor': data_args.anchor_column_name,
             'positive': data_args.positive_column_name,
             'negative': data_args.negative_column_name,
+            'label': data_args.label_column_name,
         }
         features = {k: examples[v] for k, v in col_map.items() if v}
         return features
 
     column_names = raw_datasets['train'].column_names
-    remove_columns = [col for col in column_names if col not in ['anchor', 'positive', 'negative']]
+    required = ['anchor', 'positive', 'negative']
+    if training_args.batch_sampler == 'group_by_label':
+        required += ['label']
+    remove_columns = [col for col in column_names if col not in required]
 
     if training_args.do_train:
         train_dataset = raw_datasets['train'].map(
@@ -282,7 +373,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         train_dataset=train_dataset if training_args.do_train else None,
         eval_dataset=eval_dataset if training_args.do_eval else None,
         loss=loss,
-        evaluator=evaluator if training_args.do_eval else None,
+        evaluator=evaluator if training_args.do_eval and evaluator is not None else None,
         # compute_metrics=(compute_metrics if training_args.do_eval and not is_torch_xla_available() else None),
         preprocess_logits_for_metrics=(
             preprocess_logits_for_metrics if training_args.do_eval and not is_torch_xla_available() else None
