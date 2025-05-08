@@ -50,7 +50,7 @@ from nlp.constract_llm.train.language_model.mntp.data_class.custom_arguments imp
 from nlp.constract_llm.train.language_model.mntp.data_class.data_training_arguments import DataTrainingArguments
 from nlp.constract_llm.train.language_model.mntp.data_class.model_arguments import ModelArguments
 from nlp.constract_llm.train.trainer.callback import StopTrainingCallback
-from nlp.constract_llm.train.trainer.trainer import Trainer as MNTPTrainer
+from nlp.constract_llm.train.trainer.trainer import MNTPTrainer
 
 logger = logging.getLogger(__name__)
 
