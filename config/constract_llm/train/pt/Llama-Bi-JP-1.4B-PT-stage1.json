@@ -2,7 +2,7 @@
     "model_name_or_path": "iamtatsuki05/Llama-Bi-JP-1.4B-init",
     "trust_remote_code": true,
     "dataset_name": "hotchpotch/fineweb-2-edu-japanese",
-    "dataset_config_name": "default",
+    "dataset_config_name": "sample_10BT",
     "preprocessing_num_workers": 8,
     "max_train_samples": null,
     "max_eval_samples": 1000,

@@ -14,7 +14,7 @@
     "do_train": true,
     "do_eval": true,
     "do_predict": false,
-    "num_train_epochs": 1,
+    "num_train_epochs": 2,
     "optim": "adamw_torch",
     "lr_scheduler_type": "constant_with_warmup",
     "learning_rate": 5e-5,
