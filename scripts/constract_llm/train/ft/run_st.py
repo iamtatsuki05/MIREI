@@ -301,24 +301,32 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     remove_columns = [col for col in column_names if col not in required]
 
     if training_args.do_train:
-        train_dataset = raw_datasets['train'].map(
-            prepare_features,
-            batched=True,
-            num_proc=data_args.preprocessing_num_workers,
-            load_from_cache_file=not data_args.overwrite_cache,
-            remove_columns=remove_columns,
-            desc='Running preprocessing on train dataset',
-        ).select_columns(required)
+        train_dataset = (
+            raw_datasets['train']
+            .map(
+                prepare_features,
+                batched=True,
+                num_proc=data_args.preprocessing_num_workers,
+                load_from_cache_file=not data_args.overwrite_cache,
+                remove_columns=remove_columns,
+                desc='Running preprocessing on train dataset',
+            )
+            .select_columns(required)
+        )
 
     if training_args.do_eval:
-        eval_dataset = raw_datasets['validation'].map(
-            prepare_features,
-            batched=True,
-            num_proc=data_args.preprocessing_num_workers,
-            load_from_cache_file=not data_args.overwrite_cache,
-            remove_columns=remove_columns,
-            desc='Running preprocessing on validation dataset',
-        ).select_columns(required)
+        eval_dataset = (
+            raw_datasets['validation']
+            .map(
+                prepare_features,
+                batched=True,
+                num_proc=data_args.preprocessing_num_workers,
+                load_from_cache_file=not data_args.overwrite_cache,
+                remove_columns=remove_columns,
+                desc='Running preprocessing on validation dataset',
+            )
+            .select_columns(required)
+        )
 
         def preprocess_logits_for_metrics(logits, labels):
             if isinstance(logits, tuple):
