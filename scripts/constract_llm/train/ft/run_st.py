@@ -295,9 +295,17 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         return features
 
     column_names = raw_datasets['train'].column_names
-    required = ['anchor', 'positive', 'negative']
+    required = [
+        col
+        for col in (
+            data_args.anchor_column_name,
+            data_args.positive_column_name,
+            data_args.negative_column_name,
+        )
+        if col
+    ]
     if training_args.batch_sampler == 'group_by_label':
-        required += ['label']
+        required.append('label')
     remove_columns = [col for col in column_names if col not in required]
 
     if training_args.do_train:
