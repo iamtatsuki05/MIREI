@@ -1,0 +1,9 @@
+{
+    "model_name_or_path": "iamtatsuki05/Llama-JP-1.4B-init",
+    "custom_model_type": "llama",
+    "task_type": "lm",
+    "output_dir": "./data/misc/json",
+    "push_to_hub": true,
+    "repo_id": "iamtatsuki05/Llama-Bi-JP-1.4B-init",
+    "private": true
+}

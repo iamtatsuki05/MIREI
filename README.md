@@ -1,4 +1,6 @@
-# docker+uv
+# Text Embedding
+
+English / [日本語](README_JA.md)
 
 ## How to operate uv
 ### setup
@@ -35,6 +37,7 @@ uv run python ...
 ├── .pre-commit-config.yaml
 ├── Makefile
 ├── README.md
+├── README_JA.md
 ├── compose.yaml
 ├── config
 ├── data
@@ -52,14 +55,37 @@ uv run python ...
 ├── uv.lock
 ├── pyproject.toml
 ├── scripts
-│   └── main.py
+│   ├── main.py
+│   ├── README.md
+│   ├── README_JA.md
+│   └── constract_llm
+│       ├── README.md
+│       ├── README_JA.md
+│       ├── dataset
+│       ├── model
+│       ├── tokenizer
+│       └── train
+│           ├── README.md
+│           ├── README_JA.md
+│           ├── ft
+│           └── pt
 ├── src
 │   ├── __init__.py
-│   └── project
+│   └── nlp
 │       ├── common
 │       ├── config
 │       ├── env.py
-│       └── main.py
+│       └── constract_llm
 └── tests
-    └── project
+    └── nlp
 ```
+
+## Scripts
+
+This project includes various scripts related to building and training language models (LLMs). For more details, please refer to the following READMEs:
+
+- [Scripts Overview](scripts/README.md) - Overview of basic scripts
+- [Language Model Construction Scripts](scripts/constract_llm/README.md) - Scripts related to language model construction
+- [Training Scripts](scripts/constract_llm/train/README.md) - Scripts for pre-training and fine-tuning
+  - [Pre-training Scripts](scripts/constract_llm/train/pt/README.md) - Scripts for MLM and MNTP pre-training
+  - [Fine-tuning Scripts](scripts/constract_llm/train/ft/README.md) - Scripts for Sentence Transformer fine-tuning

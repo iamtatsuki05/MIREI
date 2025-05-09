@@ -1,0 +1,8 @@
+{
+    "model_name_or_path": "sbintuitions/modernbert-ja-1.4b",
+    "output_dir": "./data/model/ModernBERT-JP-1.4B-init",
+    "model_type": "causal",
+    "push_to_hub": true,
+    "private": true,
+    "seed": 42
+}
