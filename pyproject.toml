@@ -58,6 +58,7 @@ dependencies = [
     "jsonlines>=4.0.0",
     "sudachipy>=0.6.10",
     "sudachidict-core>=20250129",
+    "schedulefree>=1.4.1",
 ]
 
 [tool.hatch.build.targets.wheel]
