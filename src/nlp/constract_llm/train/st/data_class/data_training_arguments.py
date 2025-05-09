@@ -103,6 +103,15 @@ class DataTrainingArguments:
             )
         },
     )
+    disable_hf_cache: bool = Field(
+        default=False,
+        metadata={
+            'help': (
+                'Whether to disable the Hugging Face cache. '
+                'If True, the dataset will not be cached and will be downloaded every time.'
+            )
+        },
+    )
 
     def __post_init__(self):
         if self.streaming:

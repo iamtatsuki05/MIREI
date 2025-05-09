@@ -13,6 +13,7 @@ from datasets import (
     DatasetDict,
     IterableDatasetDict,
     concatenate_datasets,
+    disable_caching,
     get_dataset_config_names,
     interleave_datasets,
     load_dataset,
@@ -52,16 +53,21 @@ def _setup_logging(training_args: SentenceTransformerTrainingArguments) -> None:
     transformers.utils.logging.enable_explicit_format()
 
 
-def _add_subset_label(
+def _add_constant_label(
     ds: datasets.Dataset | datasets.IterableDataset,
     label_id: int,
     num_proc: int | None = None,
 ) -> datasets.Dataset | datasets.IterableDataset:
+    if isinstance(ds, datasets.Dataset):
+        return ds.add_column('label', [label_id] * len(ds))
+
     return ds.map(
-        lambda batch: {'label': [label_id] * len(batch[list(batch.keys())[0]])},
-        batched=True,
+        lambda _: {'label': label_id},
         num_proc=num_proc,
-        desc='Adding subset label',
+        batched=False,
+        load_from_cache_file=False,
+        keep_in_memory=True,
+        desc='Adding constant label',
     )
 
 
@@ -70,17 +76,16 @@ def _trim_split(
     max_samples: int | None,
     streaming: bool,
     seed: int = 42,
-):
+) -> datasets.Dataset | datasets.IterableDataset:
     if max_samples is None:
         return ds_split
-
-    max_samples = min(len(ds_split), max_samples)
 
     if streaming:
         buffer_size = max(max_samples * 2, 10_000)
         return ds_split.shuffle(buffer_size=buffer_size, seed=seed).take(max_samples)
-    else:
-        return ds_split.shuffle(seed=seed).select(range(max_samples))
+
+    max_samples = min(len(ds_split), max_samples)
+    return ds_split.shuffle(seed=seed).select(range(max_samples))
 
 
 def load_raw_datasets(
@@ -88,6 +93,9 @@ def load_raw_datasets(
     model_args: ModelArguments,
     training_args: SentenceTransformerTrainingArguments,
 ) -> DatasetDict | IterableDatasetDict:
+    if getattr(data_args, 'disable_hf_cache', False):
+        disable_caching()
+
     if data_args.dataset_name is None:
         data_files: dict[str, str] = {}
         if data_args.train_file:
@@ -120,7 +128,7 @@ def load_raw_datasets(
     train_parts, valid_parts = [], []
 
     for cfg in subset_names:
-        ds = load_dataset(
+        ds_cfg = load_dataset(
             data_args.dataset_name,
             cfg,
             cache_dir=model_args.cache_dir,
@@ -129,62 +137,69 @@ def load_raw_datasets(
         )
         label_id = label_feature.str2int(cfg)
 
-        ds = {k: _add_subset_label(v, label_id, data_args.preprocessing_num_workers) for k, v in ds.items()}
-
-        if 'validation' not in ds and training_args.do_eval:
-            val_split = f'train[:{data_args.validation_split_percentage}%]'
-            train_split = f'train[{data_args.validation_split_percentage}%:]'
-
-            ds['validation'] = _add_subset_label(
-                load_dataset(
-                    data_args.dataset_name,
-                    cfg,
-                    split=val_split,
-                    cache_dir=model_args.cache_dir,
-                    token=model_args.token,
-                    streaming=data_args.streaming,
-                ),
-                label_id,
-                data_args.preprocessing_num_workers,
-            )
-            ds['train'] = _add_subset_label(
-                load_dataset(
-                    data_args.dataset_name,
-                    cfg,
-                    split=train_split,
-                    cache_dir=model_args.cache_dir,
-                    token=model_args.token,
-                    streaming=data_args.streaming,
-                ),
-                label_id,
-                data_args.preprocessing_num_workers,
-            )
-
         for split_name in ('train', 'validation'):
-            if split_name in ds and data_args.max_subset_samples is not None:
-                ds[split_name] = _trim_split(
-                    ds[split_name],
+            if split_name in ds_cfg and data_args.max_subset_samples is not None:
+                ds_cfg[split_name] = _trim_split(
+                    ds_cfg[split_name],
                     data_args.max_subset_samples,
                     data_args.streaming,
                     seed=training_args.seed,
                 )
 
-        train_parts.append(ds['train'])
-        if training_args.do_eval and 'validation' in ds:
-            valid_parts.append(ds['validation'])
+        ds_cfg = {k: _add_constant_label(v, label_id, data_args.preprocessing_num_workers) for k, v in ds_cfg.items()}
+
+        if 'validation' not in ds_cfg and training_args.do_eval:
+            val_pct = data_args.validation_split_percentage
+            ds_cfg['validation'] = _add_constant_label(
+                _trim_split(
+                    load_dataset(
+                        data_args.dataset_name,
+                        cfg,
+                        split=f'train[:{val_pct}%]',
+                        cache_dir=model_args.cache_dir,
+                        token=model_args.token,
+                        streaming=data_args.streaming,
+                    ),
+                    data_args.max_subset_samples,
+                    data_args.streaming,
+                    seed=training_args.seed,
+                ),
+                label_id,
+            )
+            ds_cfg['train'] = _add_constant_label(
+                _trim_split(
+                    load_dataset(
+                        data_args.dataset_name,
+                        cfg,
+                        split=f'train[{val_pct}%:]',
+                        cache_dir=model_args.cache_dir,
+                        token=model_args.token,
+                        streaming=data_args.streaming,
+                    ),
+                    data_args.max_subset_samples,
+                    data_args.streaming,
+                    seed=training_args.seed,
+                ),
+                label_id,
+            )
+
+        train_parts.append(ds_cfg['train'])
+        if training_args.do_eval and 'validation' in ds_cfg:
+            valid_parts.append(ds_cfg['validation'])
 
     if data_args.streaming:
-        data_dict = {'train': interleave_datasets(train_parts)}
+        raw = {'train': interleave_datasets(train_parts)}
         if valid_parts:
-            data_dict['validation'] = interleave_datasets(valid_parts)
-        raw_datasets = IterableDatasetDict(data_dict)
-        for split in raw_datasets:
-            raw_datasets[split] = raw_datasets[split].cast_column('label', label_feature)
+            raw['validation'] = interleave_datasets(valid_parts)
+        raw_datasets = IterableDatasetDict(raw)
     else:
-        data_dict = {'train': concatenate_datasets(train_parts)}
+        raw = {'train': concatenate_datasets(train_parts)}
         if valid_parts:
-            data_dict['validation'] = concatenate_datasets(valid_parts)
-        raw_datasets = DatasetDict(data_dict).cast_column('label', label_feature)
+            raw['validation'] = concatenate_datasets(valid_parts)
+        raw_datasets = DatasetDict(raw)
+
+    for split in raw_datasets:
+        raw_datasets[split] = raw_datasets[split].cast_column('label', label_feature)
 
     return raw_datasets
 
