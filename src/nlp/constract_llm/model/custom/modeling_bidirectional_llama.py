@@ -361,7 +361,7 @@ class LlamaBiForSequenceClassification(LlamaPreTrainedModel):
             skip_instruction=skip_instruction,
             max_length=max_length,
         )
-        self.classifier = nn.Linear(config.hidden_size, config.num_labels, bias=False)
+        self.score = nn.Linear(config.hidden_size, config.num_labels, bias=False)
 
         self.post_init()
 
