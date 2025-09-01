@@ -8,6 +8,7 @@
 
 - `run_mlm.py` - Masked Language Modeling（マスク言語モデリング）事前学習用スクリプト
 - `run_mntp.py` - Masked Next Token Prediction（マスク次トークン予測）事前学習用スクリプト
+- `run_clm.py` - Causal Language Modeling（自己回帰型言語モデリング）事前学習・ファインチューニング用スクリプト（GPT, GPT-2, Llama等）
 
 ## Masked Language Modeling (MLM)
 
@@ -83,3 +84,38 @@ uv run torchrun \
 - `Llama-Bi-JP-1.4B-PT-stage2.json` - Llama-Bi-JP-1.4Bのステージ2事前学習の設定
 - `ModernBERT-JP-1.4B-PT-stage1.json` - ModernBERT-JP-1.4Bのステージ1事前学習の設定
 - `ModernBERT-JP-1.4B-PT-stage2.json` - ModernBERT-JP-1.4Bのステージ2事前学習の設定
+
+
+## Causal Language Modeling (CLM)
+
+`run_clm.py`スクリプトは、Causal Language Modeling（自己回帰型言語モデリング）の目的関数を用いたモデルの事前学習・ファインチューニングに使用します。
+これは、GPT、GPT-2、Llamaなどのデコーダ型アーキテクチャに適しています。モデルは系列内の次のトークンを逐次予測するように訓練されます。
+
+### 主な機能
+
+- HuggingFaceの`AutoModelForCausalLM`および互換アーキテクチャをサポート
+- 柔軟なデータセット読み込み（ローカルファイル・HuggingFace Datasets両対応）
+- JSON設定ファイル（ModelArguments, DataTrainingArguments, TrainingArguments）による柔軟な設定
+- `torchrun`による分散・マルチGPU学習に対応
+- パープレキシティ・精度による評価
+- チェックポイントからの再開学習
+
+### 使用方法
+
+```bash
+python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig.json
+```
+
+マルチGPU学習の場合：
+
+```bash
+uv run torchrun \
+  --standalone \
+  --nnodes 1 \
+  --nproc-per-node $NUM_GPU \
+  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig.json
+```
+
+### カスタムパラメータ
+
+詳細なパラメータ情報については、`src/nlp/constract_llm/train/language_model/clm/data_class/`のデータクラスを参照してください。
