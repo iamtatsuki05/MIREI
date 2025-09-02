@@ -14,13 +14,13 @@
 
 ```bash
 # アライメントとユニフォーミティを両方計算
-python scripts/constract_llm/eval/ft/eval.py main --config_file_path=config/constract_llm/eval/pt/example.json
+python scripts/constract_llm/eval/ft/eval.py main --config_file_path=config/constract_llm/eval/sentence_model/example.json
 
 # アライメントのみ計算
-python scripts/constract_llm/eval/ft/eval.py alignment --config_file_path=config/constract_llm/eval/pt/example.json
+python scripts/constract_llm/eval/ft/eval.py alignment --config_file_path=config/constract_llm/eval/sentence_model/example.json
 
 # ユニフォーミティのみ計算
-python scripts/constract_llm/eval/ft/eval.py uniformity --config_file_path=config/constract_llm/eval/pt/example.json
+python scripts/constract_llm/eval/ft/eval.py uniformity --config_file_path=config/constract_llm/eval/sentence_model/example.json
 ```
 
 コマンドライン引数で設定値を上書きすることも可能です。
