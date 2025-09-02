@@ -52,7 +52,7 @@ This directory contains scripts for training language models.
 Each script provides a CLI interface using [Google Fire](https://github.com/google/python-fire). Basic usage is as follows:
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-1.4B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 ### Multi-GPU Training
@@ -64,7 +64,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-1.4B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 Where `$NUM_GPU` is the number of GPUs you want to use for training.
@@ -74,14 +74,14 @@ Where `$NUM_GPU` is the number of GPUs you want to use for training.
 Configuration files for each script are stored in the corresponding directories under `config/constract_llm/train/`:
 
 - Pre-training configurations: `config/constract_llm/train/pt/`
-  - `Llama-Bi-JP-1.4B-PT-stage1.json`
-  - `Llama-Bi-JP-1.4B-PT-stage2.json`
-  - `ModernBERT-JP-1.4B-PT-stage1.json`
-  - `ModernBERT-JP-1.4B-PT-stage2.json`
+  - `Llama-Bi-JP-0.5B-PT-stage1.json`
+  - `Llama-Bi-JP-0.5B-PT-stage2.json`
+  - `ModernBERT-JP-0.5B-PT-stage1.json`
+  - `ModernBERT-JP-0.5B-PT-stage2.json`
 - Fine-tuning configurations: `config/constract_llm/train/ft/`
-  - `Sentence-Llama-Bi-JP-1.4B-PT.json`
-  - `Sentence-Llama-Bi-JP-1.4B.json`
-  - `Sentence-ModernBERT-JP-1.4B-PT.json`
-  - `Sentence-ModernBERT-JP-1.4B.json`
+  - `Sentence-Llama-Bi-JP-0.5B-PT.json`
+  - `Sentence-Llama-Bi-JP-0.5B.json`
+  - `Sentence-ModernBERT-JP-0.5B-PT.json`
+  - `Sentence-ModernBERT-JP-0.5B.json`
 
 Each configuration file contains all parameters used by the corresponding script.

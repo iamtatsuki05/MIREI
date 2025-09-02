@@ -23,7 +23,7 @@
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-1.4B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 マルチGPU学習の場合：
@@ -33,7 +33,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-1.4B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 ### カスタムパラメータ
@@ -52,7 +52,7 @@ uv run torchrun \
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-Bi-JP-1.4B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-Bi-JP-0.5B-PT-stage1.json
 ```
 
 マルチGPU学習の場合：
@@ -62,7 +62,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-Bi-JP-1.4B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-Bi-JP-0.5B-PT-stage1.json
 ```
 
 ### カスタムパラメータ
@@ -80,10 +80,10 @@ uv run torchrun \
 
 事前学習の設定ファイルは`config/constract_llm/train/pt/`に格納されています：
 
-- `Llama-Bi-JP-1.4B-PT-stage1.json` - Llama-Bi-JP-1.4Bのステージ1事前学習の設定
-- `Llama-Bi-JP-1.4B-PT-stage2.json` - Llama-Bi-JP-1.4Bのステージ2事前学習の設定
-- `ModernBERT-JP-1.4B-PT-stage1.json` - ModernBERT-JP-1.4Bのステージ1事前学習の設定
-- `ModernBERT-JP-1.4B-PT-stage2.json` - ModernBERT-JP-1.4Bのステージ2事前学習の設定
+- `Llama-Bi-JP-0.5B-PT-stage1.json` - Llama-Bi-JP-0.5Bのステージ1事前学習の設定
+- `Llama-Bi-JP-0.5B-PT-stage2.json` - Llama-Bi-JP-0.5Bのステージ2事前学習の設定
+- `ModernBERT-JP-0.5B-PT-stage1.json` - ModernBERT-JP-0.5Bのステージ1事前学習の設定
+- `ModernBERT-JP-0.5B-PT-stage2.json` - ModernBERT-JP-0.5Bのステージ2事前学習の設定
 
 
 ## Causal Language Modeling (CLM)

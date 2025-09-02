@@ -51,7 +51,7 @@
 各スクリプトは[Google Fire](https://github.com/google/python-fire)を使用してCLIインターフェースを提供しています。基本的な使用方法は以下の通りです：
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-1.4B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 ### マルチGPU学習
@@ -63,7 +63,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-1.4B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 ここで、`$NUM_GPU`は学習に使用したいGPUの数です。
@@ -73,14 +73,14 @@ uv run torchrun \
 各スクリプトの設定ファイルは、`config/constract_llm/train/`以下の対応するディレクトリに格納されています：
 
 - 事前学習の設定: `config/constract_llm/train/pt/`
-  - `Llama-Bi-JP-1.4B-PT-stage1.json`
-  - `Llama-Bi-JP-1.4B-PT-stage2.json`
-  - `ModernBERT-JP-1.4B-PT-stage1.json`
-  - `ModernBERT-JP-1.4B-PT-stage2.json`
+  - `Llama-Bi-JP-0.5B-PT-stage1.json`
+  - `Llama-Bi-JP-0.5B-PT-stage2.json`
+  - `ModernBERT-JP-0.5B-PT-stage1.json`
+  - `ModernBERT-JP-0.5B-PT-stage2.json`
 - FTの設定: `config/constract_llm/train/ft/`
-  - `Sentence-Llama-Bi-JP-1.4B-PT.json`
-  - `Sentence-Llama-Bi-JP-1.4B.json`
-  - `Sentence-ModernBERT-JP-1.4B-PT.json`
-  - `Sentence-ModernBERT-JP-1.4B.json`
+  - `Sentence-Llama-Bi-JP-0.5B-PT.json`
+  - `Sentence-Llama-Bi-JP-0.5B.json`
+  - `Sentence-ModernBERT-JP-0.5B-PT.json`
+  - `Sentence-ModernBERT-JP-0.5B.json`
 
 各設定ファイルには、対応するスクリプトで使用される全てのパラメータが含まれています。
