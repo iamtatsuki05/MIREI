@@ -219,6 +219,9 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
             'You can do it from another script, save it, and load it from here, using --tokenizer_name.'
         )
 
+    if tokenizer.pad_token is None:
+        tokenizer.pad_token = tokenizer.eos_token
+
     if model_args.model_name_or_path:
         torch_dtype = (
             model_args.torch_dtype
