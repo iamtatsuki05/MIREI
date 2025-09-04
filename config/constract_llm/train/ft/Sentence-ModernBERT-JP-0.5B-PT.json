@@ -1,5 +1,5 @@
 {
-    "model_name_or_path": "iamtatsuki05/ModernBERT-JP-0.5B-init",
+    "model_name_or_path": "iamtatsuki05/ModernBERT-JP-0.5B-PT-stage2",
     "trust_remote_code": false,
     "dataset_name": "cl-nagoya/ruri-dataset-v2-pt",
     "use_all_subset": true,
