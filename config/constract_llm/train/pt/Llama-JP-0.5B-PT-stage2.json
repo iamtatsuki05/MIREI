@@ -2,7 +2,7 @@
     "model_name_or_path": "iamtatsuki05/Llama-JP-0.5B-PT-stage1",
     "trust_remote_code": true,
     "dataset_name": "fujiki/wiki40b_ja",
-    "preprocessing_num_workers": 96,
+    "preprocessing_num_workers": 128,
     "dataloader_num_workers": 32,
     "max_train_samples": null,
     "max_eval_samples": 1000,
