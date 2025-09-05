@@ -21,7 +21,7 @@
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-1.4B.json
+python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 マルチGPU学習の場合：
@@ -31,7 +31,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-1.4B.json
+  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 ### カスタムパラメータ
@@ -62,7 +62,7 @@ uv run torchrun \
 
 FTの設定ファイルは`config/constract_llm/train/ft/`に格納されています：
 
-- `Sentence-Llama-Bi-JP-1.4B-PT.json` - 事前学習済みLlama-Bi-JP-1.4BをSentence TransformerとしてWSLするための設定
-- `Sentence-Llama-Bi-JP-1.4B.json` - Llama-Bi-JP-1.4BをSentence TransformerとしてFTするための設定
-- `Sentence-ModernBERT-JP-1.4B-PT.json` - 事前学習済みModernBERT-JP-1.4BをSentence TransformerとしてWSLするための設定
-- `Sentence-ModernBERT-JP-1.4B.json` - ModernBERT-JP-1.4BをSentence TransformerとしてFTするための設定
+- `Sentence-Llama-Bi-JP-0.5B-PT.json` - 事前学習済みLlama-Bi-JP-0.5BをSentence TransformerとしてWSLするための設定
+- `Sentence-Llama-Bi-JP-0.5B.json` - Llama-Bi-JP-0.5BをSentence TransformerとしてFTするための設定
+- `Sentence-ModernBERT-JP-0.5B-PT.json` - 事前学習済みModernBERT-JP-0.5BをSentence TransformerとしてWSLするための設定
+- `Sentence-ModernBERT-JP-0.5B.json` - ModernBERT-JP-0.5BをSentence TransformerとしてFTするための設定

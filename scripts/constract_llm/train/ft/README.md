@@ -22,7 +22,7 @@ The `run_st.py` script is used for fine-tuning Sentence Transformer models, whic
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-1.4B.json
+python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 For multi-GPU training:
@@ -32,7 +32,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-1.4B.json
+  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 ### Custom Parameters
@@ -63,7 +63,7 @@ For detailed parameter information, refer to the data classes in `src/nlp/constr
 
 Configuration files for fine-tuning are stored in `config/constract_llm/train/ft/`:
 
-- `Sentence-Llama-Bi-JP-1.4B-PT.json` - Configuration for fine-tuning pre-trained Llama-Bi-JP-1.4B as a Sentence Transformer
-- `Sentence-Llama-Bi-JP-1.4B.json` - Configuration for fine-tuning Llama-Bi-JP-1.4B as a Sentence Transformer
-- `Sentence-ModernBERT-JP-1.4B-PT.json` - Configuration for fine-tuning pre-trained ModernBERT-JP-1.4B as a Sentence Transformer
-- `Sentence-ModernBERT-JP-1.4B.json` - Configuration for fine-tuning ModernBERT-JP-1.4B as a Sentence Transformer
+- `Sentence-Llama-Bi-JP-0.5B-PT.json` - Configuration for fine-tuning pre-trained Llama-Bi-JP-0.5B as a Sentence Transformer
+- `Sentence-Llama-Bi-JP-0.5B.json` - Configuration for fine-tuning Llama-Bi-JP-0.5B as a Sentence Transformer
+- `Sentence-ModernBERT-JP-0.5B-PT.json` - Configuration for fine-tuning pre-trained ModernBERT-JP-0.5B as a Sentence Transformer
+- `Sentence-ModernBERT-JP-0.5B.json` - Configuration for fine-tuning ModernBERT-JP-0.5B as a Sentence Transformer

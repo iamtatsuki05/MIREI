@@ -1,0 +1,8 @@
+{
+    "model_name_or_path": "iamtatsuki05/ModernBERT-JP-0.5B-settings",
+    "output_dir": "./data/model/ModernBERT-JP-0.5B-init",
+    "model_type": "masked",
+    "push_to_hub": true,
+    "private": true,
+    "seed": 42
+}

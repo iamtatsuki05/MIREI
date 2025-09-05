@@ -14,13 +14,13 @@ The script supports configuration via JSON/YAML/TOML files or command-line argum
 
 ```bash
 # Compute both alignment and uniformity
-python scripts/constract_llm/eval/ft/eval.py main --config_file_path=config/constract_llm/eval/pt/example.json
+python scripts/constract_llm/eval/ft/eval.py main --config_file_path=config/constract_llm/eval/sentence_model/example.json
 
 # Compute only alignment
-python scripts/constract_llm/eval/ft/eval.py alignment --config_file_path=config/constract_llm/eval/pt/example.json
+python scripts/constract_llm/eval/ft/eval.py alignment --config_file_path=config/constract_llm/eval/sentence_model/example.json
 
 # Compute only uniformity
-python scripts/constract_llm/eval/ft/eval.py uniformity --config_file_path=config/constract_llm/eval/pt/example.json
+python scripts/constract_llm/eval/ft/eval.py uniformity --config_file_path=config/constract_llm/eval/sentence_model/example.json
 ```
 
 You can also override config parameters via CLI:
