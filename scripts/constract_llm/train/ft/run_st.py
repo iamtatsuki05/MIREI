@@ -24,7 +24,11 @@ from sentence_transformers import (
     SentenceTransformerTrainingArguments,
     losses,
 )
-from sentence_transformers.evaluation import SentenceEvaluator, TripletEvaluator
+from sentence_transformers.evaluation import (
+    InformationRetrievalEvaluator,
+    SentenceEvaluator,
+    TripletEvaluator,
+)
 from transformers import HfArgumentParser, is_torch_xla_available, set_seed
 from transformers.trainer_utils import get_last_checkpoint
 
@@ -226,6 +230,38 @@ def get_evaluator(
                 positives=eval_dataset[positive_col],
                 negatives=eval_dataset[negative_col],
                 name='triplet-evaluator',
+            )
+        case 'information_retrieval':
+            required = {anchor_col, positive_col}
+            if not required.issubset(column_names):
+                return None
+
+            queries: dict[str, str] = {}
+            corpus: dict[str, str] = {}
+            relevant_docs: dict[str, dict[str, int]] = {}
+
+            anchors = eval_dataset[anchor_col]
+            positives = eval_dataset[positive_col]
+
+            for i, (a, p) in enumerate(zip(anchors, positives)):
+                qid = str(i)
+                did = str(i)
+                queries[qid] = a
+                corpus[did] = p
+                if qid not in relevant_docs:
+                    relevant_docs[qid] = set()
+                relevant_docs[qid].add(did)
+
+            return InformationRetrievalEvaluator(
+                queries=queries,
+                corpus=corpus,
+                relevant_docs=relevant_docs,
+                name='ir-evaluator',
+                show_progress_bar=False,
+                # mrr_at_k=[10],
+                # ndcg_at_k=[10],
+                # accuracy_at_k=[1, 3, 5, 10],
+                # precision_recall_at_k=[1, 3, 5, 10],
             )
         case _:
             raise ValueError(f'Unsupported evaluator type: {evaluator_type}')

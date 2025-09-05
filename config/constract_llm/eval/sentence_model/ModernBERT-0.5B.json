@@ -1,0 +1,10 @@
+{
+    "model_name_or_path": "iamtatsuki05/Sentence-ModernBERT-JP-0.5B",
+    "output_dir": "data/outputs/eval/sentence_model/Modernbert-0.5B",
+    "num_examples": 2000,
+    "seed": 42,
+    "miracl_name": "miracl/miracl",
+    "miracl_lang": "ja",
+    "wiki_name": "wikimedia/wikipedia",
+    "wiki_lang": "20231101.ja"
+}
