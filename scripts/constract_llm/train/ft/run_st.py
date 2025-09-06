@@ -411,13 +411,13 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     if training_args.do_train:
         if data_args.max_train_samples is not None:
             max_train_samples = min(len(train_dataset), data_args.max_train_samples)
-            train_dataset = train_dataset.select(range(max_train_samples))
+            train_dataset = train_dataset.shuffle(seed=training_args.seed).select(range(max_train_samples))
         logger.info(f'train dataset: {train_dataset}')
 
     if training_args.do_eval:
         if data_args.max_eval_samples is not None:
             max_eval_samples = min(len(eval_dataset), data_args.max_eval_samples)
-            eval_dataset = eval_dataset.select(range(max_eval_samples))
+            eval_dataset = eval_dataset.shuffle(seed=training_args.seed).select(range(max_eval_samples))
         logger.info(f'eval dataset: {eval_dataset}')
 
     loss = losses.CachedMultipleNegativesRankingLoss(
