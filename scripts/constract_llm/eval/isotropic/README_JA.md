@@ -14,24 +14,24 @@
 
 ```bash
 # アライメントとユニフォーミティを両方計算
-python scripts/constract_llm/eval/ft/eval.py main --config_file_path=config/constract_llm/eval/sentence_model/example.json
+python scripts/constract_llm/eval/isotropic/eval.py main --config_file_path=config/constract_llm/eval/isotropic/example.json
 
 # アライメントのみ計算
-python scripts/constract_llm/eval/ft/eval.py alignment --config_file_path=config/constract_llm/eval/sentence_model/example.json
+python scripts/constract_llm/eval/isotropic/eval.py alignment --config_file_path=config/constract_llm/eval/isotropic/example.json
 
 # ユニフォーミティのみ計算
-python scripts/constract_llm/eval/ft/eval.py uniformity --config_file_path=config/constract_llm/eval/sentence_model/example.json
+python scripts/constract_llm/eval/isotropic/eval.py uniformity --config_file_path=config/constract_llm/eval/isotropic/example.json
 ```
 
 コマンドライン引数で設定値を上書きすることも可能です。
 
 ```bash
-python scripts/constract_llm/eval/ft/eval.py main --model_name_or_path=sentence-transformers/all-MiniLM-L6-v2 --output_dir=output/
+python scripts/constract_llm/eval/isotropic/eval.py main --model_name_or_path=sentence-transformers/all-MiniLM-L6-v2 --output_dir=output/
 ```
 
 ## 設定ファイル
 
-設定ファイルは `pydantic.BaseModel` 互換（`src/nlp/constract_llm/eval/sentence_model/config.py` 参照）です。
+設定ファイルは `pydantic.BaseModel` 互換（`src/nlp/constract_llm/eval/isotropic/config.py` 参照）です。
 例（JSON）:
 
 ```json
