@@ -1,6 +1,6 @@
 {
-    "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-0.5B",
-    "output_dir": "data/outputs/eval/sentence_model/Sarashina-0.5B",
+    "model_name_or_path": "sbintuitions/sarashina2.2-0.5b",
+    "output_dir": "data/outputs/eval/isotropic/Sarashina-0.5B",
     "num_examples": 2000,
     "seed": 42,
     "miracl_name": "miracl/miracl",

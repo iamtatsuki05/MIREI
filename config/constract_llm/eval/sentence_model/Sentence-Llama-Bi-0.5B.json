@@ -1,6 +1,6 @@
 {
-    "model_name_or_path": "iamtatsuki05/Llama-JP-0.5B-PT-stage2",
-    "output_dir": "data/outputs/eval/isotropic/Llama-0.5B",
+    "model_name_or_path": "iamtatsuki05/Sentence-Llama-Bi-JP-0.5B",
+    "output_dir": "data/outputs/eval/isotropic/Sentence-Llama-Bi-0.5B",
     "num_examples": 2000,
     "seed": 42,
     "miracl_name": "miracl/miracl",
