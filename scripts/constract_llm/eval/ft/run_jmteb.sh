@@ -1,8 +1,9 @@
 git clone https://github.com/sbintuitions/JMTEB.git
 cd JMTEB
 # https://github.com/Lightning-AI/litgpt/issues/1915
-rm poetry.lock
 poetry install
+poetry add "jsonargparse>=4.36" jsonnet "peft==0.1.0" "accelerate>=1.10.1" "transformers==4.51.0" "protobuf>=3.20.1" sentencepiece
+poetry update jsonargparse jsonnet accelerate transformers protobuf sentencepiece
 
 poetry run python -m jmteb \
     --embedder SentenceBertEmbedder \
