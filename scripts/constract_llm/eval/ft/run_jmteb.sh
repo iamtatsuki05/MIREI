@@ -1,4 +1,4 @@
-git clone https://github.com/sbintuitions/JMTEB.git
+git clone -b feat/update_datasets https://github.com/sbintuitions/JMTEB.git # ver-2 if deleted this branch you can use main branch
 cd JMTEB
 # https://github.com/Lightning-AI/litgpt/issues/1915
 poetry install
