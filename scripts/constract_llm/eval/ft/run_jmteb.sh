@@ -11,7 +11,7 @@ poetry run python -m jmteb \
     --embedder.device cuda \
     --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
     --embedder.max_seq_length 2048 \
-    --embedder.batch_size 256 \
+    --embedder.batch_size 512 \
     --save_dir "output/Sentence-Sarashina-Bi-0.5B"
 
 
@@ -21,7 +21,7 @@ poetry run python -m jmteb \
     --embedder.device cuda \
     --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
     --embedder.max_seq_length 2048 \
-    --embedder.batch_size 256 \
+    --embedder.batch_size 512 \
     --save_dir "output/Sentence-ModernBERT-JP-0.5B"
 
 
@@ -31,5 +31,5 @@ poetry run python -m jmteb \
     --embedder.device cuda \
     --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
     --embedder.max_seq_length 2048 \
-    --embedder.batch_size 256 \
+    --embedder.batch_size 512 \
     --save_dir "output/Sentence-Llama-Bi-JP-0.5B"
