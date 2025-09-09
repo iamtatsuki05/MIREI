@@ -8,16 +8,28 @@ poetry update jsonargparse jsonnet accelerate transformers protobuf sentencepiec
 poetry run python -m jmteb \
     --embedder SentenceBertEmbedder \
     --embedder.model_name_or_path "iamtatsuki05/Sentence-Sarashina-Bi-0.5B" \
+    --embedder.device cuda \
+    --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
+    --embedder.max_seq_length 2048 \
+    --embedder.batch_size 256 \
     --save_dir "output/Sentence-Sarashina-Bi-0.5B"
 
 
 poetry run python -m jmteb \
     --embedder SentenceBertEmbedder \
     --embedder.model_name_or_path "iamtatsuki05/Sentence-ModernBERT-JP-0.5B" \
+    --embedder.device cuda \
+    --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
+    --embedder.max_seq_length 2048 \
+    --embedder.batch_size 256 \
     --save_dir "output/Sentence-ModernBERT-JP-0.5B"
 
 
 poetry run python -m jmteb \
     --embedder SentenceBertEmbedder \
     --embedder.model_name_or_path "iamtatsuki05/Sentence-Llama-Bi-JP-0.5B" \
+    --embedder.device cuda \
+    --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
+    --embedder.max_seq_length 2048 \
+    --embedder.batch_size 256 \
     --save_dir "output/Sentence-Llama-Bi-JP-0.5B"
