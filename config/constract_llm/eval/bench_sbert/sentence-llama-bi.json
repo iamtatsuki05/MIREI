@@ -11,7 +11,7 @@
     "device": "cuda",
     "dtype": "bfloat16",
     "normalize_embeddings": true,
-    "max_use_samples": 20000,
+    "max_use_samples": 100000,
     "monitor_interval_ms": 100,
     "warmup_fraction": 0.0,
     "show_progress": true,
