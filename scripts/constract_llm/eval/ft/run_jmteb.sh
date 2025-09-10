@@ -12,7 +12,7 @@ poetry run python -m jmteb \
     --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
     --embedder.max_seq_length 2048 \
     --embedder.batch_size 512 \
-    --save_dir "output/Sentence-Sarashina-Bi-0.5B"
+    --save_dir "output/Sentence-Sarashina-Bi-0.5B/len2048"
 
 
 poetry run python -m jmteb \
@@ -22,7 +22,7 @@ poetry run python -m jmteb \
     --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
     --embedder.max_seq_length 2048 \
     --embedder.batch_size 512 \
-    --save_dir "output/Sentence-ModernBERT-JP-0.5B"
+    --save_dir "output/Sentence-ModernBERT-JP-0.5B/len2048"
 
 
 poetry run python -m jmteb \
@@ -32,4 +32,34 @@ poetry run python -m jmteb \
     --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
     --embedder.max_seq_length 2048 \
     --embedder.batch_size 512 \
-    --save_dir "output/Sentence-Llama-Bi-JP-0.5B"
+    --save_dir "output/Sentence-Llama-Bi-JP-0.5B/len2048"
+
+
+poetry run python -m jmteb \
+    --embedder SentenceBertEmbedder \
+    --embedder.model_name_or_path "iamtatsuki05/Sentence-Sarashina-Bi-0.5B" \
+    --embedder.device cuda \
+    --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
+    --embedder.max_seq_length 512 \
+    --embedder.batch_size 512 \
+    --save_dir "output/Sentence-Sarashina-Bi-0.5B/len512"
+
+
+poetry run python -m jmteb \
+    --embedder SentenceBertEmbedder \
+    --embedder.model_name_or_path "iamtatsuki05/Sentence-ModernBERT-JP-0.5B" \
+    --embedder.device cuda \
+    --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
+    --embedder.max_seq_length 512 \
+    --embedder.batch_size 512 \
+    --save_dir "output/Sentence-ModernBERT-JP-0.5B/len512"
+
+
+poetry run python -m jmteb \
+    --embedder SentenceBertEmbedder \
+    --embedder.model_name_or_path "iamtatsuki05/Sentence-Llama-Bi-JP-0.5B" \
+    --embedder.device cuda \
+    --embedder.model_kwargs '{"torch_dtype": "torch.bfloat16"}' \
+    --embedder.max_seq_length 512 \
+    --embedder.batch_size 512 \
+    --save_dir "output/Sentence-Llama-Bi-JP-0.5B/len512"
