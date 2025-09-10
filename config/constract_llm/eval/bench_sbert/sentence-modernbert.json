@@ -16,7 +16,7 @@
     "warmup_fraction": 0.0,
     "show_progress": true,
     "trust_remote_code": true,
-    "attn_implementation": "sdpa",
+    "attn_implementation": "flash_attention_2",
     "model_extra_kwargs": {},
     "tokenizer_extra_kwargs": {},
     "common_extra_kwargs": {}
