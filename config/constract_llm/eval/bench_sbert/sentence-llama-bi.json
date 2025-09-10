@@ -1,0 +1,23 @@
+{
+    "model_name_or_path": "iamtatsuki05/Sentence-Llama-Bi-JP-0.5B",
+    "output_dir": "data/outputs/bench_sbert/llama-bi",
+    "dataset_name_or_path": "fujiki/wiki40b_ja",
+    "dataset_config_name": "default",
+    "dataset_split": "train",
+    "text_fields": ["text"],
+    "streaming": true,
+    "batch_sizes": [16, 32, 64, 128, 256, 512],
+    "seq_lengths": [128, 256, 512],
+    "device": "cuda",
+    "dtype": "auto",
+    "normalize_embeddings": true,
+    "max_use_samples": 20000,
+    "monitor_interval_ms": 100,
+    "warmup_fraction": 0.0,
+    "show_progress": true,
+    "trust_remote_code": true,
+    "attn_implementation": "sdpa",
+    "model_extra_kwargs": {},
+    "tokenizer_extra_kwargs": {},
+    "common_extra_kwargs": {}
+}
