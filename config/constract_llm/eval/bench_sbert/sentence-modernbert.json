@@ -9,7 +9,7 @@
     "batch_sizes": [16, 32, 64, 128, 256, 512],
     "seq_lengths": [128, 256, 512],
     "device": "cuda",
-    "dtype": "auto",
+    "dtype": "bfloat16",
     "normalize_embeddings": true,
     "max_use_samples": 20000,
     "monitor_interval_ms": 100,
