@@ -12,7 +12,7 @@ All MIREI checkpoints are gathered in the Hugging Face collection: [MIREI Collec
 
 ## How to operate uv
 ### setup
-1. Install with`git clone`
+1. Install with`git clone https://github.com/iamtatsuki05/MIREI.git`
 ### uv configuration
 1. `uv sync`
 2. `uv sync --group cuda`
@@ -23,7 +23,7 @@ uv run python ...
 
 ## How to operate docker
 ### setup
-1. Install with`git clone`
+1. Install with`git clone git clone https://github.com/iamtatsuki05/MIREI.git`
 ### docker configuration
 1. `docker compose up -d --build <service name(ex:python-cpu)`
 ### Connect to and disconnect from docker

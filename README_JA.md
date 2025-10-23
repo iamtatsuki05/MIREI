@@ -12,7 +12,7 @@ MIREIで公開しているモデルチェックポイントは、[MIREI collecti
 
 ## uvの操作方法
 ### セットアップ
-1. `git clone`でインストール
+1. `git clone https://github.com/iamtatsuki05/MIREI.git`でインストール
 ### uv設定
 1. `uv sync`
 2. `uv sync --group cuda`
@@ -23,7 +23,7 @@ uv run python ...
 
 ## Dockerの操作方法
 ### セットアップ
-1. `git clone`でインストール
+1. `git clone git clone https://github.com/iamtatsuki05/MIREI.git`でインストール
 ### Docker設定
 1. `docker compose up -d --build <サービス名(例:python-cpu)>`
 ### Dockerへの接続と切断
