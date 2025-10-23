@@ -6,7 +6,7 @@
 
 ## 概要
 
-`init_model.py`スクリプトは、事前学習済みモデルを初期化し、後続の微調整やその他の処理のために準備します。
+`init_model.py`スクリプトは、事前学習済みモデルを初期化し、後続のFineTuneやその他の処理のために準備します。
 
 ## 機能
 
@@ -33,7 +33,7 @@ python scripts/constract_llm/model/init_model.py config/constract_llm/model/init
 
 ### `save_custom_model.py`
 
-微調整済みモデルやアダプタ構成を標準レイアウトでまとめ、必要に応じて Hub に公開します。
+FineTune済みモデルやアダプタ構成を標準レイアウトでまとめ、必要に応じて Hub に公開します。
 
 **主な機能**
 - `src/nlp/constract_llm/model/save_custom_model.py` の `CUSTOM_MODEL_CONFIGS` で定義されたカスタムモデルをサポート。
