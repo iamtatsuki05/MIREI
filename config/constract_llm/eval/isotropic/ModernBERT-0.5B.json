@@ -1,0 +1,10 @@
+{
+    "model_name_or_path": "iamtatsuki05/ModernBERT-JP-0.5B-PT-stage2",
+    "output_dir": "data/outputs/eval/isotropic/Modernbert-0.5B",
+    "num_examples": 2000,
+    "seed": 42,
+    "miracl_name": "miracl/miracl",
+    "miracl_lang": "ja",
+    "wiki_name": "wikimedia/wikipedia",
+    "wiki_lang": "20231101.ja"
+}

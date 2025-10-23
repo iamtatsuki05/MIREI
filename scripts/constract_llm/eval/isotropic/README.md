@@ -14,24 +14,24 @@ The script supports configuration via JSON/YAML/TOML files or command-line argum
 
 ```bash
 # Compute both alignment and uniformity
-python scripts/constract_llm/eval/ft/eval.py main --config_file_path=config/constract_llm/eval/sentence_model/example.json
+python scripts/constract_llm/eval/isotropic/eval.py main --config_file_path=config/constract_llm/eval/isotropic/example.json
 
 # Compute only alignment
-python scripts/constract_llm/eval/ft/eval.py alignment --config_file_path=config/constract_llm/eval/sentence_model/example.json
+python scripts/constract_llm/eval/isotropic/eval.py alignment --config_file_path=config/constract_llm/eval/isotropic/example.json
 
 # Compute only uniformity
-python scripts/constract_llm/eval/ft/eval.py uniformity --config_file_path=config/constract_llm/eval/sentence_model/example.json
+python scripts/constract_llm/eval/isotropic/eval.py uniformity --config_file_path=config/constract_llm/eval/isotropic/example.json
 ```
 
 You can also override config parameters via CLI:
 
 ```bash
-python scripts/constract_llm/eval/ft/eval.py main --model_name_or_path=sentence-transformers/all-MiniLM-L6-v2 --output_dir=output/
+python scripts/constract_llm/eval/isotropic/eval.py main --model_name_or_path=sentence-transformers/all-MiniLM-L6-v2 --output_dir=output/
 ```
 
 ## Configuration
 
-The script uses a config file compatible with `pydantic.BaseModel` (see `src/nlp/constract_llm/eval/sentence_model/config.py`).
+The script uses a config file compatible with `pydantic.BaseModel` (see `src/nlp/constract_llm/eval/isotropic/config.py`).
 Example (JSON):
 
 ```json

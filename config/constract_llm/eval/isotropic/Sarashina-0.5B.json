@@ -1,7 +1,7 @@
 {
-    "model_name_or_path": "cl-nagoya/ruri-v3-30m",
-    "output_dir": "data/outputs/eval/sentence_model",
-    "num_examples": 100,
+    "model_name_or_path": "sbintuitions/sarashina2.2-0.5b",
+    "output_dir": "data/outputs/eval/isotropic/Sarashina-0.5B",
+    "num_examples": 2000,
     "seed": 42,
     "miracl_name": "miracl/miracl",
     "miracl_lang": "ja",
