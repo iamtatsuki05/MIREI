@@ -15,6 +15,7 @@ All MIREI checkpoints are gathered in the Hugging Face collection: [MIREI Collec
 1. Install with`git clone`
 ### uv configuration
 1. `uv sync`
+2. `uv sync --group cuda`
 ### run script
 ```shell
 uv run python ...

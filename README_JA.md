@@ -15,6 +15,7 @@ MIREIで公開しているモデルチェックポイントは、[MIREI collecti
 1. `git clone`でインストール
 ### uv設定
 1. `uv sync`
+2. `uv sync --group cuda`
 ### スクリプト実行
 ```shell
 uv run python ...
