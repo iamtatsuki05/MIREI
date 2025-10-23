@@ -2,6 +2,14 @@
 
 English / [日本語](README_JA.md)
 
+MIREIは、同一条件下でエンコーダ／デコーダ型の文埋め込みモデルを構築し、共通の学習パイプラインと評価手法で性能差を検証する研究用のコードです。
+
+![MIREI Concept Overview](assets/concept.jpg)
+
+## Hugging Faceコレクション
+
+MIREIで公開しているモデルチェックポイントは、[MIREI collections](https://huggingface.co/collections/iamtatsuki05/mirei)に集約しています。
+
 ## uvの操作方法
 ### セットアップ
 1. `git clone`でインストール
