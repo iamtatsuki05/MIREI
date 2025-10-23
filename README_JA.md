@@ -1,12 +1,21 @@
-# Text Embedding
+# **MIREI**: **M**atched **I**nvestigation of **R**epresentation **E**mbedding **I**nsights
 
 English / [日本語](README_JA.md)
 
+MIREIは、同一条件下でエンコーダ／デコーダ型の文埋め込みモデルを構築し、共通の学習パイプラインと評価手法で性能差を検証する研究用のコードです。
+
+![MIREI Concept Overview](assets/concept.jpg)
+
+## Hugging Faceコレクション
+
+MIREIで公開しているモデルチェックポイントは、[MIREI collections](https://huggingface.co/collections/iamtatsuki05/mirei)に集約しています。
+
 ## uvの操作方法
 ### セットアップ
-1. `git clone`でインストール
+1. `git clone https://github.com/iamtatsuki05/MIREI.git`でインストール
 ### uv設定
 1. `uv sync`
+2. `uv sync --group cuda`
 ### スクリプト実行
 ```shell
 uv run python ...
@@ -14,7 +23,7 @@ uv run python ...
 
 ## Dockerの操作方法
 ### セットアップ
-1. `git clone`でインストール
+1. `git clone git clone https://github.com/iamtatsuki05/MIREI.git`でインストール
 ### Docker設定
 1. `docker compose up -d --build <サービス名(例:python-cpu)>`
 ### Dockerへの接続と切断

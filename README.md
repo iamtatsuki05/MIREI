@@ -1,12 +1,21 @@
-# Text Embedding
+# **MIREI**: **M**atched **I**nvestigation of **R**epresentation **E**mbedding **I**nsights
 
 English / [日本語](README_JA.md)
 
+MIREI is a research workspace that builds encoder/decoder text-embedding models under matched conditions, tracks shared training pipelines, and benchmarks their performance differences.
+
+![MIREI Concept Overview](assets/concept.jpg)
+
+## Hugging Face Collection
+
+All MIREI checkpoints are gathered in the Hugging Face collection: [MIREI Collection](https://huggingface.co/collections/iamtatsuki05/mirei).
+
 ## How to operate uv
 ### setup
-1. Install with`git clone`
+1. Install with`git clone https://github.com/iamtatsuki05/MIREI.git`
 ### uv configuration
 1. `uv sync`
+2. `uv sync --group cuda`
 ### run script
 ```shell
 uv run python ...
@@ -14,7 +23,7 @@ uv run python ...
 
 ## How to operate docker
 ### setup
-1. Install with`git clone`
+1. Install with`git clone git clone https://github.com/iamtatsuki05/MIREI.git`
 ### docker configuration
 1. `docker compose up -d --build <service name(ex:python-cpu)`
 ### Connect to and disconnect from docker
