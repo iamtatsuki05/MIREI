@@ -2,85 +2,67 @@
 
 [English](README.md) / 日本語
 
-このディレクトリには、言語モデルの学習に関連するスクリプトが含まれています。
+このディレクトリには、言語モデルの事前学習および Sentence Transformer FineTuneを起動するスクリプトが含まれています。
 
 ## ディレクトリ構成
 
-- `pt/`: 言語モデルの事前学習用スクリプト
-  - `run_mlm.py` - Masked Language Modeling（マスク言語モデリング）事前学習用スクリプト
-  - `run_mntp.py` - Masked Next Token Prediction（マスク次トークン予測）事前学習用スクリプト
-- `ft/`: setence tranformer用のスクリプト
-  - `run_st.py` - Sentence TransformerFT/WSL用スクリプト
+- `pt/` – 事前学習用
+  - `run_mlm.py` – Masked Language Modeling（エンコーダモデル向け）。
+  - `run_mntp.py` – Masked Next Token Prediction（LoRA 対応の因果言語モデル向け）。
+  - `run_clm.py` – Causal Language Modeling（デコーダ型モデル向け）。
+- `ft/` – Sentence Transformer FineTune
+  - `run_st.py` – Sentence-Transformers Trainer によるコントラスト学習／トリプレット学習。
 
-## 事前学習スクリプト
+## 事前学習
 
-### Masked Language Modeling (MLM)
+### `run_mlm.py`
+- Hugging Face Transformers の MLM パイプラインをラップ（BERT、RoBERTa、ModernBERT 等）。
+- 行単位／連結テキストの両方に対応。
+- DeepSpeed や DDP と組み合わせて使用可能。
 
-- `run_mlm.py` - Masked Language Modelingの目的関数を使用したモデルの事前学習用スクリプト。
-  - 様々なモデルアーキテクチャ（BERT、RoBERTaなど）をサポート
-  - マスキング確率の設定が可能
-  - 行単位とテキスト連結の両方の処理をサポート
-  - 精度メトリクスによる評価
-  - 詳細なパラメータ情報については、[Hugging Face MLMドキュメント](https://huggingface.co/docs/transformers/tasks/masked_language_modeling)を参照
+### `run_mntp.py`
+- 因果モデルに対するマスク付き次トークン予測タスクを実装。
+- マスキング戦略、LoRA ランク／ドロップアウト、早期終了などのスイッチを提供。
+- 内部的に `AutoModelForCausalLM` を利用。
 
-### Masked Next Token Prediction (MNTP)
+### `run_clm.py`
+- GPT・Llama 等のデコーダ型モデルを自己回帰目的で学習／FineTune。
+- `ModelArguments` / `DataTrainingArguments` / `TrainingArguments` を設定ファイルから読み込み。
+- ストリーミングデータセット、チェックポイント再開、パープレキシティ評価をサポート。
 
-- `run_mntp.py` - Masked Next Token Predictionの目的関数を使用したモデルの事前学習用スクリプト。
-  - AutoModelForCausalLMアーキテクチャを使用
-  - 効率的な学習のためのLoRAパラメータ設定が可能
-  - 詳細なパラメータ情報については、[Hugging Face Causal LMドキュメント](https://huggingface.co/docs/transformers/tasks/language_modeling)を参照
+## FineTune
 
-## FTスクリプト
+### `run_st.py`
+- Sentence Transformer 向け学習ループを構築し、Triplet評価や IR 評価を実行。
+- 複数サブセットの結合、ストリーミング、定数ラベル付与、分散学習に対応。
+- アンカー／ポジティブ／ネガティブ列や評価器種別など細かな設定が可能。
 
-### Sentence Transformer
+## 実行方法
 
-- `run_st.py` - Sentence TransformerモデルのFT用スクリプト。
-  - トリプレット損失による学習をサポート
-  - データセットの読み込みと処理の設定が可能
-  - トリプレット評価器による評価
-  - カスタムパラメータ：
-    - `anchor_column_name`: アンカー文のカラム名
-    - `positive_column_name`: ポジティブ文のカラム名
-    - `negative_column_name`: ネガティブ文のカラム名
-    - `evaluator_type`: 使用する評価器のタイプ（例：'triplet'）
-    - `max_subset_samples`: サブセットごとの最大サンプル数
-    - `streaming`: ストリーミングデータセットを使用するかどうか
-
-## 使用方法
-
-各スクリプトは[Google Fire](https://github.com/google/python-fire)を使用してCLIインターフェースを提供しています。基本的な使用方法は以下の通りです：
+すべてのランチャーは [Google Fire](https://github.com/google/python-fire) を利用した CLI を公開しており、JSON/YAML/TOML の設定ファイルを受け取ります。
 
 ```bash
 python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
-### マルチGPU学習
-
-すべての学習スクリプトはPyTorch Distributed Data Parallel（DDP）を使用したマルチGPU学習をサポートしています。複数のGPUで学習を実行するには、以下のコマンド形式を使用します：
-
-```bash
-uv run torchrun \
-  --standalone \
-  --nnodes 1 \
-  --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
-```
-
-ここで、`$NUM_GPU`は学習に使用したいGPUの数です。
+マルチ GPU の場合は `uv run torchrun --standalone --nnodes 1 --nproc-per-node $NUM_GPU` をコマンド前に付けて実行してください。
 
 ## 設定ファイル
 
-各スクリプトの設定ファイルは、`config/constract_llm/train/`以下の対応するディレクトリに格納されています：
+設定テンプレートは `config/constract_llm/train/` 配下に用意されています。
 
-- 事前学習の設定: `config/constract_llm/train/pt/`
-  - `Llama-Bi-JP-0.5B-PT-stage1.json`
-  - `Llama-Bi-JP-0.5B-PT-stage2.json`
+- 事前学習（`pt/`）：
+  - `Llama-JP-0.5B-PT-stage1.json`
+  - `Llama-JP-0.5B-PT-stage2.json`
   - `ModernBERT-JP-0.5B-PT-stage1.json`
   - `ModernBERT-JP-0.5B-PT-stage2.json`
-- FTの設定: `config/constract_llm/train/ft/`
+- ファインチューニング（`ft/`）：
   - `Sentence-Llama-Bi-JP-0.5B-PT.json`
   - `Sentence-Llama-Bi-JP-0.5B.json`
   - `Sentence-ModernBERT-JP-0.5B-PT.json`
   - `Sentence-ModernBERT-JP-0.5B.json`
+  - `Sentence-Sarashina-Bi-0.5B-PT.json`
+  - `Sentence-Sarashina-Bi-0.5B.json`
+- DeepSpeed 設定: `config/constract_llm/train/ds_config/`
 
-各設定ファイルには、対応するスクリプトで使用される全てのパラメータが含まれています。
+テンプレートをコピーしてハイパーパラメータを調整し、対応するランチャーに渡してください。
