@@ -4,18 +4,19 @@ English / [日本語](README_JA.md)
 
 This directory contains scripts for model initialization.
 
-## Overview
+## Scripts
 
-The `init_model.py` script initializes pre-trained models and prepares them for subsequent fine-tuning or other processing.
+### `init_model.py`
 
-## Features
+Initialise a pre-trained model and prepare it for fine-tuning or evaluation.
 
-- Supports various model types
-- Loads models from Hugging Face Hub or local paths
-- Can save models locally or push to Hugging Face Hub
-- Seed setting for reproducibility
+**Key features**
+- Supports encoder, decoder, seq2seq, and generic architectures.
+- Loads checkpoints from the Hugging Face Hub or a local path.
+- Saves the hydrated model locally or pushes it to the Hub.
+- Allows deterministic runs via explicit seed control.
 
-## Usage
+**Usage**
 
 ```bash
 python scripts/constract_llm/model/init_model.py config/constract_llm/model/init_model/config.json
@@ -31,26 +32,20 @@ python scripts/constract_llm/model/init_model.py config/constract_llm/model/init
 
 The configuration file is located at `config/constract_llm/model/init_model/config.json`.
 
-### Example Configuration
+### `save_custom_model.py`
 
-```json
-{
-  "model_name_or_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-  "output_dir": "./data/misc/json",
-  "model_type": "causal",
-  "push_to_hub": true,
-  "private": true,
-  "seed": 42
-}
+Package a fine-tuned or adapter-based model into a standard layout and optionally publish it to the Hub.
+
+**Key features**
+- Supports the custom model families defined in `src/nlp/constract_llm/model/save_custom_model.py` (`CUSTOM_MODEL_CONFIGS`).
+- Validates task type (e.g. `mntp`, `st`) and required metadata before exporting.
+- Saves the full model and tokenizer to a target directory and can push to a private/public Hub repo.
+
+**Usage**
+
+```bash
+python scripts/constract_llm/model/save_custom_model.py config/constract_llm/model/save_custom_model/llama_bi.json
+python scripts/constract_llm/model/save_custom_model.py --model_name_or_path path/to/model --custom_model_type llama_bi --task_type mntp --output_dir ./artifacts
 ```
 
-### Parameter Descriptions
-
-| Parameter | Description |
-|------------|------|
-| `model_name_or_path` | Path to the model or model name from Hugging Face Hub. |
-| `model_type` | Type of the model (`seq2seq`, `causal`, `masked`, `generic`). |
-| `output_dir` | Directory to save the model. |
-| `push_to_hub` | Whether to push the model to Hugging Face Hub. |
-| `private` | Whether to make the model private on Hugging Face Hub. |
-| `seed` | Random seed for initialization. |
+Configuration examples are provided under `config/constract_llm/model/save_custom_model/`. When `push_to_hub` is enabled, remember to pass `repo_id`.

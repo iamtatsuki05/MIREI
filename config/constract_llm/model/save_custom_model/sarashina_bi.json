@@ -1,0 +1,9 @@
+{
+    "model_name_or_path": "sbintuitions/sarashina2.2-0.5b",
+    "custom_model_type": "llama",
+    "task_type": "lm",
+    "output_dir": "./data/misc/json",
+    "push_to_hub": true,
+    "repo_id": "iamtatsuki05/sarashina2.2-Bi-0.5b",
+    "private": true
+}

@@ -6,7 +6,7 @@
 
 ## 概要
 
-`init_model.py`スクリプトは、事前学習済みモデルを初期化し、後続の微調整やその他の処理のために準備します。
+`init_model.py`スクリプトは、事前学習済みモデルを初期化し、後続のFineTuneやその他の処理のために準備します。
 
 ## 機能
 
@@ -31,26 +31,20 @@ python scripts/constract_llm/model/init_model.py config/constract_llm/model/init
 
 設定ファイルは`config/constract_llm/model/init_model/config.json`にあります。
 
-### 設定例
+### `save_custom_model.py`
 
-```json
-{
-  "model_name_or_path": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-  "output_dir": "./data/misc/json",
-  "model_type": "causal",
-  "push_to_hub": true,
-  "private": true,
-  "seed": 42
-}
+FineTune済みモデルやアダプタ構成を標準レイアウトでまとめ、必要に応じて Hub に公開します。
+
+**主な機能**
+- `src/nlp/constract_llm/model/save_custom_model.py` の `CUSTOM_MODEL_CONFIGS` で定義されたカスタムモデルをサポート。
+- タスク種別（例：`mntp`, `st`）と必須メタデータを検証した上でエクスポート。
+- モデルとトークナイザーを指定ディレクトリに保存し、プライベート／パブリックの Hub リポジトリへプッシュ可能。
+
+**使用方法**
+
+```bash
+python scripts/constract_llm/model/save_custom_model.py config/constract_llm/model/save_custom_model/llama_bi.json
+python scripts/constract_llm/model/save_custom_model.py --model_name_or_path path/to/model --custom_model_type llama_bi --task_type mntp --output_dir ./artifacts
 ```
 
-### パラメータ説明
-
-| パラメータ | 説明 |
-|------------|------|
-| `model_name_or_path` | モデルのパスまたはHugging Face Hubからのモデル名 |
-| `model_type` | モデルのタイプ（`seq2seq`, `causal`, `masked`, `generic` ）|
-| `output_dir` | モデルを保存するディレクトリ |
-| `push_to_hub` | モデルをHugging Face Hubにプッシュするかどうか |
-| `private` | Hugging Face Hub上でモデルをプライベートにするかどうか |
-| `seed` | 初期化のためのランダムシード |
+設定例は `config/constract_llm/model/save_custom_model/` に用意されています。`push_to_hub` を有効にする場合は `repo_id` の指定を忘れないでください。

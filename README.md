@@ -1,10 +1,21 @@
-# docker+uv
+# **MIREI**: **M**atched **I**nvestigation of **R**epresentation **E**mbedding **I**nsights
+
+English / [日本語](README_JA.md)
+
+MIREI is a research workspace that builds encoder/decoder text-embedding models under matched conditions, tracks shared training pipelines, and benchmarks their performance differences.
+
+![MIREI Concept Overview](assets/concept.jpg)
+
+## Hugging Face Collection
+
+All MIREI checkpoints are gathered in the Hugging Face collection: [MIREI Collection](https://huggingface.co/collections/iamtatsuki05/mirei).
 
 ## How to operate uv
 ### setup
-1. Install with`git clone`
+1. Install with`git clone https://github.com/iamtatsuki05/MIREI.git`
 ### uv configuration
 1. `uv sync`
+2. `uv sync --group cuda`
 ### run script
 ```shell
 uv run python ...
@@ -12,7 +23,7 @@ uv run python ...
 
 ## How to operate docker
 ### setup
-1. Install with`git clone`
+1. Install with`git clone git clone https://github.com/iamtatsuki05/MIREI.git`
 ### docker configuration
 1. `docker compose up -d --build <service name(ex:python-cpu)`
 ### Connect to and disconnect from docker
@@ -35,6 +46,7 @@ uv run python ...
 ├── .pre-commit-config.yaml
 ├── Makefile
 ├── README.md
+├── README_JA.md
 ├── compose.yaml
 ├── config
 ├── data
@@ -52,14 +64,37 @@ uv run python ...
 ├── uv.lock
 ├── pyproject.toml
 ├── scripts
-│   └── main.py
+│   ├── main.py
+│   ├── README.md
+│   ├── README_JA.md
+│   └── constract_llm
+│       ├── README.md
+│       ├── README_JA.md
+│       ├── dataset
+│       ├── model
+│       ├── tokenizer
+│       └── train
+│           ├── README.md
+│           ├── README_JA.md
+│           ├── ft
+│           └── pt
 ├── src
 │   ├── __init__.py
-│   └── project
+│   └── nlp
 │       ├── common
 │       ├── config
 │       ├── env.py
-│       └── main.py
+│       └── constract_llm
 └── tests
-    └── project
+    └── nlp
 ```
+
+## Scripts
+
+This project includes various scripts related to building and training language models (LLMs). For more details, please refer to the following READMEs:
+
+- [Scripts Overview](scripts/README.md) - Overview of basic scripts
+- [Language Model Construction Scripts](scripts/constract_llm/README.md) - Scripts related to language model construction
+- [Training Scripts](scripts/constract_llm/train/README.md) - Scripts for pre-training and fine-tuning
+  - [Pre-training Scripts](scripts/constract_llm/train/pt/README.md) - Scripts for MLM and MNTP pre-training
+  - [Fine-tuning Scripts](scripts/constract_llm/train/ft/README.md) - Scripts for Sentence Transformer fine-tuning
