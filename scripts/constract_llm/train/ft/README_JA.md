@@ -47,7 +47,7 @@ uv run torchrun \
 - `use_subsets`: 使用する特定のサブセットのリスト
 - `max_seq_length`: トークン化の最大シーケンス長
 
-詳細なパラメータ情報については、`src/nlp/constract_llm/train/st/data_class/`のデータクラスを参照してください。
+詳細なパラメータ情報については、`src/mirei/constract_llm/train/st/data_class/`のデータクラスを参照してください。
 
 ### モデルパラメータ
 

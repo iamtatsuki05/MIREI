@@ -4,8 +4,8 @@ from typing import Any
 import fire
 from pydantic import BaseModel, Field
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.dataset.preprocess.preprocess import preprocess_data
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.dataset.preprocess.preprocess import preprocess_data
 
 
 class CLIConfig(BaseModel):

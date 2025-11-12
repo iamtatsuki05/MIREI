@@ -2,7 +2,7 @@
 
 English / [日本語](README_JA.md)
 
-This folder collects automation entry points for the text embedding project. Most scripts wrap functionality from `src/nlp` so that datasets, models, tokenizers, and evaluation jobs can be launched from the command line.
+This folder collects automation entry points for the text embedding project. Most scripts wrap functionality from `src/mirei` so that datasets, models, tokenizers, and evaluation jobs can be launched from the command line.
 
 ## Directory Overview
 

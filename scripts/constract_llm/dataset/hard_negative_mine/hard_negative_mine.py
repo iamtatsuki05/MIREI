@@ -70,17 +70,17 @@ from datasets import load_dataset
 from pydantic import BaseModel, Field
 from tqdm.auto import tqdm
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.common.utils.file.json import load_json, save_as_indented_json
-from nlp.constract_llm.model.embedder.model.base import BaseEmbedder
-from nlp.constract_llm.model.embedder.model.bm25 import GensimBM25Model
-from nlp.constract_llm.model.embedder.model.bm25_s import BM25SModel
-from nlp.constract_llm.model.embedder.model.tfidf import GensimTfidfModel
-from nlp.constract_llm.model.hard_negative_miner import HardNegativeMiner
-from nlp.constract_llm.model.tokenizer.base import BaseTokenizer
-from nlp.constract_llm.model.tokenizer.mecab import MeCabTokenizer
-from nlp.constract_llm.model.tokenizer.stopwords import STOPWORDS
-from nlp.constract_llm.model.tokenizer.sudachi import SudachiTokenizer
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.common.utils.file.json import load_json, save_as_indented_json
+from mirei.constract_llm.model.embedder.model.base import BaseEmbedder
+from mirei.constract_llm.model.embedder.model.bm25 import GensimBM25Model
+from mirei.constract_llm.model.embedder.model.bm25_s import BM25SModel
+from mirei.constract_llm.model.embedder.model.tfidf import GensimTfidfModel
+from mirei.constract_llm.model.hard_negative_miner import HardNegativeMiner
+from mirei.constract_llm.model.tokenizer.base import BaseTokenizer
+from mirei.constract_llm.model.tokenizer.mecab import MeCabTokenizer
+from mirei.constract_llm.model.tokenizer.stopwords import STOPWORDS
+from mirei.constract_llm.model.tokenizer.sudachi import SudachiTokenizer
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -4,8 +4,8 @@ from typing import Any
 import fire
 from pydantic import BaseModel, Field
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.eval.sentence_model.bench_sbert import benchmark_embeddings
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.eval.sentence_model.bench_sbert import benchmark_embeddings
 
 
 class CLIConfig(BaseModel):

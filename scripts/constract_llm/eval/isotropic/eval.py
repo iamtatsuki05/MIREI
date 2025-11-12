@@ -6,11 +6,11 @@ import fire
 import torch
 from sentence_transformers import SentenceTransformer
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.common.utils.file.json import save_as_indented_json
-from nlp.constract_llm.eval.sentence_model.config import CLIConfig
-from nlp.constract_llm.eval.sentence_model.dataset import prepare_dataset
-from nlp.constract_llm.eval.sentence_model.metric import compute_alignment, compute_uniformity
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.common.utils.file.json import save_as_indented_json
+from mirei.constract_llm.eval.sentence_model.config import CLIConfig
+from mirei.constract_llm.eval.sentence_model.dataset import prepare_dataset
+from mirei.constract_llm.eval.sentence_model.metric import compute_alignment, compute_uniformity
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

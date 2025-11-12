@@ -4,9 +4,9 @@ from typing import Any, Literal
 import fire
 from pydantic import BaseModel, Field, PositiveInt, conint
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.common.utils.file.json import load_json
-from nlp.constract_llm.tokenizer.train_tokenizer import train_tokenizer
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.common.utils.file.json import load_json
+from mirei.constract_llm.tokenizer.train_tokenizer import train_tokenizer
 
 
 class CLIConfig(BaseModel):

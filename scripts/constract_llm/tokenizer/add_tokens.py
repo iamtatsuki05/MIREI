@@ -4,8 +4,8 @@ from typing import Any
 import fire
 from pydantic import BaseModel, Field
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.tokenizer.add_tokens import extend_and_save_tokenizer
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.tokenizer.add_tokens import extend_and_save_tokenizer
 
 
 class CLIConfig(BaseModel):
