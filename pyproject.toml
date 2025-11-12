@@ -1,5 +1,5 @@
 [project]
-name = "nlp"
+name = "mirei"
 version = "0.1.0"
 description = ""
 authors = [{ name = "Tatsuki Okada", email = "tatsukio0522@gmali.com" }]
@@ -59,10 +59,11 @@ dependencies = [
     "sudachipy>=0.6.10",
     "sudachidict-core>=20250129",
     "schedulefree>=1.4.1",
+    "hf-transfer>=0.1.9",
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/nlp", "src"]
+packages = ["src/mirei", "src"]
 
 [tool.uv]
 default-groups = ["dev"]
@@ -144,6 +145,7 @@ dev = [
     "types-pyyaml>=6.0.12.20250402",
     "types-toml>=0.10.8.20240310",
     "pytest-asyncio>=0.26.0",
+    "pytest-xdist>=3.8.0",
 ]
 cuda = [
     "flash-attn>=2.7.3",

@@ -5,8 +5,8 @@ from typing import Any
 import fire
 from pydantic import BaseModel, Field, field_validator
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.model.init_model import VALID_MODEL_TYPES, initialize_model
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.model.init_model import VALID_MODEL_TYPES, initialize_model
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

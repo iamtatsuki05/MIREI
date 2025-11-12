@@ -37,7 +37,7 @@ The configuration file is located at `config/constract_llm/model/init_model/conf
 Package a fine-tuned or adapter-based model into a standard layout and optionally publish it to the Hub.
 
 **Key features**
-- Supports the custom model families defined in `src/nlp/constract_llm/model/save_custom_model.py` (`CUSTOM_MODEL_CONFIGS`).
+- Supports the custom model families defined in `src/mirei/constract_llm/model/save_custom_model.py` (`CUSTOM_MODEL_CONFIGS`).
 - Validates task type (e.g. `mntp`, `st`) and required metadata before exporting.
 - Saves the full model and tokenizer to a target directory and can push to a private/public Hub repo.
 

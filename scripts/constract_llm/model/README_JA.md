@@ -36,7 +36,7 @@ python scripts/constract_llm/model/init_model.py config/constract_llm/model/init
 FineTune済みモデルやアダプタ構成を標準レイアウトでまとめ、必要に応じて Hub に公開します。
 
 **主な機能**
-- `src/nlp/constract_llm/model/save_custom_model.py` の `CUSTOM_MODEL_CONFIGS` で定義されたカスタムモデルをサポート。
+- `src/mirei/constract_llm/model/save_custom_model.py` の `CUSTOM_MODEL_CONFIGS` で定義されたカスタムモデルをサポート。
 - タスク種別（例：`mntp`, `st`）と必須メタデータを検証した上でエクスポート。
 - モデルとトークナイザーを指定ディレクトリに保存し、プライベート／パブリックの Hub リポジトリへプッシュ可能。
 

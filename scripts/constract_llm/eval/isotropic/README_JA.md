@@ -31,7 +31,7 @@ python scripts/constract_llm/eval/isotropic/eval.py main --model_name_or_path=se
 
 ## 設定ファイル
 
-設定ファイルは `pydantic.BaseModel` 互換（`src/nlp/constract_llm/eval/isotropic/config.py` 参照）です。
+設定ファイルは `pydantic.BaseModel` 互換（`src/mirei/constract_llm/eval/isotropic/config.py` 参照）です。
 例（JSON）:
 
 ```json

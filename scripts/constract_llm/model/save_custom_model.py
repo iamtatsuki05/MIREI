@@ -5,8 +5,8 @@ from typing import Any
 import fire
 from pydantic import BaseModel, Field, ValidationInfo, field_validator
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.model.save_custom_model import (
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.model.save_custom_model import (
     CUSTOM_MODEL_CONFIGS,
     TASK_TYPES,
     load_custom_model,

@@ -43,14 +43,14 @@ from transformers import (
 )
 from transformers.trainer_utils import get_last_checkpoint
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.common.utils.peft_utils import initialize_peft
-from nlp.constract_llm.train.data_collator import DataCollatorForLanguageModelingWithFullMasking
-from nlp.constract_llm.train.language_model.mntp.data_class.custom_arguments import CustomArguments
-from nlp.constract_llm.train.language_model.mntp.data_class.data_training_arguments import DataTrainingArguments
-from nlp.constract_llm.train.language_model.mntp.data_class.model_arguments import ModelArguments
-from nlp.constract_llm.train.trainer.callback import StopTrainingCallback
-from nlp.constract_llm.train.trainer.trainer import MNTPTrainer
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.common.utils.peft_utils import initialize_peft
+from mirei.constract_llm.train.data_collator import DataCollatorForLanguageModelingWithFullMasking
+from mirei.constract_llm.train.language_model.mntp.data_class.custom_arguments import CustomArguments
+from mirei.constract_llm.train.language_model.mntp.data_class.data_training_arguments import DataTrainingArguments
+from mirei.constract_llm.train.language_model.mntp.data_class.model_arguments import ModelArguments
+from mirei.constract_llm.train.trainer.callback import StopTrainingCallback
+from mirei.constract_llm.train.trainer.trainer import MNTPTrainer
 
 logger = logging.getLogger(__name__)
 

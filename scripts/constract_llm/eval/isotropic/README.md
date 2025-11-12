@@ -31,7 +31,7 @@ python scripts/constract_llm/eval/isotropic/eval.py main --model_name_or_path=se
 
 ## Configuration
 
-The script uses a config file compatible with `pydantic.BaseModel` (see `src/nlp/constract_llm/eval/isotropic/config.py`).
+The script uses a config file compatible with `pydantic.BaseModel` (see `src/mirei/constract_llm/eval/isotropic/config.py`).
 Example (JSON):
 
 ```json
