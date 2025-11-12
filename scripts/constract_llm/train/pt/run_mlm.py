@@ -48,11 +48,11 @@ from transformers import (
 )
 from transformers.trainer_utils import get_last_checkpoint
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.train.language_model.mlm.data_class.data_training_arguments import (
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.train.language_model.mlm.data_class.data_training_arguments import (
     DataTrainingArguments,
 )
-from nlp.constract_llm.train.language_model.mlm.data_class.model_arguments import (
+from mirei.constract_llm.train.language_model.mlm.data_class.model_arguments import (
     ModelArguments,
 )
 

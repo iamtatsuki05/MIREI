@@ -39,7 +39,7 @@ uv run torchrun \
 
 ### Custom Parameters
 
-For detailed parameter information, refer to the data classes in `src/nlp/constract_llm/train/language_model/mlm/data_class/`.
+For detailed parameter information, refer to the data classes in `src/mirei/constract_llm/train/language_model/mlm/data_class/`.
 
 ## Masked Next Token Prediction (MNTP)
 
@@ -75,7 +75,7 @@ uv run torchrun \
 - `lora_dropout`: Dropout probability for LoRA layers
 - `stop_after_n_steps`: Number of steps after which to stop training
 
-For detailed parameter information, refer to the data classes in `src/nlp/constract_llm/train/language_model/mntp/data_class/`.
+For detailed parameter information, refer to the data classes in `src/mirei/constract_llm/train/language_model/mntp/data_class/`.
 
 ## Configuration Files
 
@@ -118,4 +118,4 @@ uv run torchrun \
 
 ### Custom Parameters
 
-For detailed parameter information, refer to the data classes in `src/nlp/constract_llm/train/language_model/clm/data_class/`.
+For detailed parameter information, refer to the data classes in `src/mirei/constract_llm/train/language_model/clm/data_class/`.

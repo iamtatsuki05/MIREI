@@ -32,9 +32,9 @@ from sentence_transformers.evaluation import (
 from transformers import HfArgumentParser, is_torch_xla_available, set_seed
 from transformers.trainer_utils import get_last_checkpoint
 
-from nlp.common.utils.cli_utils import load_cli_config
-from nlp.constract_llm.train.st.data_class.data_training_arguments import DataTrainingArguments
-from nlp.constract_llm.train.st.data_class.model_arguments import ModelArguments
+from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.train.st.data_class.data_training_arguments import DataTrainingArguments
+from mirei.constract_llm.train.st.data_class.model_arguments import ModelArguments
 
 logger = logging.getLogger(__name__)
 

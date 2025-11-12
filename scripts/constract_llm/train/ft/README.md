@@ -48,7 +48,7 @@ uv run torchrun \
 - `use_subsets`: List of specific subsets to use
 - `max_seq_length`: Maximum sequence length for tokenization
 
-For detailed parameter information, refer to the data classes in `src/nlp/constract_llm/train/st/data_class/`.
+For detailed parameter information, refer to the data classes in `src/mirei/constract_llm/train/st/data_class/`.
 
 ### Model Parameters
 
