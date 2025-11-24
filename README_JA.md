@@ -44,7 +44,6 @@ uv run python ...
 ├── .github
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── Makefile
 ├── README.md
 ├── README_JA.md
 ├── compose.yaml
@@ -59,12 +58,10 @@ uv run python ...
 │   ├── cpu
 │   └── gpu
 ├── docs
-├── env.sample
 ├── notebooks
 ├── uv.lock
 ├── pyproject.toml
 ├── scripts
-│   ├── main.py
 │   ├── README.md
 │   ├── README_JA.md
 │   └── constract_llm

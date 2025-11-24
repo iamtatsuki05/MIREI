@@ -6,7 +6,6 @@ This folder collects automation entry points for the text embedding project. Mos
 
 ## Directory Overview
 
-- `main.py` – Minimal demo that prints "Hello, World!" and shows how we wire Google Fire CLIs.
 - `constract_llm/` – Workflow utilities for building, training, packaging, and evaluating language models.
   - `dataset/` – Cleansing, preprocessing, splitting, and hard negative mining helpers.
   - `tokenizer/` – Commands for training new tokenizers or extending and merging existing ones.
