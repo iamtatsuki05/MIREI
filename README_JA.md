@@ -4,7 +4,7 @@ English / [日本語](README_JA.md)
 
 MIREIは、同一条件下でエンコーダ／デコーダ型の文埋め込みモデルを構築し、共通の学習パイプラインと評価手法で性能差を検証する研究用のコードです。
 
-![MIREI Concept Overview](assets/concept.jpg)
+![MIREI Concept Overview](docs/concept.jpg)
 
 ## Hugging Faceコレクション
 

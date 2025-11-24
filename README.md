@@ -4,7 +4,7 @@ English / [日本語](README_JA.md)
 
 MIREI is a research workspace that builds encoder/decoder text-embedding models under matched conditions, tracks shared training pipelines, and benchmarks their performance differences.
 
-![MIREI Concept Overview](assets/concept.jpg)
+![MIREI Concept Overview](docs/concept.jpg)
 
 ## Hugging Face Collection
 
