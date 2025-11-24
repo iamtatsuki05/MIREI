@@ -4,7 +4,7 @@ English / [日本語](README_JA.md)
 
 MIREIは、同一条件下でエンコーダ／デコーダ型の文埋め込みモデルを構築し、共通の学習パイプラインと評価手法で性能差を検証する研究用のコードです。
 
-![MIREI Concept Overview](assets/concept.jpg)
+![MIREI Concept Overview](docs/concept.jpg)
 
 ## Hugging Faceコレクション
 
@@ -44,7 +44,6 @@ uv run python ...
 ├── .github
 ├── .gitignore
 ├── .pre-commit-config.yaml
-├── Makefile
 ├── README.md
 ├── README_JA.md
 ├── compose.yaml
@@ -59,12 +58,10 @@ uv run python ...
 │   ├── cpu
 │   └── gpu
 ├── docs
-├── env.sample
 ├── notebooks
 ├── uv.lock
 ├── pyproject.toml
 ├── scripts
-│   ├── main.py
 │   ├── README.md
 │   ├── README_JA.md
 │   └── constract_llm
