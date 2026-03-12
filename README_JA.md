@@ -6,9 +6,10 @@ MIREIは、同一条件下でエンコーダ／デコーダ型の文埋め込み
 
 ![MIREI Concept Overview](docs/concept.jpg)
 
-## Hugging Faceコレクション
+## 関連リンク
 
-MIREIで公開しているモデルチェックポイントは、[MIREI collections](https://huggingface.co/collections/iamtatsuki05/mirei)に集約しています。
+- 論文: [ANLP 2026 論文集 (C9-1)](https://www.anlp.jp/proceedings/annual_meeting/2026/pdf_dir/C9-1.pdf)
+- Hugging Faceコレクション: [MIREI Collection](https://huggingface.co/collections/iamtatsuki05/mirei)
 
 ## uvの操作方法
 ### セットアップ
