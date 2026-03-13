@@ -6,9 +6,10 @@ MIREI is a research workspace that builds encoder/decoder text-embedding models 
 
 ![MIREI Concept Overview](docs/concept.jpg)
 
-## Hugging Face Collection
+## Resources
 
-All MIREI checkpoints are gathered in the Hugging Face collection: [MIREI Collection](https://huggingface.co/collections/iamtatsuki05/mirei).
+- Paper: [ANLP 2026 Proceedings (C9-1)](https://www.anlp.jp/proceedings/annual_meeting/2026/pdf_dir/C9-1.pdf)
+- Hugging Face Collection: [MIREI Collection](https://huggingface.co/collections/iamtatsuki05/mirei)
 
 ## How to operate uv
 ### setup
