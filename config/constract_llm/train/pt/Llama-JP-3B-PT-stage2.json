@@ -18,7 +18,7 @@
   "do_train": true,
   "do_eval": true,
   "do_predict": false,
-  "num_train_epochs": 2,
+  "num_train_epochs": 6,
   "optim": "schedule_free_radam",
   "lr_scheduler_type": "constant",
   "learning_rate": 2e-5,
