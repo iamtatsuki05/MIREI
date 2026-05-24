@@ -29,7 +29,13 @@ python scripts/constract_llm/model/init_model.py config/constract_llm/model/init
 
 ## 設定ファイル
 
-設定ファイルは`config/constract_llm/model/init_model/config.json`にあります。
+初期化用の設定例は `config/constract_llm/model/init_model/` にあります。
+
+- `Llama-0.5B.json`
+- `Llama-3B.json`
+- `ModernBERT-0.5B.json`
+- `ModernBERT-3B.json`
+- `config.json`
 
 ### `save_custom_model.py`
 
@@ -47,4 +53,11 @@ python scripts/constract_llm/model/save_custom_model.py config/constract_llm/mod
 python scripts/constract_llm/model/save_custom_model.py --model_name_or_path path/to/model --custom_model_type llama_bi --task_type mntp --output_dir ./artifacts
 ```
 
-設定例は `config/constract_llm/model/save_custom_model/` に用意されています。`push_to_hub` を有効にする場合は `repo_id` の指定を忘れないでください。
+設定例は `config/constract_llm/model/save_custom_model/` に用意されています。
+
+- `llama_bi.json`
+- `llama_bi_3b.json`
+- `sarashina_bi.json`
+- `sarashina_bi_3b.json`
+
+`push_to_hub` を有効にする場合は `repo_id` の指定を忘れないでください。
