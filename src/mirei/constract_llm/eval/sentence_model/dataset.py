@@ -7,6 +7,11 @@ def prepare_dataset(
     miracl_lang: str = 'ja',
     wiki_name: str = 'wikimedia/wikipedia',
     wiki_lang: str = '20231101.ja',
+    positive_pair_dataset_name: str | None = None,
+    positive_pair_dataset_config_name: str | None = None,
+    positive_pair_dataset_split: str = 'train',
+    positive_pair_sentence1_column: str = 'anchor',
+    positive_pair_sentence2_column: str = 'positive',
 ) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
     """
     Prepare positive and random sentence pairs for evaluation.
@@ -23,15 +28,29 @@ def prepare_dataset(
         - positive_pairs: list of (sentence1, sentence2) from the same context
         - random_pairs: list of (sentence1, sentence2) from different contexts
     """
-    miracl_ds = load_dataset(miracl_name, miracl_lang, trust_remote_code=True, split='train')
+    if positive_pair_dataset_name is not None:
+        pair_ds = load_dataset(
+            positive_pair_dataset_name,
+            positive_pair_dataset_config_name,
+            trust_remote_code=True,
+            split=positive_pair_dataset_split,
+        )
+        positive_pairs = [
+            (data[positive_pair_sentence1_column], data[positive_pair_sentence2_column])
+            for data in pair_ds
+            if data.get(positive_pair_sentence1_column) and data.get(positive_pair_sentence2_column)
+        ]
+    else:
+        miracl_ds = load_dataset(miracl_name, miracl_lang, trust_remote_code=True, split='train')
+        positive_pairs = []
+        for data in miracl_ds:
+            positive_passages = data['positive_passages']
+            positive_sentences = [entry['text'] for entry in positive_passages]
+            if len(positive_sentences) < 2:
+                continue
+            positive_pairs.append((positive_sentences[0], positive_sentences[1]))
+
     wiki_ds = load_dataset(wiki_name, wiki_lang, split='train').shuffle(seed=42)
-    positive_pairs = []
-    for data in miracl_ds:
-        positive_passages = data['positive_passages']
-        positive_sentences = [entry['text'] for entry in positive_passages]
-        if len(positive_sentences) < 2:
-            continue
-        positive_pairs.append((positive_sentences[0], positive_sentences[1]))
 
     if num_examples is not None:
         positive_pairs = positive_pairs[:num_examples]

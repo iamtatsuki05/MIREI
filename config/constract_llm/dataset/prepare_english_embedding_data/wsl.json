@@ -1,0 +1,137 @@
+{
+  "mode": "wsl",
+  "repo_id": "sentence-transformers/embedding-training-data",
+  "revision": "015d73e06b0686135d4d8340b1c68177d204b412",
+  "output_dir": "data/processed/english_embedding/wsl",
+  "sources": [
+    {
+      "file_name": "NQ-train_pairs.jsonl.gz",
+      "label": "nq",
+      "kind": "pair"
+    },
+    {
+      "file_name": "squad_pairs.jsonl.gz",
+      "label": "squad",
+      "kind": "pair"
+    },
+    {
+      "file_name": "TriviaQA_pairs.jsonl.gz",
+      "label": "triviaqa",
+      "kind": "pair"
+    },
+    {
+      "file_name": "gooaq_pairs.jsonl.gz",
+      "label": "gooaq",
+      "kind": "pair"
+    },
+    {
+      "file_name": "quora_duplicates.jsonl.gz",
+      "label": "quora",
+      "kind": "pair"
+    },
+    {
+      "file_name": "WikiAnswers.jsonl.gz",
+      "label": "wikianswers",
+      "kind": "pair"
+    },
+    {
+      "file_name": "PAQ_pairs.jsonl.gz",
+      "label": "paq",
+      "kind": "pair",
+      "max_samples": 4600000
+    },
+    {
+      "file_name": "amazon-qa.jsonl.gz",
+      "label": "amazon_qa",
+      "kind": "pair"
+    },
+    {
+      "file_name": "eli5_question_answer.jsonl.gz",
+      "label": "eli5",
+      "kind": "pair"
+    },
+    {
+      "file_name": "searchQA_top5_snippets.jsonl.gz",
+      "label": "searchqa",
+      "kind": "pair"
+    },
+    {
+      "file_name": "yahoo_answers_question_answer.jsonl.gz",
+      "label": "yahoo_qa",
+      "kind": "pair"
+    },
+    {
+      "file_name": "yahoo_answers_title_answer.jsonl.gz",
+      "label": "yahoo_title_answer",
+      "kind": "pair"
+    },
+    {
+      "file_name": "yahoo_answers_title_question.jsonl.gz",
+      "label": "yahoo_title_question",
+      "kind": "pair"
+    },
+    {
+      "file_name": "agnews.jsonl.gz",
+      "label": "agnews",
+      "kind": "pair"
+    },
+    {
+      "file_name": "ccnews_title_text.jsonl.gz",
+      "label": "ccnews",
+      "kind": "pair"
+    },
+    {
+      "file_name": "npr.jsonl.gz",
+      "label": "npr",
+      "kind": "pair"
+    },
+    {
+      "file_name": "cnn_dailymail.jsonl.gz",
+      "label": "cnn_dailymail",
+      "kind": "pair"
+    },
+    {
+      "file_name": "xsum.jsonl.gz",
+      "label": "xsum",
+      "kind": "pair"
+    },
+    {
+      "file_name": "stackexchange_duplicate_questions_title_title.jsonl.gz",
+      "label": "stackexchange_title",
+      "kind": "pair"
+    },
+    {
+      "file_name": "stackexchange_duplicate_questions_body_body.jsonl.gz",
+      "label": "stackexchange_body",
+      "kind": "pair"
+    },
+    {
+      "file_name": "stackexchange_duplicate_questions_title-body_title-body.jsonl.gz",
+      "label": "stackexchange_title_body",
+      "kind": "pair"
+    },
+    {
+      "file_name": "altlex.jsonl.gz",
+      "label": "altlex",
+      "kind": "pair"
+    },
+    {
+      "file_name": "SimpleWiki.jsonl.gz",
+      "label": "simplewiki",
+      "kind": "pair"
+    },
+    {
+      "file_name": "sentence-compression.jsonl.gz",
+      "label": "sentence_compression",
+      "kind": "pair"
+    },
+    {
+      "file_name": "wikihow.jsonl.gz",
+      "label": "wikihow",
+      "kind": "pair"
+    }
+  ],
+  "validation_fraction": 0.01,
+  "seed": 42,
+  "max_samples_per_source": null
+}

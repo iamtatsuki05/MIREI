@@ -18,6 +18,10 @@ class DataTrainingArguments:
         default=None,
         metadata={'help': 'The configuration name of the dataset to use (via the datasets library).'},
     )
+    dataset_revision: str | None = Field(
+        default=None,
+        metadata={'help': 'The dataset revision/commit id to use (via the datasets library).'},
+    )
     max_seq_length: int = Field(
         default=128,
         metadata={

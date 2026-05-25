@@ -1,0 +1,13 @@
+{
+  "model_name_or_path": "iamtatsuki05/Sentence-Llama-Bi-EN-3B",
+  "output_dir": "data/outputs/eval/isotropic",
+  "num_examples": 2000,
+  "seed": 42,
+  "wiki_name": "google/wiki40b",
+  "wiki_lang": "en",
+  "positive_pair_dataset_name": "sentence-transformers/all-nli",
+  "positive_pair_dataset_config_name": "triplet",
+  "positive_pair_dataset_split": "train",
+  "positive_pair_sentence1_column": "anchor",
+  "positive_pair_sentence2_column": "positive"
+}

@@ -18,7 +18,7 @@ This directory orchestrates the end-to-end workflow for constructing and operati
   - `embedding/bench_sbert.py` – Sentence embedding benchmark runner.
   - `isotropic/eval.py` – Alignment and uniformity (isotropy) metrics.
   - `ft/run_jmteb.sh` – JMTEB evaluation script for sentence transformers.
-  - `pt/run_jglue.py` – JGLUE evaluation wrapper for language models.
+  - `pt/run_glue.py` – GLUE/JGLUE evaluation wrapper for language models.
 
 ## Typical Workflow
 
