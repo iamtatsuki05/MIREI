@@ -3,7 +3,7 @@
   "trust_remote_code": true,
   "dataset_name": "hotchpotch/fineweb-2-edu-japanese",
   "dataset_config_name": "default",
-  "streaming": true,
+  "streaming": false,
   "preprocessing_num_workers": 32,
   "dataloader_num_workers": 16,
   "max_train_samples": null,

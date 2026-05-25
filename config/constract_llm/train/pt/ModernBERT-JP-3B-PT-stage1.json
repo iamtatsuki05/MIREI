@@ -2,7 +2,7 @@
   "model_name_or_path": "iamtatsuki05/ModernBERT-JP-3B-init",
   "dataset_name": "hotchpotch/fineweb-2-edu-japanese",
   "dataset_config_name": "default",
-  "streaming": true,
+  "streaming": false,
   "preprocessing_num_workers": 32,
   "dataloader_num_workers": 16,
   "max_train_samples": null,
