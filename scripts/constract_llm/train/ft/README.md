@@ -65,5 +65,15 @@ Configuration files for fine-tuning are stored in `config/constract_llm/train/ft
 
 - `Sentence-Llama-Bi-JP-0.5B-PT.json` - Configuration for fine-tuning pre-trained Llama-Bi-JP-0.5B as a Sentence Transformer
 - `Sentence-Llama-Bi-JP-0.5B.json` - Configuration for fine-tuning Llama-Bi-JP-0.5B as a Sentence Transformer
+- `Sentence-Llama-Bi-EN-0.5B-PT.json` / `Sentence-Llama-Bi-EN-0.5B.json` - English WSL and FT configurations for Llama-Bi-0.5B
+- `Sentence-Llama-Bi-JP-3B-PT.json` / `Sentence-Llama-Bi-JP-3B.json` - Japanese WSL and FT configurations for Llama-Bi-3B
+- `Sentence-Llama-Bi-EN-3B-PT.json` / `Sentence-Llama-Bi-EN-3B.json` - English WSL and FT configurations for Llama-Bi-3B
 - `Sentence-ModernBERT-JP-0.5B-PT.json` - Configuration for fine-tuning pre-trained ModernBERT-JP-0.5B as a Sentence Transformer
 - `Sentence-ModernBERT-JP-0.5B.json` - Configuration for fine-tuning ModernBERT-JP-0.5B as a Sentence Transformer
+- `Sentence-ModernBERT-EN-0.5B-PT.json` / `Sentence-ModernBERT-EN-0.5B.json` - English WSL and FT configurations for ModernBERT-0.5B
+- `Sentence-ModernBERT-JP-3B-PT.json` / `Sentence-ModernBERT-JP-3B.json` - Japanese WSL and FT configurations for ModernBERT-3B
+- `Sentence-ModernBERT-EN-3B-PT.json` / `Sentence-ModernBERT-EN-3B.json` - English WSL and FT configurations for ModernBERT-3B
+- `Sentence-Sarashina-Bi-0.5B-PT.json` / `Sentence-Sarashina-Bi-0.5B.json` - Japanese WSL and FT configurations for Sarashina-Bi-0.5B
+- `Sentence-Sarashina-Bi-EN-0.5B-PT.json` / `Sentence-Sarashina-Bi-EN-0.5B.json` - English WSL and FT configurations for Sarashina-Bi-0.5B
+- `Sentence-Sarashina-Bi-JP-3B-PT.json` / `Sentence-Sarashina-Bi-JP-3B.json` - Japanese WSL and FT configurations for Sarashina-Bi-3B
+- `Sentence-Sarashina-Bi-EN-3B-PT.json` / `Sentence-Sarashina-Bi-EN-3B.json` - English WSL and FT configurations for Sarashina-Bi-3B

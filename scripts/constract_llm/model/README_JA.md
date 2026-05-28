@@ -57,6 +57,8 @@ python scripts/constract_llm/model/save_custom_model.py --model_name_or_path pat
 
 - `llama_bi.json`
 - `llama_bi_3b.json`
+- `llama_bi_en.json`
+- `llama_bi_en_3b.json`
 - `sarashina_bi.json`
 - `sarashina_bi_3b.json`
 

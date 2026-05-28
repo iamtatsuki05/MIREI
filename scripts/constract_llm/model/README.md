@@ -58,6 +58,8 @@ Configuration examples are provided under `config/constract_llm/model/save_custo
 
 - `llama_bi.json`
 - `llama_bi_3b.json`
+- `llama_bi_en.json`
+- `llama_bi_en_3b.json`
 - `sarashina_bi.json`
 - `sarashina_bi_3b.json`
 

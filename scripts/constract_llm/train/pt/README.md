@@ -83,8 +83,16 @@ Configuration files for pre-training are stored in `config/constract_llm/train/p
 
 - `Llama-JP-0.5B-PT-stage1.json` - Configuration for stage 1 pre-training of Llama-JP-0.5B
 - `Llama-JP-0.5B-PT-stage2.json` - Configuration for stage 2 pre-training of Llama-JP-0.5B
+- `Llama-EN-0.5B-PT-stage1.json` - Configuration for stage 1 English pre-training of Llama-0.5B
+- `Llama-EN-0.5B-PT-stage2.json` - Configuration for stage 2 English pre-training of Llama-0.5B
+- `Llama-JP-3B-PT-stage1.json` / `Llama-JP-3B-PT-stage2.json` - Configuration for scaled Japanese pre-training of Llama-3B
+- `Llama-EN-3B-PT-stage1.json` / `Llama-EN-3B-PT-stage2.json` - Configuration for scaled English pre-training of Llama-3B
 - `ModernBERT-JP-0.5B-PT-stage1.json` - Configuration for stage 1 pre-training of ModernBERT-JP-0.5B
 - `ModernBERT-JP-0.5B-PT-stage2.json` - Configuration for stage 2 pre-training of ModernBERT-JP-0.5B
+- `ModernBERT-EN-0.5B-PT-stage1.json` - Configuration for stage 1 English pre-training of ModernBERT-0.5B
+- `ModernBERT-EN-0.5B-PT-stage2.json` - Configuration for stage 2 English pre-training of ModernBERT-0.5B
+- `ModernBERT-JP-3B-PT-stage1.json` / `ModernBERT-JP-3B-PT-stage2.json` - Configuration for scaled Japanese pre-training of ModernBERT-3B
+- `ModernBERT-EN-3B-PT-stage1.json` / `ModernBERT-EN-3B-PT-stage2.json` - Configuration for scaled English pre-training of ModernBERT-3B
 
 
 ## Causal Language Modeling (CLM)

@@ -83,8 +83,16 @@ uv run torchrun \
 
 - `Llama-JP-0.5B-PT-stage1.json` - Llama-JP-0.5Bのステージ1事前学習の設定
 - `Llama-JP-0.5B-PT-stage2.json` - Llama-JP-0.5Bのステージ2事前学習の設定
+- `Llama-EN-0.5B-PT-stage1.json` - Llama-0.5Bの英語ステージ1事前学習の設定
+- `Llama-EN-0.5B-PT-stage2.json` - Llama-0.5Bの英語ステージ2事前学習の設定
+- `Llama-JP-3B-PT-stage1.json` / `Llama-JP-3B-PT-stage2.json` - Llama-3Bの日本語スケール実験設定
+- `Llama-EN-3B-PT-stage1.json` / `Llama-EN-3B-PT-stage2.json` - Llama-3Bの英語スケール実験設定
 - `ModernBERT-JP-0.5B-PT-stage1.json` - ModernBERT-JP-0.5Bのステージ1事前学習の設定
 - `ModernBERT-JP-0.5B-PT-stage2.json` - ModernBERT-JP-0.5Bのステージ2事前学習の設定
+- `ModernBERT-EN-0.5B-PT-stage1.json` - ModernBERT-0.5Bの英語ステージ1事前学習の設定
+- `ModernBERT-EN-0.5B-PT-stage2.json` - ModernBERT-0.5Bの英語ステージ2事前学習の設定
+- `ModernBERT-JP-3B-PT-stage1.json` / `ModernBERT-JP-3B-PT-stage2.json` - ModernBERT-3Bの日本語スケール実験設定
+- `ModernBERT-EN-3B-PT-stage1.json` / `ModernBERT-EN-3B-PT-stage2.json` - ModernBERT-3Bの英語スケール実験設定
 
 
 ## Causal Language Modeling (CLM)
