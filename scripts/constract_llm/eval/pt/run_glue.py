@@ -45,7 +45,11 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint
 
 from mirei.common.utils.cli_utils import load_cli_config
-from mirei.constract_llm.eval.jglue.config import TASK_TO_KEYS
+from mirei.constract_llm.eval.jglue.config import (
+    JGLUE_TASKS,
+    TASK_TO_KEYS,
+    get_benchmark_dataset_spec,
+)
 from mirei.constract_llm.eval.jglue.data_class.data_training_arguments import (
     DataTrainingArguments,
 )
@@ -106,12 +110,20 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
 
     logger.info('Loading datasets...')
     if data_args.task_name is not None:
-        # Downloading and loading a dataset from the hub.
-        logger.info(f'Loading dataset {data_args.task_name}...')
-        raw_datasets = load_dataset(
-            'shunk031/JGLUE',
+        dataset_spec = get_benchmark_dataset_spec(
             data_args.task_name,
+            dataset_name=data_args.dataset_name,
+            dataset_config_name=data_args.dataset_config_name,
+        )
+        logger.info(
+            f'Loading {dataset_spec.benchmark_name.upper()} dataset '
+            f'{dataset_spec.dataset_name}/{dataset_spec.dataset_config_name}...'
+        )
+        raw_datasets = load_dataset(
+            dataset_spec.dataset_name,
+            dataset_spec.dataset_config_name,
             cache_dir=model_args.cache_dir,
+            revision=data_args.dataset_revision,
             token=model_args.token,
             trust_remote_code=model_args.trust_remote_code,
         )
@@ -121,6 +133,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
             data_args.dataset_name,
             data_args.dataset_config_name,
             cache_dir=model_args.cache_dir,
+            revision=data_args.dataset_revision,
             token=model_args.token,
             trust_remote_code=model_args.trust_remote_code,
         )
@@ -475,10 +488,16 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         'tasks': 'text-classification',
     }
     if data_args.task_name is not None:
-        kwargs['language'] = 'ja'
-        kwargs['dataset_tags'] = 'jglue'
-        kwargs['dataset_args'] = data_args.task_name
-        kwargs['dataset'] = f'JGLUE {data_args.task_name.upper()}'
+        if data_args.task_name in JGLUE_TASKS:
+            kwargs['language'] = 'ja'
+            kwargs['dataset_tags'] = 'jglue'
+            kwargs['dataset_args'] = data_args.task_name
+            kwargs['dataset'] = f'JGLUE {data_args.task_name.upper()}'
+        else:
+            kwargs['language'] = 'en'
+            kwargs['dataset_tags'] = 'glue'
+            kwargs['dataset_args'] = data_args.task_name
+            kwargs['dataset'] = f'GLUE {data_args.task_name.upper()}'
 
     if training_args.push_to_hub:
         trainer.push_to_hub(**kwargs)

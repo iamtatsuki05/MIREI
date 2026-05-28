@@ -1,0 +1,44 @@
+{
+  "mode": "ft",
+  "repo_id": "sentence-transformers/embedding-training-data",
+  "revision": "015d73e06b0686135d4d8340b1c68177d204b412",
+  "output_dir": "data/processed/english_embedding/ft",
+  "sources": [
+    {
+      "file_name": "AllNLI.jsonl.gz",
+      "label": "nli",
+      "kind": "triplet"
+    },
+    {
+      "file_name": "msmarco-triplets.jsonl.gz",
+      "label": "msmarco",
+      "kind": "triplet"
+    },
+    {
+      "file_name": "quora_duplicates_triplets.jsonl.gz",
+      "label": "quora",
+      "kind": "triplet"
+    },
+    {
+      "file_name": "NQ-train_pairs.jsonl.gz",
+      "label": "nq",
+      "kind": "pair",
+      "random_negative": true
+    },
+    {
+      "file_name": "squad_pairs.jsonl.gz",
+      "label": "squad",
+      "kind": "pair",
+      "random_negative": true
+    },
+    {
+      "file_name": "TriviaQA_pairs.jsonl.gz",
+      "label": "triviaqa",
+      "kind": "pair",
+      "random_negative": true
+    }
+  ],
+  "validation_fraction": 0.01,
+  "seed": 42,
+  "max_samples_per_source": null
+}

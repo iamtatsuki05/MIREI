@@ -29,6 +29,11 @@ def setup_and_encode(cfg: CLIConfig):
         cfg.miracl_lang,
         cfg.wiki_name,
         cfg.wiki_lang,
+        cfg.positive_pair_dataset_name,
+        cfg.positive_pair_dataset_config_name,
+        cfg.positive_pair_dataset_split,
+        cfg.positive_pair_sentence1_column,
+        cfg.positive_pair_sentence2_column,
     )
     model_id = cfg.model_name_or_path
     logger.info(f'Model: {model_id}')

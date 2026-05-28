@@ -28,9 +28,15 @@ You can also override configuration file values using command-line arguments:
 python scripts/constract_llm/model/init_model.py config/constract_llm/model/init_model/config.json --model_type=encoder --push_to_hub=False
 ```
 
-## Configuration File
+## Configuration Files
 
-The configuration file is located at `config/constract_llm/model/init_model/config.json`.
+Initialization examples live under `config/constract_llm/model/init_model/`:
+
+- `Llama-0.5B.json`
+- `Llama-3B.json`
+- `ModernBERT-0.5B.json`
+- `ModernBERT-3B.json`
+- `config.json`
 
 ### `save_custom_model.py`
 
@@ -48,4 +54,13 @@ python scripts/constract_llm/model/save_custom_model.py config/constract_llm/mod
 python scripts/constract_llm/model/save_custom_model.py --model_name_or_path path/to/model --custom_model_type llama_bi --task_type mntp --output_dir ./artifacts
 ```
 
-Configuration examples are provided under `config/constract_llm/model/save_custom_model/`. When `push_to_hub` is enabled, remember to pass `repo_id`.
+Configuration examples are provided under `config/constract_llm/model/save_custom_model/`:
+
+- `llama_bi.json`
+- `llama_bi_3b.json`
+- `llama_bi_en.json`
+- `llama_bi_en_3b.json`
+- `sarashina_bi.json`
+- `sarashina_bi_3b.json`
+
+When `push_to_hub` is enabled, remember to pass `repo_id`.

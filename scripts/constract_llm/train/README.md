@@ -54,15 +54,25 @@ Configuration templates live under `config/constract_llm/train/`:
 - Pre-training (`pt/`):
   - `Llama-JP-0.5B-PT-stage1.json`
   - `Llama-JP-0.5B-PT-stage2.json`
+  - `Llama-JP-3B-PT-stage1.json`
+  - `Llama-JP-3B-PT-stage2.json`
   - `ModernBERT-JP-0.5B-PT-stage1.json`
   - `ModernBERT-JP-0.5B-PT-stage2.json`
+  - `ModernBERT-JP-3B-PT-stage1.json`
+  - `ModernBERT-JP-3B-PT-stage2.json`
 - Fine-tuning (`ft/`):
   - `Sentence-Llama-Bi-JP-0.5B-PT.json`
   - `Sentence-Llama-Bi-JP-0.5B.json`
+  - `Sentence-Llama-Bi-JP-3B-PT.json`
+  - `Sentence-Llama-Bi-JP-3B.json`
   - `Sentence-ModernBERT-JP-0.5B-PT.json`
   - `Sentence-ModernBERT-JP-0.5B.json`
+  - `Sentence-ModernBERT-JP-3B-PT.json`
+  - `Sentence-ModernBERT-JP-3B.json`
   - `Sentence-Sarashina-Bi-0.5B-PT.json`
   - `Sentence-Sarashina-Bi-0.5B.json`
+  - `Sentence-Sarashina-Bi-JP-3B-PT.json`
+  - `Sentence-Sarashina-Bi-JP-3B.json`
 - DeepSpeed configs: `config/constract_llm/train/ds_config/`
 
 Copy a template, adjust hyperparameters, and pass the path to the relevant launch script.
