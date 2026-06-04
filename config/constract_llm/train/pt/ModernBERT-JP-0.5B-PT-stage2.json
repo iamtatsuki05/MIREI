@@ -16,6 +16,7 @@
     "do_train": true,
     "do_eval": true,
     "do_predict": false,
+    "ddp_timeout": 86400,
     "num_train_epochs": 2,
     "optim": "schedule_free_radam",
     "lr_scheduler_type": "constant",
