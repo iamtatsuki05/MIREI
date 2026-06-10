@@ -65,14 +65,20 @@ FTの設定ファイルは`config/constract_llm/train/ft/`に格納されてい�
 - `Sentence-Llama-Bi-JP-0.5B-PT.json` - 事前学習済みLlama-Bi-JP-0.5BをSentence TransformerとしてWSLするための設定
 - `Sentence-Llama-Bi-JP-0.5B.json` - Llama-Bi-JP-0.5BをSentence TransformerとしてFTするための設定
 - `Sentence-Llama-Bi-EN-0.5B-PT.json` / `Sentence-Llama-Bi-EN-0.5B.json` - Llama-Bi-0.5Bの英語WSL/FT設定
+- `Sentence-Llama-Bi-JP-1B-PT.json` / `Sentence-Llama-Bi-JP-1B.json` - Llama-Bi-1Bの日本語WSL/FT設定
+- `Sentence-Llama-Bi-EN-1B-PT.json` / `Sentence-Llama-Bi-EN-1B.json` - Llama-Bi-1Bの英語WSL/FT設定
 - `Sentence-Llama-Bi-JP-3B-PT.json` / `Sentence-Llama-Bi-JP-3B.json` - Llama-Bi-3Bの日本語WSL/FT設定
 - `Sentence-Llama-Bi-EN-3B-PT.json` / `Sentence-Llama-Bi-EN-3B.json` - Llama-Bi-3Bの英語WSL/FT設定
 - `Sentence-ModernBERT-JP-0.5B-PT.json` - 事前学習済みModernBERT-JP-0.5BをSentence TransformerとしてWSLするための設定
 - `Sentence-ModernBERT-JP-0.5B.json` - ModernBERT-JP-0.5BをSentence TransformerとしてFTするための設定
 - `Sentence-ModernBERT-EN-0.5B-PT.json` / `Sentence-ModernBERT-EN-0.5B.json` - ModernBERT-0.5Bの英語WSL/FT設定
+- `Sentence-ModernBERT-JP-1B-PT.json` / `Sentence-ModernBERT-JP-1B.json` - ModernBERT-1Bの日本語WSL/FT設定
+- `Sentence-ModernBERT-EN-1B-PT.json` / `Sentence-ModernBERT-EN-1B.json` - ModernBERT-1Bの英語WSL/FT設定
 - `Sentence-ModernBERT-JP-3B-PT.json` / `Sentence-ModernBERT-JP-3B.json` - ModernBERT-3Bの日本語WSL/FT設定
 - `Sentence-ModernBERT-EN-3B-PT.json` / `Sentence-ModernBERT-EN-3B.json` - ModernBERT-3Bの英語WSL/FT設定
 - `Sentence-Sarashina-Bi-0.5B-PT.json` / `Sentence-Sarashina-Bi-0.5B.json` - Sarashina-Bi-0.5Bの日本語WSL/FT設定
 - `Sentence-Sarashina-Bi-EN-0.5B-PT.json` / `Sentence-Sarashina-Bi-EN-0.5B.json` - Sarashina-Bi-0.5Bの英語WSL/FT設定
+- `Sentence-Sarashina-Bi-JP-1B-PT.json` / `Sentence-Sarashina-Bi-JP-1B.json` - Sarashina-Bi-1Bの日本語WSL/FT設定
+- `Sentence-Sarashina-Bi-EN-1B-PT.json` / `Sentence-Sarashina-Bi-EN-1B.json` - Sarashina-Bi-1Bの英語WSL/FT設定
 - `Sentence-Sarashina-Bi-JP-3B-PT.json` / `Sentence-Sarashina-Bi-JP-3B.json` - Sarashina-Bi-3Bの日本語WSL/FT設定
 - `Sentence-Sarashina-Bi-EN-3B-PT.json` / `Sentence-Sarashina-Bi-EN-3B.json` - Sarashina-Bi-3Bの英語WSL/FT設定

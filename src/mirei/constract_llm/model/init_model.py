@@ -70,6 +70,7 @@ def initialize_model(
     push_to_hub: bool = False,
     private: bool = False,
     seed: int | None = None,
+    tokenizer_name_or_path: str | Path | None = None,
 ) -> None:
     """
     Initialize a model with random weights and save it to the specified directory.
@@ -82,7 +83,8 @@ def initialize_model(
     output_dir = Path(output_dir) if output_dir else Path(f'{base}-init')
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
+    tokenizer_source = tokenizer_name_or_path or model_name_or_path
+    tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(tokenizer_source)
     config: PretrainedConfig = AutoConfig.from_pretrained(model_name_or_path)
 
     model_class: Type[PreTrainedModel] = load_model_class(model_type)

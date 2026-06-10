@@ -17,6 +17,10 @@ class CLIConfig(BaseModel):
         ...,
         description='Path to the model or model name from Hugging Face Hub.',
     )
+    tokenizer_name_or_path: str | Path | None = Field(
+        None,
+        description='Optional tokenizer path or HF identifier. Defaults to model_name_or_path.',
+    )
     model_type: str = Field(
         ...,
         description='Type of the model. Choose from: ' + ', '.join(VALID_MODEL_TYPES),
@@ -54,6 +58,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         push_to_hub=cfg.push_to_hub,
         private=cfg.private,
         seed=cfg.seed,
+        tokenizer_name_or_path=cfg.tokenizer_name_or_path,
     )
     logger.info('Model initialization completed.')
 

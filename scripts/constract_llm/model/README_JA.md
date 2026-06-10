@@ -32,8 +32,10 @@ python scripts/constract_llm/model/init_model.py config/constract_llm/model/init
 初期化用の設定例は `config/constract_llm/model/init_model/` にあります。
 
 - `Llama-0.5B.json`
+- `Llama-1B.json`
 - `Llama-3B.json`
 - `ModernBERT-0.5B.json`
+- `ModernBERT-1B.json`
 - `ModernBERT-3B.json`
 - `config.json`
 
@@ -56,10 +58,13 @@ python scripts/constract_llm/model/save_custom_model.py --model_name_or_path pat
 設定例は `config/constract_llm/model/save_custom_model/` に用意されています。
 
 - `llama_bi.json`
+- `llama_bi_1b.json`
 - `llama_bi_3b.json`
 - `llama_bi_en.json`
+- `llama_bi_en_1b.json`
 - `llama_bi_en_3b.json`
 - `sarashina_bi.json`
+- `sarashina_bi_1b.json`
 - `sarashina_bi_3b.json`
 
 `push_to_hub` を有効にする場合は `repo_id` の指定を忘れないでください。
