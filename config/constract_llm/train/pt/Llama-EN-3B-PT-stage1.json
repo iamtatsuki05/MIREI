@@ -32,7 +32,7 @@
   "logging_first_step": true,
   "prediction_loss_only": true,
   "eval_on_start": true,
-  "logging_steps": 10,
+  "logging_steps": 1,
   "save_steps": 100,
   "eval_steps": 100,
   "save_total_limit": 20,
