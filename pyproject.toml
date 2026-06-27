@@ -135,7 +135,7 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "tensorboard>=2.14.0",
-    "wandb>=0.19.10",
+    "wandb==0.20.1",
     "jupyterlab>=3.3.4",
     "marimo>=0.13.3",
     "mypy>=1.11.2",
