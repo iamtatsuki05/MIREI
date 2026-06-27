@@ -29,6 +29,7 @@
   "per_device_eval_batch_size": 16,
   "gradient_accumulation_steps": 32,
   "gradient_checkpointing": true,
+  "gather_across_devices": true,
   "eval_accumulation_steps": 1,
   "max_seq_length": 512,
   "weight_decay": 1e-5,

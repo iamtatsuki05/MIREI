@@ -423,6 +423,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     loss = losses.CachedMultipleNegativesRankingLoss(
         model,
         mini_batch_size=model_args.loss_cache_mini_batch_size or training_args.per_device_train_batch_size,
+        gather_across_devices=model_args.gather_across_devices,
         scale=model_args.loss_scale,
     )
 
