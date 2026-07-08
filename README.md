@@ -1,4 +1,4 @@
-# **MIREI**: **M**atched **I**nvestigation of **R**epresentation **E**mbedding **I**nsights
+# **MIREI**: **M**atched **I**solation of **R**epresentation **E**mbedding **I**mpactdel Sizes and Languages
 
 English / [日本語](README_JA.md)
 
