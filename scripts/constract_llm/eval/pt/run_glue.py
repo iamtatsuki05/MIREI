@@ -76,6 +76,41 @@ def _setup_logging(training_args: TrainingArguments) -> None:
     transformers.utils.logging.enable_explicit_format()
 
 
+def _ensure_pad_token(tokenizer: Any, model: Any) -> None:
+    if tokenizer.pad_token is None:
+        if tokenizer.eos_token is None:
+            raise ValueError('Tokenizer has neither a pad token nor an EOS token.')
+        logger.warning('Tokenizer does not have a pad token. Using EOS token as pad token.')
+        tokenizer.pad_token = tokenizer.eos_token
+
+    model.config.pad_token_id = tokenizer.pad_token_id
+
+
+def _load_metric(task_name: str | None, *, is_regression: bool, cache_dir: str | None) -> Any:
+    if task_name == 'JSTS':
+        return evaluate.load('glue', 'stsb')
+    if task_name == 'JNLI':
+        return evaluate.load('glue', 'mnli')
+    if task_name == 'JCoLA':
+        return evaluate.combine(
+            [
+                evaluate.load('accuracy', cache_dir=cache_dir),
+                evaluate.load('glue', 'cola', cache_dir=cache_dir),
+            ]
+        )
+    if task_name is not None:
+        return evaluate.load('glue', task_name, cache_dir=cache_dir)
+    if is_regression:
+        return evaluate.load('mse', cache_dir=cache_dir)
+    return evaluate.load('accuracy', cache_dir=cache_dir)
+
+
+def _add_combined_score(result: dict[str, float], *, task_name: str | None) -> dict[str, float]:
+    if len(result) > 1 and task_name != 'JCoLA':
+        result['combined_score'] = np.mean(list(result.values())).item()
+    return result
+
+
 def main(config_file_path: str | Path, **kwargs: Any) -> None:
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
     model_args, data_args, training_args = parser.parse_dict(load_cli_config(config_file_path, **kwargs))
@@ -234,10 +269,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
     if len(tokenizer) > embedding_size:
         model.resize_token_embeddings(len(tokenizer))
 
-    if tokenizer.pad_token is not None:
-        logger.warning('Tokenizer does not have a pad token. Using eos token as pad token.')
-        tokenizer.pad_token_id = tokenizer.eos_token_id
-        model.config.pad_token_id = tokenizer.pad_token_id
+    _ensure_pad_token(tokenizer, model)
 
     # Preprocessing the raw_datasets
     if data_args.task_name is not None:
@@ -355,19 +387,11 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
             logger.info(f'Sample {index} of the training set: {train_dataset[index]}.')
 
     # Get the metric function
-    if data_args.task_name is not None:
-        if data_args.task_name == 'JSTS':
-            metric = evaluate.load('glue', 'stsb')
-        elif data_args.task_name == 'JNLI':
-            metric = evaluate.load('glue', 'mnli')
-        elif data_args.task_name == 'JCoLA':
-            metric = evaluate.load('accuracy')
-        else:
-            metric = evaluate.load('glue', data_args.task_name, cache_dir=model_args.cache_dir)
-    elif is_regression:
-        metric = evaluate.load('mse', cache_dir=model_args.cache_dir)
-    else:
-        metric = evaluate.load('accuracy', cache_dir=model_args.cache_dir)
+    metric = _load_metric(
+        data_args.task_name,
+        is_regression=is_regression,
+        cache_dir=model_args.cache_dir,
+    )
 
     # You can define your custom compute_metrics function. It takes an `EvalPrediction` object (a namedtuple with a
     # predictions and label_ids field) and has to return a dictionary string to float.
@@ -379,9 +403,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
             labels = np.concatenate(p.label_ids, axis=0)
         preds = np.squeeze(preds) if is_regression else np.argmax(preds, axis=1)
         result = metric.compute(predictions=preds, references=labels)
-        if len(result) > 1:
-            result['combined_score'] = np.mean(list(result.values())).item()
-        return result
+        return _add_combined_score(result, task_name=data_args.task_name)
 
     # Data collator will default to DataCollatorWithPadding when the tokenizer is passed to Trainer, so we change it if
     # we already did the padding.

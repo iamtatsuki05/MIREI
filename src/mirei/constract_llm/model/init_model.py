@@ -12,7 +12,7 @@ from transformers import (
     AutoTokenizer,
     PretrainedConfig,
     PreTrainedModel,
-    PreTrainedTokenizer,
+    PreTrainedTokenizerBase,
     set_seed,
 )
 
@@ -71,6 +71,9 @@ def initialize_model(
     private: bool = False,
     seed: int | None = None,
     tokenizer_name_or_path: str | Path | None = None,
+    revision: str = 'main',
+    tokenizer_revision: str | None = None,
+    repo_id: str | None = None,
 ) -> None:
     """
     Initialize a model with random weights and save it to the specified directory.
@@ -84,8 +87,11 @@ def initialize_model(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     tokenizer_source = tokenizer_name_or_path or model_name_or_path
-    tokenizer: PreTrainedTokenizer = AutoTokenizer.from_pretrained(tokenizer_source)
-    config: PretrainedConfig = AutoConfig.from_pretrained(model_name_or_path)
+    tokenizer: PreTrainedTokenizerBase = AutoTokenizer.from_pretrained(
+        tokenizer_source,
+        revision=tokenizer_revision or revision,
+    )
+    config: PretrainedConfig = AutoConfig.from_pretrained(model_name_or_path, revision=revision)
 
     model_class: Type[PreTrainedModel] = load_model_class(model_type)
     model: PreTrainedModel = model_class.from_config(config)
@@ -98,8 +104,8 @@ def initialize_model(
     logger.info(f"Model and tokenizer saved to '{output_dir}'.")
 
     if push_to_hub:
-        repo_id = output_dir.name
-        logger.info(f"Pushing to Hugging Face Hub: repo='{repo_id}', private={private}")
-        model.push_to_hub(repo_id, private=private)  # type: ignore[attr-defined]
-        tokenizer.push_to_hub(repo_id, private=private)
+        destination_repo = repo_id or output_dir.name
+        logger.info(f"Pushing to Hugging Face Hub: repo='{destination_repo}', private={private}")
+        model.push_to_hub(destination_repo, private=private)  # type: ignore[attr-defined]
+        tokenizer.push_to_hub(destination_repo, private=private)
         logger.info('Push to Hub completed.')

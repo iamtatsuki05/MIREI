@@ -10,6 +10,22 @@ class DataTrainingArguments:
         None,
         description='The configuration name of the dataset to use (via the datasets library).',
     )
+    tokenized_dataset_path: str | None = Field(
+        None,
+        description='Path to a preprocessed DatasetDict saved with datasets.save_to_disk.',
+    )
+    tokenized_train_files: str | None = Field(
+        None,
+        description='Glob pattern or file path for preprocessed tokenized train Arrow shard(s).',
+    )
+    tokenized_validation_files: str | None = Field(
+        None,
+        description='Glob pattern or file path for preprocessed tokenized validation Arrow shard(s).',
+    )
+    tokenized_test_files: str | None = Field(
+        None,
+        description='Glob pattern or file path for preprocessed tokenized test Arrow shard(s).',
+    )
     train_file: str | None = Field(None, description='The input training data file (a text file).')
     validation_file: str | None = Field(
         None,
@@ -67,7 +83,13 @@ class DataTrainingArguments:
     def __post_init__(self):
         if self.streaming:
             require_version('datasets>=2.0.0', 'The streaming feature requires `datasets>=2.0.0`')
-        if self.dataset_name is None and self.train_file is None and self.validation_file is None:
+        if (
+            self.dataset_name is None
+            and self.train_file is None
+            and self.validation_file is None
+            and self.tokenized_dataset_path is None
+            and self.tokenized_train_files is None
+        ):
             raise ValueError('Need either a dataset name or a training/validation file.')
         else:
             if self.train_file is not None:

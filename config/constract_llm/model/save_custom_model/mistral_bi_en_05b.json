@@ -1,0 +1,10 @@
+{
+  "model_name_or_path": "./data/outputs/Mistral-EN-0.5B-PT-stage2",
+  "revision": null,
+  "custom_model_type": "mistral",
+  "task_type": "mntp",
+  "output_dir": "./data/model/Mistral-Bi-EN-0.5B-PT-stage2",
+  "push_to_hub": true,
+  "repo_id": "iamtatsuki05/Mistral-Bi-EN-0.5B-PT-stage2",
+  "private": true
+}
