@@ -66,9 +66,13 @@ def _histogram(sq_distances: torch.Tensor, bins: int = HISTOGRAM_BINS) -> dict[s
     return {'counts': counts.tolist(), 'bin_edges': bin_edges.tolist()}
 
 
-def _compute_alignment_result(model: SentenceTransformer, positive_pairs: list[tuple[str, str]]) -> dict[str, Any]:
-    z1 = model.encode([pair[0] for pair in positive_pairs], convert_to_tensor=True)
-    z2 = model.encode([pair[1] for pair in positive_pairs], convert_to_tensor=True)
+def _compute_alignment_result(
+    model: SentenceTransformer,
+    positive_pairs: list[tuple[str, str]],
+    batch_size: int,
+) -> dict[str, Any]:
+    z1 = model.encode([pair[0] for pair in positive_pairs], batch_size=batch_size, convert_to_tensor=True)
+    z2 = model.encode([pair[1] for pair in positive_pairs], batch_size=batch_size, convert_to_tensor=True)
     sq_distances = compute_alignment_sq_distances(z1, z2)
     return {
         'alignment': sq_distances.mean().item(),
@@ -76,9 +80,13 @@ def _compute_alignment_result(model: SentenceTransformer, positive_pairs: list[t
     }
 
 
-def _compute_uniformity_result(model: SentenceTransformer, random_pairs: list[tuple[str, str]]) -> dict[str, Any]:
-    z1 = model.encode([pair[0] for pair in random_pairs], convert_to_tensor=True)
-    z2 = model.encode([pair[1] for pair in random_pairs], convert_to_tensor=True)
+def _compute_uniformity_result(
+    model: SentenceTransformer,
+    random_pairs: list[tuple[str, str]],
+    batch_size: int,
+) -> dict[str, Any]:
+    z1 = model.encode([pair[0] for pair in random_pairs], batch_size=batch_size, convert_to_tensor=True)
+    z2 = model.encode([pair[1] for pair in random_pairs], batch_size=batch_size, convert_to_tensor=True)
     sq_distances = compute_pairwise_sq_distances(torch.cat([z1, z2], dim=0))
     return {
         'uniformity': compute_uniformity_from_sq_distances(sq_distances),
@@ -91,7 +99,7 @@ def alignment(config_file_path: str | None = None, **kwargs: Any) -> None:
     model, positive_pairs, random_pairs, out_dir = setup_and_encode(cfg)
 
     result = _base_result(cfg, len(positive_pairs), len(random_pairs))
-    result.update(_compute_alignment_result(model, positive_pairs))
+    result.update(_compute_alignment_result(model, positive_pairs, cfg.batch_size))
     logger.info(f'Alignment:  {result["alignment"]:.4f}')
     save_as_indented_json(result, out_dir / 'alignment.json')
 
@@ -101,7 +109,7 @@ def uniformity(config_file_path: str | None = None, **kwargs: Any) -> None:
     model, positive_pairs, random_pairs, out_dir = setup_and_encode(cfg)
 
     result = _base_result(cfg, len(positive_pairs), len(random_pairs))
-    result.update(_compute_uniformity_result(model, random_pairs))
+    result.update(_compute_uniformity_result(model, random_pairs, cfg.batch_size))
     logger.info(f'Uniformity: {result["uniformity"]:.4f}')
     save_as_indented_json(result, out_dir / 'uniformity.json')
 
@@ -111,8 +119,8 @@ def main(config_file_path: str | None = None, **kwargs: Any) -> None:
     model, positive_pairs, random_pairs, out_dir = setup_and_encode(cfg)
 
     result = _base_result(cfg, len(positive_pairs), len(random_pairs))
-    result.update(_compute_alignment_result(model, positive_pairs))
-    result.update(_compute_uniformity_result(model, random_pairs))
+    result.update(_compute_alignment_result(model, positive_pairs, cfg.batch_size))
+    result.update(_compute_uniformity_result(model, random_pairs, cfg.batch_size))
     logger.info(f'Alignment:  {result["alignment"]:.4f}')
     logger.info(f'Uniformity: {result["uniformity"]:.4f}')
     save_as_indented_json(result, out_dir / 'result.json')
