@@ -2,6 +2,8 @@
   "model_name_or_path": "iamtatsuki05/Sentence-Qwen2.5-Scratch-Bi-EN-0.5B",
   "output_dir": "data/outputs/eval/isotropic",
   "num_examples": 2000,
+  "dtype": "bfloat16",
+  "attn_implementation": "flash_attention_2",
   "seed": 42,
   "wiki_name": "google/wiki40b",
   "wiki_lang": "en",

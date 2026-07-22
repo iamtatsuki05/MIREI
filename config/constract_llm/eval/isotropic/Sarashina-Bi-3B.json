@@ -2,6 +2,8 @@
     "model_name_or_path": "iamtatsuki05/sarashina2.2-Bi-3b",
     "output_dir": "data/outputs/eval/isotropic/Sarashina-Bi-3B",
     "num_examples": 2000,
+    "dtype": "bfloat16",
+    "attn_implementation": "flash_attention_2",
     "seed": 42,
     "miracl_name": "miracl/miracl",
     "miracl_lang": "ja",

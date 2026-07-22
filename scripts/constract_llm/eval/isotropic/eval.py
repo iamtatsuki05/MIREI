@@ -22,6 +22,48 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 HISTOGRAM_BINS = 100
+EXPECTED_LONG_CONTEXT_LENGTH = 8192
+
+
+def _build_model_kwargs(dtype: str | None, attn_implementation: str | None) -> dict[str, Any]:
+    if dtype is None and attn_implementation is None:
+        return {}
+    if dtype != 'bfloat16' or attn_implementation != 'flash_attention_2':
+        raise ValueError(
+            'Isotropic model loading supports only the explicit '
+            'dtype=bfloat16 and attn_implementation=flash_attention_2 combination.'
+        )
+    return {
+        'torch_dtype': torch.bfloat16,
+        'attn_implementation': 'flash_attention_2',
+    }
+
+
+def _validate_model_contract(model: SentenceTransformer, dtype: str | None, attn_implementation: str | None) -> None:
+    if dtype is None and attn_implementation is None:
+        return
+    auto_model = getattr(model._first_module(), 'auto_model', None)
+    if auto_model is None:
+        raise RuntimeError('SentenceTransformer first module does not expose auto_model.')
+    reported_backend = getattr(auto_model.config, '_attn_implementation', None)
+    if reported_backend != attn_implementation:
+        raise RuntimeError(
+            f'requested attention backend {attn_implementation!r}, but model reported {reported_backend!r}'
+        )
+    reported_dtype = str(next(model.parameters()).dtype)
+    expected_dtype = str(torch.bfloat16)
+    if reported_dtype != expected_dtype:
+        raise RuntimeError(f'requested model dtype {expected_dtype!r}, but model reported {reported_dtype!r}')
+    reported_max_seq_length = getattr(model, 'max_seq_length', None)
+    reported_max_positions = getattr(auto_model.config, 'max_position_embeddings', None)
+    if (
+        reported_max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH
+        or reported_max_positions != EXPECTED_LONG_CONTEXT_LENGTH
+    ):
+        raise RuntimeError(
+            '8192-token benchmark contract mismatch: '
+            f'max_seq_length={reported_max_seq_length!r} max_position_embeddings={reported_max_positions!r}'
+        )
 
 
 def setup_and_encode(cfg: CLIConfig):
@@ -45,7 +87,12 @@ def setup_and_encode(cfg: CLIConfig):
     )
     model_id = cfg.model_name_or_path
     logger.info(f'Model: {model_id}')
-    model = SentenceTransformer(model_id).to(device)
+    model_kwargs = _build_model_kwargs(cfg.dtype, cfg.attn_implementation)
+    loader_kwargs: dict[str, Any] = {'device': str(device)}
+    if model_kwargs:
+        loader_kwargs['model_kwargs'] = model_kwargs
+    model = SentenceTransformer(model_id, **loader_kwargs)
+    _validate_model_contract(model, cfg.dtype, cfg.attn_implementation)
     out_dir = Path(cfg.output_dir) / 'alignment_and_uniformity' / model_id.replace('/', '_')
     out_dir.mkdir(parents=True, exist_ok=True)
     return model, positive_pairs, random_pairs, out_dir

@@ -2,6 +2,8 @@
     "model_name_or_path": "iamtatsuki05/Sentence-Llama-Bi-JP-3B",
     "output_dir": "data/outputs/eval/isotropic/Sentence-Llama-Bi-3B",
     "num_examples": 2000,
+    "dtype": "bfloat16",
+    "attn_implementation": "flash_attention_2",
     "seed": 42,
     "miracl_name": "miracl/miracl",
     "miracl_lang": "ja",
