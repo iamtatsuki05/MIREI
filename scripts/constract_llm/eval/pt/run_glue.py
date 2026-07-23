@@ -91,7 +91,7 @@ def _load_metric(task_name: str | None, *, is_regression: bool, cache_dir: str |
         return evaluate.load('glue', 'stsb')
     if task_name == 'JNLI':
         return evaluate.load('glue', 'mnli')
-    if task_name == 'JCoLA':
+    if task_name in ('JCoLA', 'cola'):
         return evaluate.combine(
             [
                 evaluate.load('accuracy', cache_dir=cache_dir),
@@ -106,7 +106,7 @@ def _load_metric(task_name: str | None, *, is_regression: bool, cache_dir: str |
 
 
 def _add_combined_score(result: dict[str, float], *, task_name: str | None) -> dict[str, float]:
-    if len(result) > 1 and task_name != 'JCoLA':
+    if len(result) > 1 and task_name not in ('JCoLA', 'cola'):
         result['combined_score'] = np.mean(list(result.values())).item()
     return result
 
