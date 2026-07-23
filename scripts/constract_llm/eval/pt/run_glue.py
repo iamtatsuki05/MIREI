@@ -263,6 +263,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         token=model_args.token,
         trust_remote_code=model_args.trust_remote_code,
         ignore_mismatched_sizes=model_args.ignore_mismatched_sizes,
+        attn_implementation=model_args.attn_implementation,
     )
 
     embedding_size = model.get_input_embeddings().weight.shape[0]
