@@ -45,6 +45,6 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": null,
+  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json",
   "dataset_revision": "bcdcba79d07bc864c1c254ccfcedcce55bcc9a8c"
 }
