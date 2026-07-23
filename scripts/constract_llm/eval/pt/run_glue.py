@@ -254,6 +254,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         token=model_args.token,
         trust_remote_code=model_args.trust_remote_code,
     )
+    tokenizer.padding_side = 'right'
     model = AutoModelForSequenceClassification.from_pretrained(
         model_args.model_name_or_path,
         from_tf=bool('.ckpt' in model_args.model_name_or_path),
@@ -271,6 +272,22 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         model.resize_token_embeddings(len(tokenizer))
 
     _ensure_pad_token(tokenizer, model)
+
+    padding_probe = tokenizer(
+        ['padding probe', 'a longer padding probe'],
+        padding='max_length',
+        max_length=16,
+        truncation=True,
+        return_attention_mask=True,
+    )
+    if tokenizer.padding_side != 'right' or any(
+        mask[0] != 1 or mask[-1] != 0 for mask in padding_probe['attention_mask']
+    ):
+        raise RuntimeError(
+            f'Right-padding preflight failed: padding_side={tokenizer.padding_side} '
+            f'attention_mask={padding_probe["attention_mask"]}'
+        )
+    logger.info('tokenizer_padding_side=right padding_preflight=passed')
 
     # Preprocessing the raw_datasets
     if data_args.task_name is not None:
@@ -415,8 +432,20 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
     else:
         data_collator = None
 
+    class FiniteMetricTrainer(Trainer):
+        def evaluate(self, *args, **kwargs):
+            metrics = super().evaluate(*args, **kwargs)
+            non_finite_metrics = {
+                key: value
+                for key, value in metrics.items()
+                if isinstance(value, (float, np.floating)) and not np.isfinite(value)
+            }
+            if non_finite_metrics:
+                raise RuntimeError(f'Non-finite evaluation metrics: {non_finite_metrics}')
+            return metrics
+
     # Initialize our Trainer
-    trainer = Trainer(
+    trainer = FiniteMetricTrainer(
         model=model,
         args=training_args,
         train_dataset=train_dataset if training_args.do_train else None,
