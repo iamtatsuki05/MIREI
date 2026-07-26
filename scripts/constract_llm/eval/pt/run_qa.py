@@ -245,14 +245,19 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
                 token_end_index = len(input_ids) - 1
                 while sequence_ids[token_end_index] != 1:
                     token_end_index -= 1
+                # Keep the answer search inside the context span. Upstream relies on a
+                # (0, 0)-offset special token to stop the walk, which tokenizers that
+                # add no special tokens (e.g. sarashina) do not provide.
+                context_start_index = token_start_index
+                context_end_index = token_end_index
                 if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char):
                     tokenized_examples['start_positions'].append(cls_index)
                     tokenized_examples['end_positions'].append(cls_index)
                 else:
-                    while token_start_index < len(offsets) and offsets[token_start_index][0] <= start_char:
+                    while token_start_index <= context_end_index and offsets[token_start_index][0] <= start_char:
                         token_start_index += 1
                     tokenized_examples['start_positions'].append(token_start_index - 1)
-                    while offsets[token_end_index][1] >= end_char:
+                    while token_end_index >= context_start_index and offsets[token_end_index][1] >= end_char:
                         token_end_index -= 1
                     tokenized_examples['end_positions'].append(token_end_index + 1)
         return tokenized_examples
