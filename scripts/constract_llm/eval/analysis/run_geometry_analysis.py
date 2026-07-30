@@ -47,6 +47,14 @@ class CLIConfig(BaseModel):
     model_name_or_path: str = Field(..., description='Model name or path to analyze')
     model_revision: str | None = Field(None, description='Model revision (HF) if any')
     language: Literal['en', 'ja'] = Field(..., description='Language of geometry / STS datasets')
+    geometry_source: Literal['pairs', 'wiki'] = Field(
+        'pairs',
+        description=(
+            'Sentence source for geometry / attention / dump: pairs = positive pairs (miracl / all-nli, '
+            'overlaps FT training data and contains duplicate anchors in EN), wiki = held-out random pairs '
+            'from the wiki corpus (alignment then measures random-pair distance, not positive-pair alignment)'
+        ),
+    )
     num_examples: int = Field(2000, gt=0, description='Number of positive pairs for geometry analysis')
     num_attention_examples: int = Field(32, gt=0, description='Number of sentences for attention analysis')
     attention_max_tokens: int = Field(128, gt=0, description='Max tokens per sentence for attention analysis')
@@ -58,6 +66,12 @@ class CLIConfig(BaseModel):
     with_layer_sts: bool = Field(True, description='Run per-layer STS spearman analysis')
     with_kill_test: bool = Field(True, description='Run outlier-dimension ablation (kill) test')
     dump_layer_embeddings: bool = Field(False, description='Dump per-layer z1 mean embeddings as float16 npz')
+    dump_sts_pair_cos: bool = Field(
+        False, description='Save per-pair STS cosine similarities per pooling variant as sts_pair_cos.npz'
+    )
+    dump_attention_per_sentence: bool = Field(
+        False, description='Include per-sentence per-layer attention summaries in analysis.json (for CIs)'
+    )
     sts_max_pairs: int = Field(1500, gt=0, description='Max number of STS pairs')
 
 
@@ -70,14 +84,14 @@ def _resolve_dtype(dtype: str) -> torch.dtype:
 
 def _prepare_geometry_pairs(cfg: CLIConfig) -> list[tuple[str, str]]:
     if cfg.language == 'ja':
-        positive_pairs, _ = prepare_dataset(
+        positive_pairs, random_pairs = prepare_dataset(
             cfg.num_examples,
             miracl_lang='ja',
             wiki_name='wikimedia/wikipedia',
             wiki_lang='20231101.ja',
         )
     else:
-        positive_pairs, _ = prepare_dataset(
+        positive_pairs, random_pairs = prepare_dataset(
             cfg.num_examples,
             wiki_name='google/wiki40b',
             wiki_lang='en',
@@ -87,7 +101,7 @@ def _prepare_geometry_pairs(cfg: CLIConfig) -> list[tuple[str, str]]:
             positive_pair_sentence1_column='anchor',
             positive_pair_sentence2_column='positive',
         )
-    return positive_pairs
+    return random_pairs if cfg.geometry_source == 'wiki' else positive_pairs
 
 
 def _prepare_sts_pairs(cfg: CLIConfig) -> tuple[list[str], list[str], list[float]]:
@@ -323,6 +337,11 @@ def _attention_and_position_sections(
             'num_sentences': len(attention_texts),
             'max_tokens': cfg.attention_max_tokens,
         }
+        if cfg.dump_attention_per_sentence:
+            attention_section['per_sentence'] = [
+                {'layer': layer_index, 'sentences': [s['mean'] for s in summaries]}
+                for layer_index, summaries in enumerate(layer_summaries)
+            ]
 
     counts = np.asarray([r['count'] for r in position_results], dtype=np.float64)
     cos_means = np.asarray([r['cos_mean'] for r in position_results], dtype=np.float64)
@@ -471,6 +490,15 @@ def main(config_file_path: str | None = None, **kwargs: Any) -> None:
         out_dir.mkdir(parents=True, exist_ok=True)
         save_as_indented_json(result, out_dir / 'analysis.json')
         logger.info(f'Saved analysis result: {out_dir / "analysis.json"}')
+
+        if cfg.dump_sts_pair_cos:
+            pair_arrays = {
+                name: F.cosine_similarity(s1_variants[name], s2_variants[name], dim=-1).numpy().astype(np.float32)
+                for name in POOLING_VARIANTS
+            }
+            pair_arrays['labels'] = np.asarray(sts_labels, dtype=np.float32)
+            np.savez(out_dir / 'sts_pair_cos.npz', **pair_arrays)
+            logger.info(f'Saved STS pair cosines: {out_dir / "sts_pair_cos.npz"}')
 
         if cfg.dump_layer_embeddings:
             arrays = {
