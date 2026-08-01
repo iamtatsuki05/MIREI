@@ -1,0 +1,29 @@
+{
+  "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-EN-0.5B",
+  "output_dir": "data/outputs/eval/mteb/sentence-sarashina-bi-en-0.5b",
+  "tasks": [
+    "SciFact",
+    "STSBenchmark",
+    "Banking77Classification.v2",
+    "AskUbuntuDupQuestions",
+    "StackExchangeClustering.v2"
+  ],
+  "languages": [
+    "eng"
+  ],
+  "eval_splits": null,
+  "exclusive_language_filter": false,
+  "overwrite_strategy": "only-missing",
+  "public_only": true,
+  "raise_error": true,
+  "num_proc": null,
+  "batch_size": 32,
+  "normalize_embeddings": true,
+  "show_progress_bar": true,
+  "device": "cuda",
+  "trust_remote_code": true,
+  "attn_implementation": "flash_attention_2",
+  "model_extra_kwargs": {},
+  "tokenizer_extra_kwargs": {},
+  "use_mteb_get_model": false
+}

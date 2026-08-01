@@ -49,17 +49,28 @@ python scripts/constract_llm/eval/isotropic/eval.py main --model_name_or_path=se
 
 ## 出力
 
-結果は以下のパスにJSON形式で保存されます。
+結果は `<output_dir>/alignment_and_uniformity/<model_name_or_path>/` 配下にJSON形式で保存されます。
 
-```
-<output_dir>/alignment_and_uniformity/<model_name_or_path>/result.json
-```
+- `main` → `result.json`(両方のメトリクス)
+- `alignment` → `alignment.json`
+- `uniformity` → `uniformity.json`
 
-出力例:
+各ファイルには resolved config・モデル名・実際に使用したペア数・timestamp も記録されるため、JSON単体から可視化を再構築できます。
+
+出力例(`result.json`):
 
 ```json
 {
+  "model_name_or_path": "sentence-transformers/all-MiniLM-L6-v2",
+  "config": { "...": "resolved CLIConfig の全フィールド" },
+  "n_positive_pairs": 1000,
+  "n_random_pairs": 1000,
+  "meta": { "timestamp": 1752969600, "source": "isotropic_eval" },
   "alignment": 0.1234,
-  "uniformity": 1.2345
+  "alignment_sq_distances": [0.1, 0.15, "..."],
+  "uniformity": -1.2345,
+  "uniformity_sq_distance_histogram": { "counts": [2, 10, "..."], "bin_edges": [0.0, 0.04, "..."] }
 }
 ```
+
+`alignment_sq_distances` は positive pair ごとの二乗L2距離です。`uniformity_sq_distance_histogram` は全埋め込みの順序付き off-diagonal ペア(非順序ペアを2回ずつカウント)の二乗距離に対する100 binのヒストグラムです。

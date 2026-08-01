@@ -1,0 +1,10 @@
+{
+  "model_name_or_path": "Qwen/Qwen2.5-0.5B",
+  "revision": "060db6499f32faf8b98477b0a26969ef7d8b9987",
+  "custom_model_type": "qwen2",
+  "task_type": "mntp",
+  "output_dir": "./data/model/Qwen2.5-Bi-EN-0.5B",
+  "push_to_hub": true,
+  "repo_id": "iamtatsuki05/Qwen2.5-Bi-EN-0.5B",
+  "private": true
+}

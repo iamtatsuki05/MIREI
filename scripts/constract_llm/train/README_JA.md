@@ -54,15 +54,25 @@ python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/M
 - 事前学習（`pt/`）：
   - `Llama-JP-0.5B-PT-stage1.json`
   - `Llama-JP-0.5B-PT-stage2.json`
+  - `Llama-JP-3B-PT-stage1.json`
+  - `Llama-JP-3B-PT-stage2.json`
   - `ModernBERT-JP-0.5B-PT-stage1.json`
   - `ModernBERT-JP-0.5B-PT-stage2.json`
+  - `ModernBERT-JP-3B-PT-stage1.json`
+  - `ModernBERT-JP-3B-PT-stage2.json`
 - ファインチューニング（`ft/`）：
   - `Sentence-Llama-Bi-JP-0.5B-PT.json`
   - `Sentence-Llama-Bi-JP-0.5B.json`
+  - `Sentence-Llama-Bi-JP-3B-PT.json`
+  - `Sentence-Llama-Bi-JP-3B.json`
   - `Sentence-ModernBERT-JP-0.5B-PT.json`
   - `Sentence-ModernBERT-JP-0.5B.json`
+  - `Sentence-ModernBERT-JP-3B-PT.json`
+  - `Sentence-ModernBERT-JP-3B.json`
   - `Sentence-Sarashina-Bi-0.5B-PT.json`
   - `Sentence-Sarashina-Bi-0.5B.json`
+  - `Sentence-Sarashina-Bi-JP-3B-PT.json`
+  - `Sentence-Sarashina-Bi-JP-3B.json`
 - DeepSpeed 設定: `config/constract_llm/train/ds_config/`
 
 テンプレートをコピーしてハイパーパラメータを調整し、対応するランチャーに渡してください。

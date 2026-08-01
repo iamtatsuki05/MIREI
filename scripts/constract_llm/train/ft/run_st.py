@@ -110,6 +110,8 @@ def load_raw_datasets(
             extension = data_args.validation_file.split('.')[-1]
         if extension == 'txt':
             extension = 'text'
+        if extension == 'jsonl':
+            extension = 'json'
         return load_dataset(
             extension,
             data_files=data_files,
@@ -204,6 +206,46 @@ def load_raw_datasets(
 
     for split in raw_datasets:
         raw_datasets[split] = raw_datasets[split].cast_column('label', label_feature)
+
+    return raw_datasets
+
+
+def _should_cast_label_column(ds_split: datasets.Dataset | datasets.IterableDataset, label_column_name: str) -> bool:
+    feature = ds_split.features.get(label_column_name)
+    if isinstance(feature, ClassLabel):
+        return False
+    if isinstance(feature, datasets.Value) and feature.dtype.startswith(('int', 'uint')):
+        return False
+    return True
+
+
+def cast_label_column_for_grouped_sampling(
+    raw_datasets: DatasetDict | IterableDatasetDict,
+    label_column_name: str = 'label',
+) -> DatasetDict | IterableDatasetDict:
+    if isinstance(raw_datasets, IterableDatasetDict):
+        raise ValueError('`batch_sampler=group_by_label` requires a non-streaming dataset with a label column.')
+
+    if not all(label_column_name in raw_datasets[split].column_names for split in raw_datasets):
+        raise ValueError(f'`batch_sampler=group_by_label` requires `{label_column_name}` in every split.')
+
+    if not any(_should_cast_label_column(raw_datasets[split], label_column_name) for split in raw_datasets):
+        return raw_datasets
+
+    label_names = sorted(
+        {
+            str(label)
+            for split in raw_datasets
+            for label in raw_datasets[split].unique(label_column_name)
+            if label is not None
+        }
+    )
+    if not label_names:
+        raise ValueError(f'`{label_column_name}` must contain at least one non-null label.')
+
+    label_feature = ClassLabel(names=label_names)
+    for split in raw_datasets:
+        raw_datasets[split] = raw_datasets[split].cast_column(label_column_name, label_feature)
 
     return raw_datasets
 
@@ -307,6 +349,11 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
 
     logger.info('Loading datasets...')
     raw_datasets = load_raw_datasets(data_args, model_args, training_args)
+    if training_args.batch_sampler == 'group_by_label':
+        raw_datasets = cast_label_column_for_grouped_sampling(
+            raw_datasets,
+            label_column_name=data_args.label_column_name or 'label',
+        )
     logger.info(f'Raw datasets: {raw_datasets}')
 
     logger.info('Loading model...')
@@ -423,6 +470,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     loss = losses.CachedMultipleNegativesRankingLoss(
         model,
         mini_batch_size=model_args.loss_cache_mini_batch_size or training_args.per_device_train_batch_size,
+        gather_across_devices=model_args.gather_across_devices,
         scale=model_args.loss_scale,
     )
 

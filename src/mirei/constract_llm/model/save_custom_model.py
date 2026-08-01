@@ -8,13 +8,25 @@ from peft import PeftConfig, PeftModel, get_peft_model
 from transformers import (
     AutoTokenizer,
     LlamaConfig,
+    MistralConfig,
     PreTrainedTokenizer,
+    Qwen2Config,
 )
 
 from mirei.constract_llm.model.custom.modeling_bidirectional_llama import (
     LlamaBiForMNTP,
     LlamaBiForSequenceClassification,
     LlamaBiModel,
+)
+from mirei.constract_llm.model.custom.modeling_bidirectional_mistral import (
+    MistralBiForMNTP,
+    MistralBiForSequenceClassification,
+    MistralBiModel,
+)
+from mirei.constract_llm.model.custom.modeling_bidirectional_qwen2 import (
+    Qwen2BiForMNTP,
+    Qwen2BiForSequenceClassification,
+    Qwen2BiModel,
 )
 from mirei.env import PACKAGE_DIR
 
@@ -25,6 +37,20 @@ CUSTOM_MODEL_CONFIGS: Final[dict[str, dict[str, Any]]] = {
         'mntp_class': LlamaBiForMNTP,
         'seq_class': LlamaBiForSequenceClassification,
         'modeling_py_path': PACKAGE_DIR / 'src/mirei/constract_llm/model/custom/modeling_bidirectional_llama.py',
+    },
+    'mistral': {
+        'config_class': MistralConfig,
+        'base_class': MistralBiModel,
+        'mntp_class': MistralBiForMNTP,
+        'seq_class': MistralBiForSequenceClassification,
+        'modeling_py_path': PACKAGE_DIR / 'src/mirei/constract_llm/model/custom/modeling_bidirectional_mistral.py',
+    },
+    'qwen2': {
+        'config_class': Qwen2Config,
+        'base_class': Qwen2BiModel,
+        'mntp_class': Qwen2BiForMNTP,
+        'seq_class': Qwen2BiForSequenceClassification,
+        'modeling_py_path': PACKAGE_DIR / 'src/mirei/constract_llm/model/custom/modeling_bidirectional_qwen2.py',
     },
 }
 
@@ -64,6 +90,7 @@ def load_custom_model(
     task_type: str = 'mntp',
     peft_weights_path: str | Path | None = None,
     peft_config: PeftConfig | None = None,
+    revision: str | None = 'main',
 ) -> tuple[Any, PreTrainedTokenizer]:
     if custom_model_type not in CUSTOM_MODEL_CONFIGS:
         raise ValueError(f"Invalid custom_model_type '{custom_model_type}'.")
@@ -71,10 +98,11 @@ def load_custom_model(
     set_auto_model_classes(custom_model_type)
 
     cfg = CUSTOM_MODEL_CONFIGS[custom_model_type]
-    model_path = Path(model_name_or_path)
+    model_source = str(model_name_or_path)
+    revision_kwargs = {'revision': revision} if revision is not None else {}
 
-    config = cfg['config_class'].from_pretrained(model_path)
-    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    config = cfg['config_class'].from_pretrained(model_source, **revision_kwargs)
+    tokenizer = AutoTokenizer.from_pretrained(model_source, **revision_kwargs)
 
     if task_type == 'lm':
         ModelClass = cfg['base_class']
@@ -84,7 +112,7 @@ def load_custom_model(
         ModelClass = cfg['seq_class']
     else:
         raise ValueError(f"Invalid task_type '{task_type}'.")
-    model = ModelClass.from_pretrained(model_path, config=config)
+    model = ModelClass.from_pretrained(model_source, config=config, **revision_kwargs)
 
     if peft_weights_path:
         model = PeftModel.from_pretrained(model, peft_weights_path)
@@ -117,10 +145,14 @@ def save_custom_model(
 
     cfg_key = model.config.__class__.__name__.lower().replace('config', '')
     cfg = CUSTOM_MODEL_CONFIGS.get(cfg_key)
-    if cfg:
-        src = cfg['modeling_py_path']
-        if src.exists():
-            (out_dir / src.name).write_bytes(src.read_bytes())
+    if cfg is None:
+        raise ValueError(f"No custom model export configuration for config key '{cfg_key}'.")
+    src = cfg['modeling_py_path']
+    if not src.is_file():
+        raise FileNotFoundError(f'Missing custom model Python artifact: {src}')
+    destination = out_dir / src.name
+    destination.unlink(missing_ok=True)
+    destination.write_bytes(src.read_bytes())
 
     config_path = out_dir / 'config.json'
     if config_path.exists():
@@ -135,10 +167,10 @@ def save_custom_model(
             else:
                 return f'{repo_id}--{src.stem}.{name}'
 
-        config_cls = cfg.get('config_class') if cfg else model.config.__class__
-        base_cls = cfg.get('base_class') if cfg else None
-        mntp_cls = cfg.get('mntp_class') if cfg else None
-        seq_cls = cfg.get('seq_class') if cfg else None
+        config_cls = cfg['config_class']
+        base_cls = cfg['base_class']
+        mntp_cls = cfg['mntp_class']
+        seq_cls = cfg['seq_class']
 
         desired = {
             'AutoConfig': make_value(config_cls),
