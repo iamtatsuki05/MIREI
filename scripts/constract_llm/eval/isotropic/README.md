@@ -49,17 +49,28 @@ Example (JSON):
 
 ## Output
 
-Results are saved as JSON files under:
+Results are saved as JSON files under `<output_dir>/alignment_and_uniformity/<model_name_or_path>/`:
 
-```
-<output_dir>/alignment_and_uniformity/<model_name_or_path>/result.json
-```
+- `main` → `result.json` (both metrics)
+- `alignment` → `alignment.json`
+- `uniformity` → `uniformity.json`
 
-Example output:
+Each file also records the resolved config, the model name, the number of pairs actually used, and a timestamp, so plots can be rebuilt from the JSON alone.
+
+Example output (`result.json`):
 
 ```json
 {
+  "model_name_or_path": "sentence-transformers/all-MiniLM-L6-v2",
+  "config": { "...": "resolved CLIConfig fields" },
+  "n_positive_pairs": 1000,
+  "n_random_pairs": 1000,
+  "meta": { "timestamp": 1752969600, "source": "isotropic_eval" },
   "alignment": 0.1234,
-  "uniformity": 1.2345
+  "alignment_sq_distances": [0.1, 0.15, "..."],
+  "uniformity": -1.2345,
+  "uniformity_sq_distance_histogram": { "counts": [2, 10, "..."], "bin_edges": [0.0, 0.04, "..."] }
 }
 ```
+
+`alignment_sq_distances` holds the per-pair squared L2 distances of the positive pairs. `uniformity_sq_distance_histogram` is a 100-bin histogram over the squared distances of all ordered off-diagonal embedding pairs (each unordered pair is counted twice).

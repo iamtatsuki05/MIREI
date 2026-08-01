@@ -1,0 +1,18 @@
+{
+    "model_name_or_path": "iamtatsuki05/Sentence-ModernBERT-JP-0.5B",
+    "model_revision": null,
+    "output_dir": "data/outputs/eval/analysis/Sentence-ModernBERT-JP-0.5B",
+    "language": "ja",
+    "num_examples": 2000,
+    "num_attention_examples": 32,
+    "attention_max_tokens": 128,
+    "batch_size": 16,
+    "max_seq_length": 512,
+    "seed": 42,
+    "dtype": "bfloat16",
+    "with_attention": true,
+    "with_layer_sts": true,
+    "with_kill_test": true,
+    "dump_layer_embeddings": false,
+    "sts_max_pairs": 1500
+}

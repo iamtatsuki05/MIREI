@@ -17,6 +17,15 @@ class CLIConfig(BaseModel):
         ...,
         description='Path to the model or model name from Hugging Face Hub.',
     )
+    tokenizer_name_or_path: str | Path | None = Field(
+        None,
+        description='Optional tokenizer path or HF identifier. Defaults to model_name_or_path.',
+    )
+    revision: str = Field('main', description='Pinned model config revision to load.')
+    tokenizer_revision: str | None = Field(
+        None,
+        description='Pinned tokenizer revision. Defaults to revision.',
+    )
     model_type: str = Field(
         ...,
         description='Type of the model. Choose from: ' + ', '.join(VALID_MODEL_TYPES),
@@ -37,6 +46,7 @@ class CLIConfig(BaseModel):
         42,
         description='Random seed for initialization.',
     )
+    repo_id: str | None = Field(None, description='Explicit Hub repository ID when pushing.')
 
     @field_validator('model_type')
     def validate_model_type(cls, v: str) -> str:
@@ -54,6 +64,10 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         push_to_hub=cfg.push_to_hub,
         private=cfg.private,
         seed=cfg.seed,
+        tokenizer_name_or_path=cfg.tokenizer_name_or_path,
+        revision=cfg.revision,
+        tokenizer_revision=cfg.tokenizer_revision,
+        repo_id=cfg.repo_id,
     )
     logger.info('Model initialization completed.')
 

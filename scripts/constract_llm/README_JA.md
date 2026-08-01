@@ -18,7 +18,7 @@
   - `embedding/bench_sbert.py` – 文埋め込みベンチマークランナー。
   - `isotropic/eval.py` – アライメント・ユニフォーミティ（等方性）指標。
   - `ft/run_jmteb.sh` – Sentence Transformer 用 JMTEB 評価スクリプト。
-  - `pt/run_jglue.py` – 言語モデル向け JGLUE 評価ラッパー。
+  - `pt/run_glue.py` – 言語モデル向け GLUE/JGLUE 評価ラッパー。
 
 ## 典型的なワークフロー
 

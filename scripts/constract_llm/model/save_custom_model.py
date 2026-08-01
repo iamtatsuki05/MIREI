@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 class CLIConfig(BaseModel):
     model_name_or_path: str | Path = Field(..., description='Model path or HF identifier.')
+    revision: str | None = Field('main', description='Pinned Hub revision, or null for a local model path.')
     custom_model_type: str = Field(
         ...,
         description=f'Custom model family: {", ".join(CUSTOM_MODEL_CONFIGS.keys())}',
@@ -56,6 +57,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         cfg.model_name_or_path,
         cfg.custom_model_type,
         cfg.task_type,
+        revision=cfg.revision,
     )
 
     logger.info('Saving model to %s', cfg.output_dir)

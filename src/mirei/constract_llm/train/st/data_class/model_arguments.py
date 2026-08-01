@@ -74,6 +74,10 @@ class ModelArguments:
         default=None,
         metadata={'help': 'The mini batch size for cached loss.'},
     )
+    gather_across_devices: bool = Field(
+        default=False,
+        metadata={'help': 'Whether to gather embeddings across devices before computing the cached loss.'},
+    )
     loss_scale: float = Field(
         default=20.0,
         metadata={
