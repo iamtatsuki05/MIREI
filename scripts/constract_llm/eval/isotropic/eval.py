@@ -30,8 +30,7 @@ def _build_model_kwargs(dtype: str | None, attn_implementation: str | None) -> d
         return {}
     if dtype != 'bfloat16' or attn_implementation not in ('flash_attention_2', 'sdpa'):
         raise ValueError(
-            'Isotropic model loading supports only dtype=bfloat16 with '
-            'attn_implementation=flash_attention_2 or sdpa.'
+            'Isotropic model loading supports only dtype=bfloat16 with attn_implementation=flash_attention_2 or sdpa.'
         )
     return {
         'torch_dtype': torch.bfloat16,
@@ -100,7 +99,11 @@ def setup_and_encode(cfg: CLIConfig):
     model = SentenceTransformer(model_id, trust_remote_code=True, **loader_kwargs)
     _auto_model = getattr(model._first_module(), 'auto_model', None)
     _max_pos = getattr(getattr(_auto_model, 'config', None), 'max_position_embeddings', None)
-    if _max_pos is not None and _max_pos >= EXPECTED_LONG_CONTEXT_LENGTH and model.max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH:
+    if (
+        _max_pos is not None
+        and _max_pos >= EXPECTED_LONG_CONTEXT_LENGTH
+        and model.max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH
+    ):
         logger.warning(
             f'Raising max_seq_length from {model.max_seq_length} to {EXPECTED_LONG_CONTEXT_LENGTH} '
             'to meet the benchmark contract.'

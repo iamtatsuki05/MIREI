@@ -18,6 +18,4 @@ class CLIConfig(BaseModel):
     positive_pair_sentence1_column: str = Field('anchor', description='First sentence column for positive pairs')
     positive_pair_sentence2_column: str = Field('positive', description='Second sentence column for positive pairs')
     dtype: str | None = Field(None, description='Model dtype for encoding (only bfloat16 is supported)')
-    attn_implementation: str | None = Field(
-        None, description='Attention implementation (flash_attention_2 or sdpa)'
-    )
+    attn_implementation: str | None = Field(None, description='Attention implementation (flash_attention_2 or sdpa)')
