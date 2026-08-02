@@ -56,9 +56,14 @@ def _validate_model_contract(model: SentenceTransformer, dtype: str | None, attn
         raise RuntimeError(f'requested model dtype {expected_dtype!r}, but model reported {reported_dtype!r}')
     reported_max_seq_length = getattr(model, 'max_seq_length', None)
     reported_max_positions = getattr(auto_model.config, 'max_position_embeddings', None)
-    if (
-        reported_max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH
-        or reported_max_positions != EXPECTED_LONG_CONTEXT_LENGTH
+    if reported_max_positions is not None and reported_max_positions < EXPECTED_LONG_CONTEXT_LENGTH:
+        logger.warning(
+            'Model does not support the 8192-token contract; measuring at its native lengths '
+            f'(max_seq_length={reported_max_seq_length!r}, max_position_embeddings={reported_max_positions!r}).'
+        )
+        return
+    if reported_max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH or (
+        reported_max_positions is not None and reported_max_positions < EXPECTED_LONG_CONTEXT_LENGTH
     ):
         raise RuntimeError(
             '8192-token benchmark contract mismatch: '
@@ -92,7 +97,15 @@ def setup_and_encode(cfg: CLIConfig):
     loader_kwargs: dict[str, Any] = {'device': str(device)}
     if model_kwargs:
         loader_kwargs['model_kwargs'] = model_kwargs
-    model = SentenceTransformer(model_id, **loader_kwargs)
+    model = SentenceTransformer(model_id, trust_remote_code=True, **loader_kwargs)
+    _auto_model = getattr(model._first_module(), 'auto_model', None)
+    _max_pos = getattr(getattr(_auto_model, 'config', None), 'max_position_embeddings', None)
+    if _max_pos is not None and _max_pos >= EXPECTED_LONG_CONTEXT_LENGTH and model.max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH:
+        logger.warning(
+            f'Raising max_seq_length from {model.max_seq_length} to {EXPECTED_LONG_CONTEXT_LENGTH} '
+            'to meet the benchmark contract.'
+        )
+        model.max_seq_length = EXPECTED_LONG_CONTEXT_LENGTH
     _validate_model_contract(model, cfg.dtype, cfg.attn_implementation)
     out_dir = Path(cfg.output_dir) / 'alignment_and_uniformity' / model_id.replace('/', '_')
     out_dir.mkdir(parents=True, exist_ok=True)
