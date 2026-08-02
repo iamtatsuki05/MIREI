@@ -28,14 +28,14 @@ EXPECTED_LONG_CONTEXT_LENGTH = 8192
 def _build_model_kwargs(dtype: str | None, attn_implementation: str | None) -> dict[str, Any]:
     if dtype is None and attn_implementation is None:
         return {}
-    if dtype != 'bfloat16' or attn_implementation != 'flash_attention_2':
+    if dtype != 'bfloat16' or attn_implementation not in ('flash_attention_2', 'sdpa'):
         raise ValueError(
-            'Isotropic model loading supports only the explicit '
-            'dtype=bfloat16 and attn_implementation=flash_attention_2 combination.'
+            'Isotropic model loading supports only dtype=bfloat16 with '
+            'attn_implementation=flash_attention_2 or sdpa.'
         )
     return {
         'torch_dtype': torch.bfloat16,
-        'attn_implementation': 'flash_attention_2',
+        'attn_implementation': attn_implementation,
     }
 
 
