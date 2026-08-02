@@ -9,6 +9,7 @@ class CLIConfig(BaseModel):
     seed: int = Field(42, description='Random seed for reproducibility')
     miracl_name: str = Field('miracl/miracl', description='HuggingFace dataset name for MIRACL')
     miracl_lang: str = Field('ja', description='Language code for MIRACL')
+    miracl_split: str = Field('train', description='Dataset split for MIRACL positive pairs')
     wiki_name: str = Field('wikimedia/wikipedia', description='HuggingFace dataset name for Wikipedia')
     wiki_lang: str = Field('20231101.ja', description='Language code or split for Wikipedia')
     positive_pair_dataset_name: str | None = Field(None, description='HF dataset name for positive sentence pairs')

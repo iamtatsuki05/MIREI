@@ -75,15 +75,16 @@ def setup_and_encode(cfg: CLIConfig):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     positive_pairs, random_pairs = prepare_dataset(
         cfg.num_examples,
-        cfg.miracl_name,
-        cfg.miracl_lang,
-        cfg.wiki_name,
-        cfg.wiki_lang,
-        cfg.positive_pair_dataset_name,
-        cfg.positive_pair_dataset_config_name,
-        cfg.positive_pair_dataset_split,
-        cfg.positive_pair_sentence1_column,
-        cfg.positive_pair_sentence2_column,
+        miracl_name=cfg.miracl_name,
+        miracl_lang=cfg.miracl_lang,
+        miracl_split=cfg.miracl_split,
+        wiki_name=cfg.wiki_name,
+        wiki_lang=cfg.wiki_lang,
+        positive_pair_dataset_name=cfg.positive_pair_dataset_name,
+        positive_pair_dataset_config_name=cfg.positive_pair_dataset_config_name,
+        positive_pair_dataset_split=cfg.positive_pair_dataset_split,
+        positive_pair_sentence1_column=cfg.positive_pair_sentence1_column,
+        positive_pair_sentence2_column=cfg.positive_pair_sentence2_column,
     )
     model_id = cfg.model_name_or_path
     logger.info(f'Model: {model_id}')

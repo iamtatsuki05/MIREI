@@ -5,6 +5,7 @@ def prepare_dataset(
     num_examples: int | None = None,
     miracl_name: str = 'miracl/miracl',
     miracl_lang: str = 'ja',
+    miracl_split: str = 'train',
     wiki_name: str = 'wikimedia/wikipedia',
     wiki_lang: str = '20231101.ja',
     positive_pair_dataset_name: str | None = None,
@@ -41,7 +42,7 @@ def prepare_dataset(
             if data.get(positive_pair_sentence1_column) and data.get(positive_pair_sentence2_column)
         ]
     else:
-        miracl_ds = load_dataset(miracl_name, miracl_lang, trust_remote_code=True, split='train')
+        miracl_ds = load_dataset(miracl_name, miracl_lang, trust_remote_code=True, split=miracl_split)
         positive_pairs = []
         for data in miracl_ds:
             positive_passages = data['positive_passages']
