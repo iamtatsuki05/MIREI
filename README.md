@@ -1,4 +1,4 @@
-# **MIREI**: *M**atched **I**mplementations **R**eveal **E**mbedding **I**nsights
+# **MIREI**: **M**atched **I**mplementations **R**eveal **E**mbedding **I**nsights
 
 English / [日本語](README_JA.md)
 
