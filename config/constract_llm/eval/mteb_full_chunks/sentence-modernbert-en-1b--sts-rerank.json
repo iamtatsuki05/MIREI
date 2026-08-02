@@ -29,7 +29,9 @@
   "device": "cuda",
   "trust_remote_code": true,
   "attn_implementation": "flash_attention_2",
-  "model_extra_kwargs": {},
+  "model_extra_kwargs": {
+    "torch_dtype": "bfloat16"
+  },
   "tokenizer_extra_kwargs": {},
   "use_mteb_get_model": false
 }
