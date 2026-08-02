@@ -87,7 +87,25 @@ def _load_sentence_model(cfg: CLIConfig) -> Any:
     }
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
     logger.info(f'Loading model via SentenceTransformer: {cfg.model_name_or_path}')
-    return SentenceTransformer(cfg.model_name_or_path, **kwargs)
+    model = SentenceTransformer(cfg.model_name_or_path, **kwargs)
+    _patch_encode_for_empty_texts(model)
+    return model
+
+
+def _patch_encode_for_empty_texts(model: Any) -> None:
+    # Tokenizers without forced special tokens (e.g. Llama) map empty corpus documents such as
+    # those in FiQA to zero tokens, which yields a float32 (batch, 0) input_ids tensor and
+    # crashes the embedding layer. Substitute a single space so every text has at least one token.
+    original_encode = model.encode
+
+    def encode_with_nonempty_texts(sentences: Any, *args: Any, **kwargs: Any) -> Any:
+        if isinstance(sentences, str):
+            sentences = sentences if sentences.strip() else ' '
+        elif isinstance(sentences, list):
+            sentences = [s if not isinstance(s, str) or s.strip() else ' ' for s in sentences]
+        return original_encode(sentences, *args, **kwargs)
+
+    model.encode = encode_with_nonempty_texts
 
 
 def _summarize_tasks(tasks: Sequence[Any]) -> list[dict[str, Any]]:
