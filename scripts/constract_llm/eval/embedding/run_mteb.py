@@ -96,16 +96,15 @@ def _patch_encode_for_empty_texts(model: Any) -> None:
     # Tokenizers without forced special tokens (e.g. Llama) map empty corpus documents such as
     # those in FiQA to zero tokens, which yields a float32 (batch, 0) input_ids tensor and
     # crashes the embedding layer. Substitute a single space so every text has at least one token.
-    original_encode = model.encode
+    # Patch tokenize (the single choke point of every encode path) because MTEB may pass numpy
+    # arrays rather than lists, which container-type checks in an encode wrapper would miss.
+    original_tokenize = model.tokenize
 
-    def encode_with_nonempty_texts(sentences: Any, *args: Any, **kwargs: Any) -> Any:
-        if isinstance(sentences, str):
-            sentences = sentences if sentences.strip() else ' '
-        elif isinstance(sentences, list):
-            sentences = [s if not isinstance(s, str) or s.strip() else ' ' for s in sentences]
-        return original_encode(sentences, *args, **kwargs)
+    def tokenize_with_nonempty_texts(texts: Any, **kwargs: Any) -> Any:
+        texts = [' ' if isinstance(t, str) and not t.strip() else t for t in texts]
+        return original_tokenize(texts, **kwargs)
 
-    model.encode = encode_with_nonempty_texts
+    model.tokenize = tokenize_with_nonempty_texts
 
 
 def _summarize_tasks(tasks: Sequence[Any]) -> list[dict[str, Any]]:
