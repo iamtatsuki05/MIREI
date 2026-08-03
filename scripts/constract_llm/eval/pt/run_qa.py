@@ -66,6 +66,10 @@ class DataTrainingArguments:
     version_2_with_negative: bool = Field(default=False, metadata={'help': 'Whether unanswerable questions exist.'})
     null_score_diff_threshold: float = Field(default=0.0, metadata={'help': 'Threshold for null answer selection.'})
     pad_to_max_length: bool = Field(default=False, metadata={'help': 'Pad all samples to max_seq_length.'})
+    force_add_bos_token: bool = Field(
+        default=False,
+        metadata={'help': 'Force the tokenizer to prepend BOS so causal models get a dedicated first token.'},
+    )
     max_train_samples: int | None = Field(default=None, metadata={'help': 'Truncate the train set for debugging.'})
     max_eval_samples: int | None = Field(default=None, metadata={'help': 'Truncate the eval set for debugging.'})
     preprocessing_num_workers: int | None = Field(default=None, metadata={'help': 'Workers for preprocessing.'})
@@ -170,6 +174,12 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         trust_remote_code=model_args.trust_remote_code,
     )
     tokenizer.padding_side = 'right'
+    if data_args.force_add_bos_token:
+        if getattr(tokenizer, 'add_bos_token', None) is False and tokenizer.bos_token_id is not None:
+            tokenizer.add_bos_token = True
+            logger.info('force_add_bos_token: enabled BOS prepending on the tokenizer')
+        else:
+            logger.warning('force_add_bos_token requested but the tokenizer does not support it; ignoring')
     model = AutoModelForQuestionAnswering.from_pretrained(
         model_args.model_name_or_path,
         from_tf=bool('.ckpt' in model_args.model_name_or_path),
