@@ -1,4 +1,4 @@
-# **MIREI**: **M**atched **I**mplementations **R**eveal **E**mbedding **I**nsights
+# **MIREI**: **M**atched **I**mplementations **R**eveal **E**mbedding **I**nsights that Disentangle Architecture from Pre-training Investment
 
 English / [日本語](README_JA.md)
 
