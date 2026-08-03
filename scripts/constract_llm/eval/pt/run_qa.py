@@ -178,6 +178,15 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         if getattr(tokenizer, 'add_bos_token', None) is False and tokenizer.bos_token_id is not None:
             tokenizer.add_bos_token = True
             logger.info('force_add_bos_token: enabled BOS prepending on the tokenizer')
+        elif tokenizer.bos_token_id is None and tokenizer.eos_token_id is not None and tokenizer.is_fast:
+            from tokenizers.processors import TemplateProcessing
+
+            tokenizer._tokenizer.post_processor = TemplateProcessing(
+                single=f'{tokenizer.eos_token} $A',
+                pair=f'{tokenizer.eos_token} $A $B:1',
+                special_tokens=[(tokenizer.eos_token, tokenizer.eos_token_id)],
+            )
+            logger.info('force_add_bos_token: no BOS available; prepending EOS as the dedicated first token')
         else:
             logger.warning('force_add_bos_token requested but the tokenizer does not support it; ignoring')
     model = AutoModelForQuestionAnswering.from_pretrained(
