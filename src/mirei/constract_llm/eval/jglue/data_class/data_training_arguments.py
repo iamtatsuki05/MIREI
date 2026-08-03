@@ -83,6 +83,10 @@ class DataTrainingArguments:
         default=None,
         metadata={'help': 'A csv or a json file containing the test data.'},
     )
+    force_add_bos_token: bool = Field(
+        default=False,
+        metadata={'help': 'Force the tokenizer to prepend BOS so causal models get a dedicated first token.'},
+    )
 
     def __post_init__(self):
         if self.task_name is not None:
