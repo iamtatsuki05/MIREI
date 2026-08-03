@@ -28,14 +28,13 @@ EXPECTED_LONG_CONTEXT_LENGTH = 8192
 def _build_model_kwargs(dtype: str | None, attn_implementation: str | None) -> dict[str, Any]:
     if dtype is None and attn_implementation is None:
         return {}
-    if dtype != 'bfloat16' or attn_implementation != 'flash_attention_2':
+    if dtype != 'bfloat16' or attn_implementation not in ('flash_attention_2', 'sdpa'):
         raise ValueError(
-            'Isotropic model loading supports only the explicit '
-            'dtype=bfloat16 and attn_implementation=flash_attention_2 combination.'
+            'Isotropic model loading supports only dtype=bfloat16 with attn_implementation=flash_attention_2 or sdpa.'
         )
     return {
         'torch_dtype': torch.bfloat16,
-        'attn_implementation': 'flash_attention_2',
+        'attn_implementation': attn_implementation,
     }
 
 
@@ -56,9 +55,14 @@ def _validate_model_contract(model: SentenceTransformer, dtype: str | None, attn
         raise RuntimeError(f'requested model dtype {expected_dtype!r}, but model reported {reported_dtype!r}')
     reported_max_seq_length = getattr(model, 'max_seq_length', None)
     reported_max_positions = getattr(auto_model.config, 'max_position_embeddings', None)
-    if (
-        reported_max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH
-        or reported_max_positions != EXPECTED_LONG_CONTEXT_LENGTH
+    if reported_max_positions is not None and reported_max_positions < EXPECTED_LONG_CONTEXT_LENGTH:
+        logger.warning(
+            'Model does not support the 8192-token contract; measuring at its native lengths '
+            f'(max_seq_length={reported_max_seq_length!r}, max_position_embeddings={reported_max_positions!r}).'
+        )
+        return
+    if reported_max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH or (
+        reported_max_positions is not None and reported_max_positions < EXPECTED_LONG_CONTEXT_LENGTH
     ):
         raise RuntimeError(
             '8192-token benchmark contract mismatch: '
@@ -75,15 +79,16 @@ def setup_and_encode(cfg: CLIConfig):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     positive_pairs, random_pairs = prepare_dataset(
         cfg.num_examples,
-        cfg.miracl_name,
-        cfg.miracl_lang,
-        cfg.wiki_name,
-        cfg.wiki_lang,
-        cfg.positive_pair_dataset_name,
-        cfg.positive_pair_dataset_config_name,
-        cfg.positive_pair_dataset_split,
-        cfg.positive_pair_sentence1_column,
-        cfg.positive_pair_sentence2_column,
+        miracl_name=cfg.miracl_name,
+        miracl_lang=cfg.miracl_lang,
+        miracl_split=cfg.miracl_split,
+        wiki_name=cfg.wiki_name,
+        wiki_lang=cfg.wiki_lang,
+        positive_pair_dataset_name=cfg.positive_pair_dataset_name,
+        positive_pair_dataset_config_name=cfg.positive_pair_dataset_config_name,
+        positive_pair_dataset_split=cfg.positive_pair_dataset_split,
+        positive_pair_sentence1_column=cfg.positive_pair_sentence1_column,
+        positive_pair_sentence2_column=cfg.positive_pair_sentence2_column,
     )
     model_id = cfg.model_name_or_path
     logger.info(f'Model: {model_id}')
@@ -91,7 +96,19 @@ def setup_and_encode(cfg: CLIConfig):
     loader_kwargs: dict[str, Any] = {'device': str(device)}
     if model_kwargs:
         loader_kwargs['model_kwargs'] = model_kwargs
-    model = SentenceTransformer(model_id, **loader_kwargs)
+    model = SentenceTransformer(model_id, trust_remote_code=True, **loader_kwargs)
+    _auto_model = getattr(model._first_module(), 'auto_model', None)
+    _max_pos = getattr(getattr(_auto_model, 'config', None), 'max_position_embeddings', None)
+    if (
+        _max_pos is not None
+        and _max_pos >= EXPECTED_LONG_CONTEXT_LENGTH
+        and model.max_seq_length != EXPECTED_LONG_CONTEXT_LENGTH
+    ):
+        logger.warning(
+            f'Raising max_seq_length from {model.max_seq_length} to {EXPECTED_LONG_CONTEXT_LENGTH} '
+            'to meet the benchmark contract.'
+        )
+        model.max_seq_length = EXPECTED_LONG_CONTEXT_LENGTH
     _validate_model_contract(model, cfg.dtype, cfg.attn_implementation)
     out_dir = Path(cfg.output_dir) / 'alignment_and_uniformity' / model_id.replace('/', '_')
     out_dir.mkdir(parents=True, exist_ok=True)

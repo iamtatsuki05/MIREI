@@ -1,0 +1,27 @@
+{
+  "model_name_or_path": "iamtatsuki05/Sentence-Qwen2.5-Scratch-Bi-EN-0.5B",
+  "output_dir": "/cl/work16/tatsuki-o/mirei_devsplit/mteb_full/sentence-qwen2.5-scratch-bi-en-0.5b",
+  "tasks": [
+    "ArguAna"
+  ],
+  "languages": [
+    "eng"
+  ],
+  "eval_splits": null,
+  "exclusive_language_filter": false,
+  "overwrite_strategy": "only-missing",
+  "public_only": true,
+  "raise_error": true,
+  "num_proc": null,
+  "batch_size": 32,
+  "normalize_embeddings": true,
+  "show_progress_bar": true,
+  "device": "cuda",
+  "trust_remote_code": true,
+  "attn_implementation": "flash_attention_2",
+  "model_extra_kwargs": {
+    "torch_dtype": "bfloat16"
+  },
+  "tokenizer_extra_kwargs": {},
+  "use_mteb_get_model": false
+}

@@ -87,7 +87,26 @@ def _load_sentence_model(cfg: CLIConfig) -> Any:
     }
     kwargs = {k: v for k, v in kwargs.items() if v is not None}
     logger.info(f'Loading model via SentenceTransformer: {cfg.model_name_or_path}')
-    return SentenceTransformer(cfg.model_name_or_path, **kwargs)
+    model = SentenceTransformer(cfg.model_name_or_path, **kwargs)
+    _patch_encode_for_empty_texts(model)
+    return model
+
+
+def _patch_encode_for_empty_texts(model: Any) -> None:
+    # Tokenizers without forced special tokens (e.g. Llama) map empty corpus documents such as
+    # those in FiQA to zero tokens, which yields a float32 (batch, 0) input_ids tensor and
+    # crashes the embedding layer. Substitute a period so every text has at least one token; a
+    # whitespace placeholder does not survive the str.strip() sentence-transformers applies
+    # inside Transformer.tokenize. Patch tokenize (the single choke point of every encode path)
+    # because MTEB may pass numpy arrays rather than lists, which container-type checks in an
+    # encode wrapper would miss.
+    original_tokenize = model.tokenize
+
+    def tokenize_with_nonempty_texts(texts: Any, **kwargs: Any) -> Any:
+        texts = ['.' if isinstance(t, str) and not t.strip() else t for t in texts]
+        return original_tokenize(texts, **kwargs)
+
+    model.tokenize = tokenize_with_nonempty_texts
 
 
 def _summarize_tasks(tasks: Sequence[Any]) -> list[dict[str, Any]]:
