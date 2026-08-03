@@ -23,6 +23,7 @@
   "gradient_accumulation_steps": 1,
   "eval_accumulation_steps": 1,
   "max_seq_length": 512,
+  "force_add_bos_token": true,
   "weight_decay": 0.00001,
   "adam_beta1": 0.9,
   "adam_beta2": 0.98,
