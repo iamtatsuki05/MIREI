@@ -1,4 +1,4 @@
-# **MIREI**: アーキテクチャか事前学習投資か？ Decoder 文埋め込みの強さの源泉を統制比較で切り分ける
+# **MIREI**: **M**atched **I**nvestigation of **R**epresentation **E**mbedding **I**nsights
 
 English / [日本語](README_JA.md)
 
