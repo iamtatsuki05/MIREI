@@ -222,6 +222,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
 
         tokenized_examples['start_positions'] = []
         tokenized_examples['end_positions'] = []
+        answer_in_window = []
         for i, offsets in enumerate(offset_mapping):
             input_ids = tokenized_examples['input_ids'][i]
             if tokenizer.cls_token_id in input_ids:
@@ -236,6 +237,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             if len(answers['answer_start']) == 0:
                 tokenized_examples['start_positions'].append(cls_index)
                 tokenized_examples['end_positions'].append(cls_index)
+                answer_in_window.append(False)
             else:
                 start_char = answers['answer_start'][0]
                 end_char = start_char + len(answers['text'][0])
@@ -253,6 +255,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
                 if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char):
                     tokenized_examples['start_positions'].append(cls_index)
                     tokenized_examples['end_positions'].append(cls_index)
+                    answer_in_window.append(False)
                 else:
                     while token_start_index <= context_end_index and offsets[token_start_index][0] <= start_char:
                         token_start_index += 1
@@ -260,6 +263,13 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
                     while token_end_index >= context_start_index and offsets[token_end_index][1] >= end_char:
                         token_end_index -= 1
                     tokenized_examples['end_positions'].append(token_end_index + 1)
+                    answer_in_window.append(True)
+        # Without unanswerable questions, windows lacking the answer would be labeled with
+        # cls_index; tokenizers that prepend no BOS/CLS map that to the first question token,
+        # which corrupts training. Drop such windows from the training set instead.
+        if not data_args.version_2_with_negative:
+            keep = [i for i, ok in enumerate(answer_in_window) if ok]
+            tokenized_examples = {key: [values[i] for i in keep] for key, values in tokenized_examples.items()}
         return tokenized_examples
 
     def prepare_validation_features(examples):
