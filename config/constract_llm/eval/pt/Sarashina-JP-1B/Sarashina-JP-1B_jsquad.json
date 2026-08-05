@@ -6,6 +6,7 @@
   "dataset_config_name": "JSQuAD",
   "dataset_revision": "41cc99f1c01d41b1ab13435ae97b7076c2199f4c",
   "max_seq_length": 384,
+  "force_add_bos_token": true,
   "doc_stride": 128,
   "n_best_size": 20,
   "max_answer_length": 30,

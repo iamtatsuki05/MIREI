@@ -6,6 +6,7 @@
   "dataset_config_name": null,
   "dataset_revision": "7b6d24c440a36b6815f21b70d25016731768db1f",
   "max_seq_length": 384,
+  "force_add_bos_token": true,
   "doc_stride": 128,
   "n_best_size": 20,
   "max_answer_length": 30,

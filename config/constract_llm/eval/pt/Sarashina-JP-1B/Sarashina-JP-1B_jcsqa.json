@@ -6,6 +6,7 @@
   "dataset_config_name": "JCommonsenseQA",
   "dataset_revision": "41cc99f1c01d41b1ab13435ae97b7076c2199f4c",
   "max_seq_length": 128,
+  "force_add_bos_token": true,
   "max_train_samples": null,
   "max_eval_samples": null,
   "run_name": "Sarashina-JP-1B-jcsqa-test",
