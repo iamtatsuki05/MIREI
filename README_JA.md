@@ -1,4 +1,4 @@
-# **MIREI**: **M**atched **I**nvestigation of **R**epresentation **E**mbedding **I**nsights
+# **MIREI**: What Makes Decoder-Based Sentence Embeddings Strong? Rethinking Encoder and Decoder Architectures for Sentence Embeddings
 
 English / [日本語](README_JA.md)
 

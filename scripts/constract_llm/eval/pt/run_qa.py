@@ -66,6 +66,10 @@ class DataTrainingArguments:
     version_2_with_negative: bool = Field(default=False, metadata={'help': 'Whether unanswerable questions exist.'})
     null_score_diff_threshold: float = Field(default=0.0, metadata={'help': 'Threshold for null answer selection.'})
     pad_to_max_length: bool = Field(default=False, metadata={'help': 'Pad all samples to max_seq_length.'})
+    force_add_bos_token: bool = Field(
+        default=False,
+        metadata={'help': 'Force the tokenizer to prepend BOS so causal models get a dedicated first token.'},
+    )
     max_train_samples: int | None = Field(default=None, metadata={'help': 'Truncate the train set for debugging.'})
     max_eval_samples: int | None = Field(default=None, metadata={'help': 'Truncate the eval set for debugging.'})
     preprocessing_num_workers: int | None = Field(default=None, metadata={'help': 'Workers for preprocessing.'})
@@ -170,6 +174,21 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
         trust_remote_code=model_args.trust_remote_code,
     )
     tokenizer.padding_side = 'right'
+    if data_args.force_add_bos_token:
+        if getattr(tokenizer, 'add_bos_token', None) is False and tokenizer.bos_token_id is not None:
+            tokenizer.add_bos_token = True
+            logger.info('force_add_bos_token: enabled BOS prepending on the tokenizer')
+        elif tokenizer.bos_token_id is None and tokenizer.eos_token_id is not None and tokenizer.is_fast:
+            from tokenizers.processors import TemplateProcessing
+
+            tokenizer._tokenizer.post_processor = TemplateProcessing(
+                single=f'{tokenizer.eos_token} $A',
+                pair=f'{tokenizer.eos_token} $A $B:1',
+                special_tokens=[(tokenizer.eos_token, tokenizer.eos_token_id)],
+            )
+            logger.info('force_add_bos_token: no BOS available; prepending EOS as the dedicated first token')
+        else:
+            logger.warning('force_add_bos_token requested but the tokenizer does not support it; ignoring')
     model = AutoModelForQuestionAnswering.from_pretrained(
         model_args.model_name_or_path,
         from_tf=bool('.ckpt' in model_args.model_name_or_path),
@@ -222,6 +241,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
 
         tokenized_examples['start_positions'] = []
         tokenized_examples['end_positions'] = []
+        answer_in_window = []
         for i, offsets in enumerate(offset_mapping):
             input_ids = tokenized_examples['input_ids'][i]
             if tokenizer.cls_token_id in input_ids:
@@ -236,6 +256,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             if len(answers['answer_start']) == 0:
                 tokenized_examples['start_positions'].append(cls_index)
                 tokenized_examples['end_positions'].append(cls_index)
+                answer_in_window.append(False)
             else:
                 start_char = answers['answer_start'][0]
                 end_char = start_char + len(answers['text'][0])
@@ -253,6 +274,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
                 if not (offsets[token_start_index][0] <= start_char and offsets[token_end_index][1] >= end_char):
                     tokenized_examples['start_positions'].append(cls_index)
                     tokenized_examples['end_positions'].append(cls_index)
+                    answer_in_window.append(False)
                 else:
                     while token_start_index <= context_end_index and offsets[token_start_index][0] <= start_char:
                         token_start_index += 1
@@ -260,6 +282,13 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
                     while token_end_index >= context_start_index and offsets[token_end_index][1] >= end_char:
                         token_end_index -= 1
                     tokenized_examples['end_positions'].append(token_end_index + 1)
+                    answer_in_window.append(True)
+        # Without unanswerable questions, windows lacking the answer would be labeled with
+        # cls_index; tokenizers that prepend no BOS/CLS map that to the first question token,
+        # which corrupts training. Drop such windows from the training set instead.
+        if not data_args.version_2_with_negative:
+            keep = [i for i, ok in enumerate(answer_in_window) if ok]
+            tokenized_examples = {key: [values[i] for i in keep] for key, values in tokenized_examples.items()}
         return tokenized_examples
 
     def prepare_validation_features(examples):
