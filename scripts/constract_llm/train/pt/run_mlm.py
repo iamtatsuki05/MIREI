@@ -49,6 +49,7 @@ from transformers import (
 from transformers.trainer_utils import get_last_checkpoint
 
 from mirei.common.utils.cli_utils import load_cli_config
+from mirei.constract_llm.train.universal_checkpoint import apply_universal_checkpoint_option
 from mirei.constract_llm.train.language_model.mlm.data_class.data_training_arguments import (
     DataTrainingArguments,
 )
@@ -79,7 +80,9 @@ def _setup_logging(training_args: TrainingArguments) -> None:
 
 def main(config_file_path: str | Path, **kwargs: Any) -> None:
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
-    model_args, data_args, training_args = parser.parse_dict(load_cli_config(config_file_path, **kwargs))
+    model_args, data_args, training_args = parser.parse_dict(
+        apply_universal_checkpoint_option(load_cli_config(config_file_path, **kwargs))
+    )
 
     # Setup logging
     _setup_logging(training_args)
