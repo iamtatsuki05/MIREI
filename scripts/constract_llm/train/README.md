@@ -42,7 +42,7 @@ This directory provides launch scripts for language-model pre-training and Sente
 All launchers expose [Google Fire](https://github.com/google/python-fire) CLIs that accept JSON/YAML/TOML configs. Basic usage:
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 For multi-GPU runs, prepend `uv run torchrun --standalone --nnodes 1 --nproc-per-node $NUM_GPU` to the command above.

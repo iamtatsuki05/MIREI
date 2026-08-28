@@ -21,7 +21,7 @@
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
+python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 マルチGPU学習の場合：
@@ -31,7 +31,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
+  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 ### カスタムパラメータ

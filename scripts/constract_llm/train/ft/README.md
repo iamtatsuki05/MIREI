@@ -22,7 +22,7 @@ The `run_st.py` script is used for fine-tuning Sentence Transformer models, whic
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
+python scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 For multi-GPU training:
@@ -32,7 +32,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B.json
+  scripts/constract_llm/train/ft/run_st.py config/constract_llm/train/ft/Sentence-ModernBERT-JP-0.5B/Sentence-ModernBERT-JP-0.5B.json
 ```
 
 ### Custom Parameters

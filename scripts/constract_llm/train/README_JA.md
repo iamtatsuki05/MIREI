@@ -42,7 +42,7 @@
 すべてのランチャーは [Google Fire](https://github.com/google/python-fire) を利用した CLI を公開しており、JSON/YAML/TOML の設定ファイルを受け取ります。
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 マルチ GPU の場合は `uv run torchrun --standalone --nnodes 1 --nproc-per-node $NUM_GPU` をコマンド前に付けて実行してください。

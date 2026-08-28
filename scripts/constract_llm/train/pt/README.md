@@ -24,7 +24,7 @@ The `run_mlm.py` script is used for pre-training models using the Masked Languag
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 For multi-GPU training:
@@ -34,7 +34,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/ModernBERT-JP-0.5B-PT-stage1.json
 ```
 
 ### Custom Parameters
@@ -53,7 +53,7 @@ The `run_mntp.py` script is used for pre-training models using the Masked Next T
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1/Llama-JP-0.5B-PT-stage1.json
 ```
 
 For multi-GPU training:
@@ -63,7 +63,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1/Llama-JP-0.5B-PT-stage1.json
 ```
 
 ### Custom Parameters
@@ -115,7 +115,7 @@ The `run_clm.py` script is used for pre-training and fine-tuning models using th
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig.json
+python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/YourCLMConfig.json
 ```
 
 For multi-GPU training:
@@ -125,7 +125,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig.json
+  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/YourCLMConfig.json
 ```
 
 ### Custom Parameters
