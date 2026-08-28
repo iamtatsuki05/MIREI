@@ -14,13 +14,13 @@
 
 ```bash
 # アライメントとユニフォーミティを両方計算
-python scripts/constract_llm/eval/isotropic/eval.py main --config_file_path=config/constract_llm/eval/isotropic/example.json
+python scripts/constract_llm/eval/isotropic/eval.py main --config_file_path=config/constract_llm/eval/ft/isotropic/example.json
 
 # アライメントのみ計算
-python scripts/constract_llm/eval/isotropic/eval.py alignment --config_file_path=config/constract_llm/eval/isotropic/example.json
+python scripts/constract_llm/eval/isotropic/eval.py alignment --config_file_path=config/constract_llm/eval/ft/isotropic/example.json
 
 # ユニフォーミティのみ計算
-python scripts/constract_llm/eval/isotropic/eval.py uniformity --config_file_path=config/constract_llm/eval/isotropic/example.json
+python scripts/constract_llm/eval/isotropic/eval.py uniformity --config_file_path=config/constract_llm/eval/ft/isotropic/example.json
 ```
 
 コマンドライン引数で設定値を上書きすることも可能です。

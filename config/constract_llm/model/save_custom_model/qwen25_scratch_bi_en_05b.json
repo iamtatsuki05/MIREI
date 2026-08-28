@@ -1,9 +1,9 @@
 {
-  "model_name_or_path": "./data/outputs/Qwen2.5-Scratch-EN-0.5B-PT-stage2",
+  "model_name_or_path": "data/outputs/Qwen2.5-Scratch-EN-0.5B-PT-stage2",
   "revision": null,
   "custom_model_type": "qwen2",
   "task_type": "mntp",
-  "output_dir": "./data/model/Qwen2.5-Scratch-Bi-EN-0.5B-PT-stage2",
+  "output_dir": "data/model/Qwen2.5-Scratch-Bi-EN-0.5B-PT-stage2",
   "push_to_hub": true,
   "repo_id": "iamtatsuki05/Qwen2.5-Scratch-Bi-EN-0.5B-PT-stage2",
   "private": true

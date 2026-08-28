@@ -24,7 +24,7 @@
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B/stage1.json
 ```
 
 マルチGPU学習の場合：
@@ -34,7 +34,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B/stage1.json
 ```
 
 ### カスタムパラメータ
@@ -53,7 +53,7 @@ uv run torchrun \
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B/stage1.json
 ```
 
 マルチGPU学習の場合：
@@ -63,7 +63,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B/stage1.json
 ```
 
 ### カスタムパラメータ
@@ -81,22 +81,22 @@ uv run torchrun \
 
 事前学習の設定ファイルは`config/constract_llm/train/pt/`に格納されています：
 
-- `Llama-JP-0.5B-PT-stage1.json` - Llama-JP-0.5Bのステージ1事前学習の設定
-- `Llama-JP-0.5B-PT-stage2.json` - Llama-JP-0.5Bのステージ2事前学習の設定
-- `Llama-EN-0.5B-PT-stage1.json` - Llama-0.5Bの英語ステージ1事前学習の設定
-- `Llama-EN-0.5B-PT-stage2.json` - Llama-0.5Bの英語ステージ2事前学習の設定
-- `Llama-JP-1B-PT-stage1.json` / `Llama-JP-1B-PT-stage2.json` - Llama-1Bの日本語中間スケール実験設定
-- `Llama-EN-1B-PT-stage1.json` / `Llama-EN-1B-PT-stage2.json` - Llama-1Bの英語中間スケール実験設定
-- `Llama-JP-3B-PT-stage1.json` / `Llama-JP-3B-PT-stage2.json` - Llama-3Bの日本語スケール実験設定
-- `Llama-EN-3B-PT-stage1.json` / `Llama-EN-3B-PT-stage2.json` - Llama-3Bの英語スケール実験設定
-- `ModernBERT-JP-0.5B-PT-stage1.json` - ModernBERT-JP-0.5Bのステージ1事前学習の設定
-- `ModernBERT-JP-0.5B-PT-stage2.json` - ModernBERT-JP-0.5Bのステージ2事前学習の設定
-- `ModernBERT-EN-0.5B-PT-stage1.json` - ModernBERT-0.5Bの英語ステージ1事前学習の設定
-- `ModernBERT-EN-0.5B-PT-stage2.json` - ModernBERT-0.5Bの英語ステージ2事前学習の設定
-- `ModernBERT-JP-1B-PT-stage1.json` / `ModernBERT-JP-1B-PT-stage2.json` - ModernBERT-1Bの日本語中間スケール実験設定
-- `ModernBERT-EN-1B-PT-stage1.json` / `ModernBERT-EN-1B-PT-stage2.json` - ModernBERT-1Bの英語中間スケール実験設定
-- `ModernBERT-JP-3B-PT-stage1.json` / `ModernBERT-JP-3B-PT-stage2.json` - ModernBERT-3Bの日本語スケール実験設定
-- `ModernBERT-EN-3B-PT-stage1.json` / `ModernBERT-EN-3B-PT-stage2.json` - ModernBERT-3Bの英語スケール実験設定
+- `Llama-JP-0.5B/stage1.json` - Llama-JP-0.5Bのステージ1事前学習の設定
+- `Llama-JP-0.5B/stage2.json` - Llama-JP-0.5Bのステージ2事前学習の設定
+- `Llama-EN-0.5B/stage1.json` - Llama-0.5Bの英語ステージ1事前学習の設定
+- `Llama-EN-0.5B/stage2.json` - Llama-0.5Bの英語ステージ2事前学習の設定
+- `Llama-JP-1B/stage1.json`(total batch を 0.5B と統一) / `Llama-JP-1B/stage1-bs8192.json` / `Llama-JP-1B/stage2.json`(total batch を 0.5B と統一) / `Llama-JP-1B/stage2-bs1024.json` - Llama-1Bの日本語中間スケール実験設定
+- `Llama-EN-1B/stage1.json`(total batch を 0.5B と統一) / `Llama-EN-1B/stage1-bs8192.json` / `Llama-EN-1B/stage2.json`(total batch を 0.5B と統一) / `Llama-EN-1B/stage2-bs1024.json` - Llama-1Bの英語中間スケール実験設定
+- `Llama-JP-3B/stage1.json`(total batch を 0.5B と統一) / `Llama-JP-3B/stage1-bs16384.json` / `Llama-JP-3B/stage2.json`(total batch を 0.5B と統一) / `Llama-JP-3B/stage2-bs2048.json` - Llama-3Bの日本語スケール実験設定
+- `Llama-EN-3B/stage1.json`(total batch を 0.5B と統一) / `Llama-EN-3B/stage1-bs16384.json` / `Llama-EN-3B/stage2.json`(total batch を 0.5B と統一) / `Llama-EN-3B/stage2-bs2048.json` - Llama-3Bの英語スケール実験設定
+- `ModernBERT-JP-0.5B/stage1.json` - ModernBERT-JP-0.5Bのステージ1事前学習の設定
+- `ModernBERT-JP-0.5B/stage2.json` - ModernBERT-JP-0.5Bのステージ2事前学習の設定
+- `ModernBERT-EN-0.5B/stage1.json` - ModernBERT-0.5Bの英語ステージ1事前学習の設定
+- `ModernBERT-EN-0.5B/stage2.json` - ModernBERT-0.5Bの英語ステージ2事前学習の設定
+- `ModernBERT-JP-1B/stage1.json`(total batch を 0.5B と統一) / `ModernBERT-JP-1B/stage1-bs8192.json` / `ModernBERT-JP-1B/stage2.json`(total batch を 0.5B と統一) / `ModernBERT-JP-1B/stage2-bs1024.json` - ModernBERT-1Bの日本語中間スケール実験設定
+- `ModernBERT-EN-1B/stage1.json`(total batch を 0.5B と統一) / `ModernBERT-EN-1B/stage1-bs8192.json` / `ModernBERT-EN-1B/stage2.json`(total batch を 0.5B と統一) / `ModernBERT-EN-1B/stage2-bs1024.json` - ModernBERT-1Bの英語中間スケール実験設定
+- `ModernBERT-JP-3B/stage1.json`(total batch を 0.5B と統一) / `ModernBERT-JP-3B/stage1-bs16384.json` / `ModernBERT-JP-3B/stage2.json`(total batch を 0.5B と統一) / `ModernBERT-JP-3B/stage2-bs2048.json` - ModernBERT-3Bの日本語スケール実験設定
+- `ModernBERT-EN-3B/stage1.json`(total batch を 0.5B と統一) / `ModernBERT-EN-3B/stage1-bs16384.json` / `ModernBERT-EN-3B/stage2.json`(total batch を 0.5B と統一) / `ModernBERT-EN-3B/stage2-bs2048.json` - ModernBERT-3Bの英語スケール実験設定
 
 
 ## Causal Language Modeling (CLM)
@@ -116,7 +116,7 @@ uv run torchrun \
 ### 使用方法
 
 ```bash
-python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig.json
+python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/stage2.json
 ```
 
 マルチGPU学習の場合：
@@ -126,7 +126,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig.json
+  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/stage2.json
 ```
 
 ### カスタムパラメータ
