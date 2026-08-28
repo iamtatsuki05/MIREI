@@ -1,7 +1,7 @@
 {
   "model_name_or_path": "instruction-pretrain/InstructLM-500M",
   "revision": "2158022d3e7be0c4f9668f0a45f8002c434d5432",
-  "output_dir": "./data/model/Mistral-0.5B-init",
+  "output_dir": "data/model/Mistral-0.5B-init",
   "repo_id": "iamtatsuki05/Mistral-0.5B-init",
   "model_type": "causal",
   "push_to_hub": true,

@@ -106,7 +106,7 @@ CKA は比較前に、両点の `analysis.json` の設定(language / num_example
 - 実行中に対処した問題:
   - `Sentence-Sarashina-Bi-{EN,JP}-1B-PT` の run root `model.safetensors` が破損
     (保存時 truncation)→ HF の同一モデルへ差し替えて解析(checkpoint と HF は無事)。
-  - `Sentence-Llama-Bi-JP-1B`(FT 段)の checkpoint が auto_map ローカル参照なのに
+  - `Sentence-Llama-Bi-JP-1B-bs1024`(FT 段)の checkpoint が auto_map ローカル参照なのに
     `modeling_bidirectional_llama.py` を同梱していない → source からコピーして解決。
 
 ## 検証状況
