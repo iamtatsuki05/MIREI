@@ -59,8 +59,8 @@
   "batch_sampler": "group_by_label",
   "model_name_or_path": "iamtatsuki05/Sentence-Llama-Bi-EN-1B-PT",
   "run_name": "Sentence-Llama-Bi-EN-1B",
-  "output_dir": "./data/outputs/Sentence-Llama-Bi-EN-1B",
-  "logging_dir": "./data/outputs/Sentence-Llama-Bi-EN-1B/logs",
-  "train_file": "./data/processed/english_embedding/ft/train.jsonl",
-  "validation_file": "./data/processed/english_embedding/ft/validation.jsonl"
+  "output_dir": "data/outputs/Sentence-Llama-Bi-EN-1B",
+  "logging_dir": "data/outputs/Sentence-Llama-Bi-EN-1B/logs",
+  "train_file": "data/processed/english_embedding/ft/train.jsonl",
+  "validation_file": "data/processed/english_embedding/ft/validation.jsonl"
 }

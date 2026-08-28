@@ -10,8 +10,8 @@
   "validation_split_percentage": 1,
   "text_column_name": "text",
   "run_name": "ModernBERT-JP-1B-PT-stage2-bs1024",
-  "output_dir": "./data/outputs/ModernBERT-JP-1B-PT-stage2-bs1024",
-  "logging_dir": "./data/outputs/ModernBERT-JP-1B-PT-stage2-bs1024/logs",
+  "output_dir": "data/outputs/ModernBERT-JP-1B-PT-stage2-bs1024",
+  "logging_dir": "data/outputs/ModernBERT-JP-1B-PT-stage2-bs1024/logs",
   "save_only_model": false,
   "overwrite_output_dir": false,
   "do_train": true,
@@ -51,5 +51,5 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json"
+  "deepspeed": "config/constract_llm/train/ds_config/ds_zero2.json"
 }

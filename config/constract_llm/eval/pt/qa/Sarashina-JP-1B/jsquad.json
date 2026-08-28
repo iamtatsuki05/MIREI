@@ -13,8 +13,8 @@
   "max_train_samples": null,
   "max_eval_samples": null,
   "run_name": "Sarashina-JP-1B-jsquad-test",
-  "output_dir": "./data/outputs/eval/jglue/Sarashina-JP-1B-jsquad-test",
-  "logging_dir": "./data/outputs/eval/jglue/Sarashina-JP-1B-jsquad-test/logs",
+  "output_dir": "data/outputs/eval/jglue/Sarashina-JP-1B-jsquad-test",
+  "logging_dir": "data/outputs/eval/jglue/Sarashina-JP-1B-jsquad-test/logs",
   "save_only_model": false,
   "overwrite_output_dir": true,
   "do_train": true,
@@ -51,5 +51,5 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json"
+  "deepspeed": "config/constract_llm/train/ds_config/ds_zero2.json"
 }

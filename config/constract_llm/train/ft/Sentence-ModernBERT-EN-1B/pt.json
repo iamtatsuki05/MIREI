@@ -16,8 +16,8 @@
   "positive_column_name": "positive",
   "negative_column_name": null,
   "run_name": "Sentence-ModernBERT-EN-1B-PT",
-  "output_dir": "./data/outputs/Sentence-ModernBERT-EN-1B-PT",
-  "logging_dir": "./data/outputs/Sentence-ModernBERT-EN-1B-PT/logs",
+  "output_dir": "data/outputs/Sentence-ModernBERT-EN-1B-PT",
+  "logging_dir": "data/outputs/Sentence-ModernBERT-EN-1B-PT/logs",
   "save_only_model": false,
   "overwrite_output_dir": false,
   "do_train": true,
@@ -61,6 +61,6 @@
   "deepspeed": null,
   "evaluator_type": "triplet",
   "batch_sampler": "group_by_label",
-  "train_file": "./data/processed/english_embedding/wsl/train.jsonl",
-  "validation_file": "./data/processed/english_embedding/wsl/validation.jsonl"
+  "train_file": "data/processed/english_embedding/wsl/train.jsonl",
+  "validation_file": "data/processed/english_embedding/wsl/validation.jsonl"
 }

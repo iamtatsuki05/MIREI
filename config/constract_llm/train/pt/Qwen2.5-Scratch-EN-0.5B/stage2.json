@@ -10,8 +10,8 @@
   "dataset_config_name": "en",
   "text_column_name": "text",
   "run_name": "Qwen2.5-Scratch-EN-0.5B-PT-stage2",
-  "output_dir": "./data/outputs/Qwen2.5-Scratch-EN-0.5B-PT-stage2",
-  "logging_dir": "./data/outputs/Qwen2.5-Scratch-EN-0.5B-PT-stage2/logs",
+  "output_dir": "data/outputs/Qwen2.5-Scratch-EN-0.5B-PT-stage2",
+  "logging_dir": "data/outputs/Qwen2.5-Scratch-EN-0.5B-PT-stage2/logs",
   "save_only_model": false,
   "overwrite_output_dir": false,
   "do_train": true,
@@ -49,6 +49,6 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json",
+  "deepspeed": "config/constract_llm/train/ds_config/ds_zero2.json",
   "streaming": false
 }

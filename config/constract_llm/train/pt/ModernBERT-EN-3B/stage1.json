@@ -45,11 +45,11 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json",
+  "deepspeed": "config/constract_llm/train/ds_config/ds_zero2.json",
   "mlm_probability": 0.3,
   "line_by_line": true,
   "model_name_or_path": "iamtatsuki05/ModernBERT-JP-3B-init",
   "run_name": "ModernBERT-EN-3B-PT-stage1",
-  "output_dir": "./data/outputs/ModernBERT-EN-3B-PT-stage1",
-  "logging_dir": "./data/outputs/ModernBERT-EN-3B-PT-stage1/logs"
+  "output_dir": "data/outputs/ModernBERT-EN-3B-PT-stage1",
+  "logging_dir": "data/outputs/ModernBERT-EN-3B-PT-stage1/logs"
 }

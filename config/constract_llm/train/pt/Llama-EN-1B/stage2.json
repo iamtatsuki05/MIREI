@@ -45,10 +45,10 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json",
+  "deepspeed": "config/constract_llm/train/ds_config/ds_zero2.json",
   "trust_remote_code": true,
   "model_name_or_path": "iamtatsuki05/Llama-EN-1B-PT-stage1",
   "run_name": "Llama-EN-1B-PT-stage2",
-  "output_dir": "./data/outputs/Llama-EN-1B-PT-stage2",
-  "logging_dir": "./data/outputs/Llama-EN-1B-PT-stage2/logs"
+  "output_dir": "data/outputs/Llama-EN-1B-PT-stage2",
+  "logging_dir": "data/outputs/Llama-EN-1B-PT-stage2/logs"
 }

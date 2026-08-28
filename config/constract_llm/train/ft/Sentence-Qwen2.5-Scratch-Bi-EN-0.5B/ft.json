@@ -15,8 +15,8 @@
   "positive_column_name": "positive",
   "negative_column_name": "negative",
   "run_name": "Sentence-Qwen2.5-Scratch-Bi-EN-0.5B",
-  "output_dir": "./data/outputs/Sentence-Qwen2.5-Scratch-Bi-EN-0.5B",
-  "logging_dir": "./data/outputs/Sentence-Qwen2.5-Scratch-Bi-EN-0.5B/logs",
+  "output_dir": "data/outputs/Sentence-Qwen2.5-Scratch-Bi-EN-0.5B",
+  "logging_dir": "data/outputs/Sentence-Qwen2.5-Scratch-Bi-EN-0.5B/logs",
   "save_only_model": false,
   "overwrite_output_dir": false,
   "do_train": true,
@@ -61,6 +61,6 @@
   "evaluator_type": "triplet",
   "batch_sampler": "group_by_label",
   "streaming": false,
-  "train_file": "./data/processed/english_embedding/ft/train.jsonl",
-  "validation_file": "./data/processed/english_embedding/ft/validation.jsonl"
+  "train_file": "data/processed/english_embedding/ft/train.jsonl",
+  "validation_file": "data/processed/english_embedding/ft/validation.jsonl"
 }

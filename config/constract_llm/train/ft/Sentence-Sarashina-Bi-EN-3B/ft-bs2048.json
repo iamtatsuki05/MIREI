@@ -59,8 +59,8 @@
   "batch_sampler": "group_by_label",
   "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-EN-3B-PT-bs16384",
   "run_name": "Sentence-Sarashina-Bi-EN-3B-bs2048",
-  "output_dir": "./data/outputs/Sentence-Sarashina-Bi-EN-3B-bs2048",
-  "logging_dir": "./data/outputs/Sentence-Sarashina-Bi-EN-3B-bs2048/logs",
-  "train_file": "./data/processed/english_embedding/ft/train.jsonl",
-  "validation_file": "./data/processed/english_embedding/ft/validation.jsonl"
+  "output_dir": "data/outputs/Sentence-Sarashina-Bi-EN-3B-bs2048",
+  "logging_dir": "data/outputs/Sentence-Sarashina-Bi-EN-3B-bs2048/logs",
+  "train_file": "data/processed/english_embedding/ft/train.jsonl",
+  "validation_file": "data/processed/english_embedding/ft/validation.jsonl"
 }

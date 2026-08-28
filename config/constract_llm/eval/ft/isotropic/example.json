@@ -1,12 +1,12 @@
 {
-    "model_name_or_path": "cl-nagoya/ruri-v3-30m",
-    "output_dir": "data/outputs/eval/isotropic",
-    "num_examples": 100,
-    "dtype": "bfloat16",
-    "attn_implementation": "flash_attention_2",
-    "seed": 42,
-    "miracl_name": "miracl/miracl",
-    "miracl_lang": "ja",
-    "wiki_name": "wikimedia/wikipedia",
-    "wiki_lang": "20231101.ja"
+  "model_name_or_path": "cl-nagoya/ruri-v3-30m",
+  "output_dir": "data/outputs/eval/isotropic",
+  "num_examples": 100,
+  "dtype": "bfloat16",
+  "attn_implementation": "flash_attention_2",
+  "seed": 42,
+  "miracl_name": "miracl/miracl",
+  "miracl_lang": "ja",
+  "wiki_name": "wikimedia/wikipedia",
+  "wiki_lang": "20231101.ja"
 }

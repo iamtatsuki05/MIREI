@@ -8,8 +8,8 @@
   "max_train_samples": null,
   "max_eval_samples": null,
   "run_name": "ModernBERT-EN-1B-PT-stage2-bs1024-stsb-glue",
-  "output_dir": "./data/outputs/eval/glue/ModernBERT-EN-1B-PT-stage2-bs1024-stsb-glue",
-  "logging_dir": "./data/outputs/eval/glue/ModernBERT-EN-1B-PT-stage2-bs1024-stsb-glue/logs",
+  "output_dir": "data/outputs/eval/glue/ModernBERT-EN-1B-PT-stage2-bs1024-stsb-glue",
+  "logging_dir": "data/outputs/eval/glue/ModernBERT-EN-1B-PT-stage2-bs1024-stsb-glue/logs",
   "save_only_model": false,
   "overwrite_output_dir": true,
   "do_train": true,
@@ -48,5 +48,5 @@
   "bf16": true,
   "bf16_full_eval": true,
   "attn_implementation": "flash_attention_2",
-  "deepspeed": "./config/constract_llm/train/ds_config/ds_zero2.json"
+  "deepspeed": "config/constract_llm/train/ds_config/ds_zero2.json"
 }
