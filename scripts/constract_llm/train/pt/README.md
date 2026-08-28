@@ -24,7 +24,7 @@ The `run_mlm.py` script is used for pre-training models using the Masked Languag
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/ModernBERT-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/stage1.json
 ```
 
 For multi-GPU training:
@@ -34,7 +34,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/ModernBERT-JP-0.5B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/stage1.json
 ```
 
 ### Custom Parameters
@@ -53,7 +53,7 @@ The `run_mntp.py` script is used for pre-training models using the Masked Next T
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1/Llama-JP-0.5B-PT-stage1.json
+python scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1/stage1.json
 ```
 
 For multi-GPU training:
@@ -63,7 +63,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1/Llama-JP-0.5B-PT-stage1.json
+  scripts/constract_llm/train/pt/run_mntp.py config/constract_llm/train/pt/Llama-JP-0.5B-PT-stage1/stage1.json
 ```
 
 ### Custom Parameters
@@ -85,18 +85,18 @@ Configuration files for pre-training are stored in `config/constract_llm/train/p
 - `Llama-JP-0.5B-PT-stage2.json` - Configuration for stage 2 pre-training of Llama-JP-0.5B
 - `Llama-EN-0.5B-PT-stage1.json` - Configuration for stage 1 English pre-training of Llama-0.5B
 - `Llama-EN-0.5B-PT-stage2.json` - Configuration for stage 2 English pre-training of Llama-0.5B
-- `Llama-JP-1B-PT-stage1.json` / `Llama-JP-1B-PT-stage2.json` - Configuration for intermediate-scale Japanese pre-training of Llama-1B
-- `Llama-EN-1B-PT-stage1.json` / `Llama-EN-1B-PT-stage2.json` - Configuration for intermediate-scale English pre-training of Llama-1B
-- `Llama-JP-3B-PT-stage1.json` / `Llama-JP-3B-PT-stage2.json` - Configuration for scaled Japanese pre-training of Llama-3B
-- `Llama-EN-3B-PT-stage1.json` / `Llama-EN-3B-PT-stage2.json` - Configuration for scaled English pre-training of Llama-3B
+- `Llama-JP-1B-PT-stage1-bs8192.json` / `Llama-JP-1B-PT-stage2-bs1024.json` - Configuration for intermediate-scale Japanese pre-training of Llama-1B
+- `Llama-EN-1B-PT-stage1-bs8192.json` / `Llama-EN-1B-PT-stage2-bs1024.json` - Configuration for intermediate-scale English pre-training of Llama-1B
+- `Llama-JP-3B-PT-stage1-bs16384.json` / `Llama-JP-3B-PT-stage2-bs2048.json` - Configuration for scaled Japanese pre-training of Llama-3B
+- `Llama-EN-3B-PT-stage1-bs16384.json` / `Llama-EN-3B-PT-stage2-bs2048.json` - Configuration for scaled English pre-training of Llama-3B
 - `ModernBERT-JP-0.5B-PT-stage1.json` - Configuration for stage 1 pre-training of ModernBERT-JP-0.5B
 - `ModernBERT-JP-0.5B-PT-stage2.json` - Configuration for stage 2 pre-training of ModernBERT-JP-0.5B
 - `ModernBERT-EN-0.5B-PT-stage1.json` - Configuration for stage 1 English pre-training of ModernBERT-0.5B
 - `ModernBERT-EN-0.5B-PT-stage2.json` - Configuration for stage 2 English pre-training of ModernBERT-0.5B
-- `ModernBERT-JP-1B-PT-stage1.json` / `ModernBERT-JP-1B-PT-stage2.json` - Configuration for intermediate-scale Japanese pre-training of ModernBERT-1B
-- `ModernBERT-EN-1B-PT-stage1.json` / `ModernBERT-EN-1B-PT-stage2.json` - Configuration for intermediate-scale English pre-training of ModernBERT-1B
-- `ModernBERT-JP-3B-PT-stage1.json` / `ModernBERT-JP-3B-PT-stage2.json` - Configuration for scaled Japanese pre-training of ModernBERT-3B
-- `ModernBERT-EN-3B-PT-stage1.json` / `ModernBERT-EN-3B-PT-stage2.json` - Configuration for scaled English pre-training of ModernBERT-3B
+- `ModernBERT-JP-1B-PT-stage1-bs8192.json` / `ModernBERT-JP-1B-PT-stage2-bs1024.json` - Configuration for intermediate-scale Japanese pre-training of ModernBERT-1B
+- `ModernBERT-EN-1B-PT-stage1-bs8192.json` / `ModernBERT-EN-1B-PT-stage2-bs1024.json` - Configuration for intermediate-scale English pre-training of ModernBERT-1B
+- `ModernBERT-JP-3B-PT-stage1-bs16384.json` / `ModernBERT-JP-3B-PT-stage2-bs2048.json` - Configuration for scaled Japanese pre-training of ModernBERT-3B
+- `ModernBERT-EN-3B-PT-stage1-bs16384.json` / `ModernBERT-EN-3B-PT-stage2-bs2048.json` - Configuration for scaled English pre-training of ModernBERT-3B
 
 
 ## Causal Language Modeling (CLM)
@@ -115,7 +115,7 @@ The `run_clm.py` script is used for pre-training and fine-tuning models using th
 ### Usage
 
 ```bash
-python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/YourCLMConfig.json
+python scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/stage2.json
 ```
 
 For multi-GPU training:
@@ -125,7 +125,7 @@ uv run torchrun \
   --standalone \
   --nnodes 1 \
   --nproc-per-node $NUM_GPU \
-  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/YourCLMConfig.json
+  scripts/constract_llm/train/pt/run_clm.py config/constract_llm/train/pt/YourCLMConfig/stage2.json
 ```
 
 ### Custom Parameters

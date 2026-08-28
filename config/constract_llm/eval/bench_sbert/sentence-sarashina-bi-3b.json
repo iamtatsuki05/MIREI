@@ -1,5 +1,5 @@
 {
-    "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-JP-3B",
+    "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-JP-3B-bs2048",
     "output_dir": "data/outputs/bench_sbert/sarashina-bi-3b",
     "dataset_name_or_path": "fujiki/wiki40b_ja",
     "dataset_config_name": "default",

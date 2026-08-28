@@ -1,5 +1,5 @@
 {
-    "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-JP-3B",
+    "model_name_or_path": "iamtatsuki05/Sentence-Sarashina-Bi-JP-3B-bs2048",
     "output_dir": "data/outputs/eval/isotropic/Sentence-Sarashina-Bi-3B",
     "num_examples": 2000,
     "dtype": "bfloat16",

@@ -1,5 +1,5 @@
 {
-  "model_name_or_path": "iamtatsuki05/Llama-JP-1B-PT-stage2",
+  "model_name_or_path": "iamtatsuki05/Llama-JP-1B-PT-stage2-bs1024",
   "custom_model_type": "llama",
   "task_type": "lm",
   "output_dir": "./data/misc/json",
