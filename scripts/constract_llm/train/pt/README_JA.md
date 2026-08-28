@@ -85,18 +85,18 @@ uv run torchrun \
 - `Llama-JP-0.5B/stage2.json` - Llama-JP-0.5Bのステージ2事前学習の設定
 - `Llama-EN-0.5B/stage1.json` - Llama-0.5Bの英語ステージ1事前学習の設定
 - `Llama-EN-0.5B/stage2.json` - Llama-0.5Bの英語ステージ2事前学習の設定
-- `Llama-JP-1B/stage1-bs8192.json` / `Llama-JP-1B/stage2-bs1024.json` - Llama-1Bの日本語中間スケール実験設定
-- `Llama-EN-1B/stage1-bs8192.json` / `Llama-EN-1B/stage2-bs1024.json` - Llama-1Bの英語中間スケール実験設定
-- `Llama-JP-3B/stage1-bs16384.json` / `Llama-JP-3B/stage2-bs2048.json` - Llama-3Bの日本語スケール実験設定
-- `Llama-EN-3B/stage1-bs16384.json` / `Llama-EN-3B/stage2-bs2048.json` - Llama-3Bの英語スケール実験設定
+- `Llama-JP-1B/stage1.json` (total batch matched to 0.5B) / `Llama-JP-1B/stage1-bs8192.json` / `Llama-JP-1B/stage2.json` (total batch matched to 0.5B) / `Llama-JP-1B/stage2-bs1024.json` - Llama-1Bの日本語中間スケール実験設定
+- `Llama-EN-1B/stage1.json` (total batch matched to 0.5B) / `Llama-EN-1B/stage1-bs8192.json` / `Llama-EN-1B/stage2.json` (total batch matched to 0.5B) / `Llama-EN-1B/stage2-bs1024.json` - Llama-1Bの英語中間スケール実験設定
+- `Llama-JP-3B/stage1.json` (total batch matched to 0.5B) / `Llama-JP-3B/stage1-bs16384.json` / `Llama-JP-3B/stage2.json` (total batch matched to 0.5B) / `Llama-JP-3B/stage2-bs2048.json` - Llama-3Bの日本語スケール実験設定
+- `Llama-EN-3B/stage1.json` (total batch matched to 0.5B) / `Llama-EN-3B/stage1-bs16384.json` / `Llama-EN-3B/stage2.json` (total batch matched to 0.5B) / `Llama-EN-3B/stage2-bs2048.json` - Llama-3Bの英語スケール実験設定
 - `ModernBERT-JP-0.5B/stage1.json` - ModernBERT-JP-0.5Bのステージ1事前学習の設定
 - `ModernBERT-JP-0.5B/stage2.json` - ModernBERT-JP-0.5Bのステージ2事前学習の設定
 - `ModernBERT-EN-0.5B/stage1.json` - ModernBERT-0.5Bの英語ステージ1事前学習の設定
 - `ModernBERT-EN-0.5B/stage2.json` - ModernBERT-0.5Bの英語ステージ2事前学習の設定
-- `ModernBERT-JP-1B/stage1-bs8192.json` / `ModernBERT-JP-1B/stage2-bs1024.json` - ModernBERT-1Bの日本語中間スケール実験設定
-- `ModernBERT-EN-1B/stage1-bs8192.json` / `ModernBERT-EN-1B/stage2-bs1024.json` - ModernBERT-1Bの英語中間スケール実験設定
-- `ModernBERT-JP-3B/stage1-bs16384.json` / `ModernBERT-JP-3B/stage2-bs2048.json` - ModernBERT-3Bの日本語スケール実験設定
-- `ModernBERT-EN-3B/stage1-bs16384.json` / `ModernBERT-EN-3B/stage2-bs2048.json` - ModernBERT-3Bの英語スケール実験設定
+- `ModernBERT-JP-1B/stage1.json` (total batch matched to 0.5B) / `ModernBERT-JP-1B/stage1-bs8192.json` / `ModernBERT-JP-1B/stage2.json` (total batch matched to 0.5B) / `ModernBERT-JP-1B/stage2-bs1024.json` - ModernBERT-1Bの日本語中間スケール実験設定
+- `ModernBERT-EN-1B/stage1.json` (total batch matched to 0.5B) / `ModernBERT-EN-1B/stage1-bs8192.json` / `ModernBERT-EN-1B/stage2.json` (total batch matched to 0.5B) / `ModernBERT-EN-1B/stage2-bs1024.json` - ModernBERT-1Bの英語中間スケール実験設定
+- `ModernBERT-JP-3B/stage1.json` (total batch matched to 0.5B) / `ModernBERT-JP-3B/stage1-bs16384.json` / `ModernBERT-JP-3B/stage2.json` (total batch matched to 0.5B) / `ModernBERT-JP-3B/stage2-bs2048.json` - ModernBERT-3Bの日本語スケール実験設定
+- `ModernBERT-EN-3B/stage1.json` (total batch matched to 0.5B) / `ModernBERT-EN-3B/stage1-bs16384.json` / `ModernBERT-EN-3B/stage2.json` (total batch matched to 0.5B) / `ModernBERT-EN-3B/stage2-bs2048.json` - ModernBERT-3Bの英語スケール実験設定
 
 
 ## Causal Language Modeling (CLM)

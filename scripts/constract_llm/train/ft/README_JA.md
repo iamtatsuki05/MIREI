@@ -65,20 +65,20 @@ FTの設定ファイルは`config/constract_llm/train/ft/`に格納されてい�
 - `Sentence-Llama-Bi-JP-0.5B/pt.json` - 事前学習済みLlama-Bi-JP-0.5BをSentence TransformerとしてWSLするための設定
 - `Sentence-Llama-Bi-JP-0.5B/ft.json` - Llama-Bi-JP-0.5BをSentence TransformerとしてFTするための設定
 - `Sentence-Llama-Bi-EN-0.5B/pt.json` / `Sentence-Llama-Bi-EN-0.5B/ft.json` - Llama-Bi-0.5Bの英語WSL/FT設定
-- `Sentence-Llama-Bi-JP-1B/pt-bs8192.json` / `Sentence-Llama-Bi-JP-1B/ft-bs1024.json` - Llama-Bi-1Bの日本語WSL/FT設定
-- `Sentence-Llama-Bi-EN-1B/pt-bs8192.json` / `Sentence-Llama-Bi-EN-1B/ft-bs1024.json` - Llama-Bi-1Bの英語WSL/FT設定
-- `Sentence-Llama-Bi-JP-3B/pt-bs16384.json` / `Sentence-Llama-Bi-JP-3B/ft-bs2048.json` - Llama-Bi-3Bの日本語WSL/FT設定
-- `Sentence-Llama-Bi-EN-3B/pt-bs16384.json` / `Sentence-Llama-Bi-EN-3B/ft-bs2048.json` - Llama-Bi-3Bの英語WSL/FT設定
+- `Sentence-Llama-Bi-JP-1B/pt.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-JP-1B/pt-bs8192.json` / `Sentence-Llama-Bi-JP-1B/ft.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-JP-1B/ft-bs1024.json` - Llama-Bi-1Bの日本語WSL/FT設定
+- `Sentence-Llama-Bi-EN-1B/pt.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-EN-1B/pt-bs8192.json` / `Sentence-Llama-Bi-EN-1B/ft.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-EN-1B/ft-bs1024.json` - Llama-Bi-1Bの英語WSL/FT設定
+- `Sentence-Llama-Bi-JP-3B/pt.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-JP-3B/pt-bs16384.json` / `Sentence-Llama-Bi-JP-3B/ft.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-JP-3B/ft-bs2048.json` - Llama-Bi-3Bの日本語WSL/FT設定
+- `Sentence-Llama-Bi-EN-3B/pt.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-EN-3B/pt-bs16384.json` / `Sentence-Llama-Bi-EN-3B/ft.json` (total batch matched to 0.5B) / `Sentence-Llama-Bi-EN-3B/ft-bs2048.json` - Llama-Bi-3Bの英語WSL/FT設定
 - `Sentence-ModernBERT-JP-0.5B/pt.json` - 事前学習済みModernBERT-JP-0.5BをSentence TransformerとしてWSLするための設定
 - `Sentence-ModernBERT-JP-0.5B/ft.json` - ModernBERT-JP-0.5BをSentence TransformerとしてFTするための設定
 - `Sentence-ModernBERT-EN-0.5B/pt.json` / `Sentence-ModernBERT-EN-0.5B/ft.json` - ModernBERT-0.5Bの英語WSL/FT設定
-- `Sentence-ModernBERT-JP-1B/pt-bs8192.json` / `Sentence-ModernBERT-JP-1B/ft-bs1024.json` - ModernBERT-1Bの日本語WSL/FT設定
-- `Sentence-ModernBERT-EN-1B/pt-bs8192.json` / `Sentence-ModernBERT-EN-1B/ft-bs1024.json` - ModernBERT-1Bの英語WSL/FT設定
-- `Sentence-ModernBERT-JP-3B/pt-bs16384.json` / `Sentence-ModernBERT-JP-3B/ft-bs2048.json` - ModernBERT-3Bの日本語WSL/FT設定
-- `Sentence-ModernBERT-EN-3B/pt-bs16384.json` / `Sentence-ModernBERT-EN-3B/ft-bs2048.json` - ModernBERT-3Bの英語WSL/FT設定
+- `Sentence-ModernBERT-JP-1B/pt.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-JP-1B/pt-bs8192.json` / `Sentence-ModernBERT-JP-1B/ft.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-JP-1B/ft-bs1024.json` - ModernBERT-1Bの日本語WSL/FT設定
+- `Sentence-ModernBERT-EN-1B/pt.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-EN-1B/pt-bs8192.json` / `Sentence-ModernBERT-EN-1B/ft.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-EN-1B/ft-bs1024.json` - ModernBERT-1Bの英語WSL/FT設定
+- `Sentence-ModernBERT-JP-3B/pt.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-JP-3B/pt-bs16384.json` / `Sentence-ModernBERT-JP-3B/ft.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-JP-3B/ft-bs2048.json` - ModernBERT-3Bの日本語WSL/FT設定
+- `Sentence-ModernBERT-EN-3B/pt.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-EN-3B/pt-bs16384.json` / `Sentence-ModernBERT-EN-3B/ft.json` (total batch matched to 0.5B) / `Sentence-ModernBERT-EN-3B/ft-bs2048.json` - ModernBERT-3Bの英語WSL/FT設定
 - `Sentence-Sarashina-Bi-0.5B/pt.json` / `Sentence-Sarashina-Bi-0.5B/ft.json` - Sarashina-Bi-0.5Bの日本語WSL/FT設定
 - `Sentence-Sarashina-Bi-EN-0.5B/pt.json` / `Sentence-Sarashina-Bi-EN-0.5B/ft.json` - Sarashina-Bi-0.5Bの英語WSL/FT設定
-- `Sentence-Sarashina-Bi-JP-1B/pt-bs8192.json` / `Sentence-Sarashina-Bi-JP-1B/ft-bs1024.json` - Sarashina-Bi-1Bの日本語WSL/FT設定
-- `Sentence-Sarashina-Bi-EN-1B/pt-bs8192.json` / `Sentence-Sarashina-Bi-EN-1B/ft-bs1024.json` - Sarashina-Bi-1Bの英語WSL/FT設定
-- `Sentence-Sarashina-Bi-JP-3B/pt-bs16384.json` / `Sentence-Sarashina-Bi-JP-3B/ft-bs2048.json` - Sarashina-Bi-3Bの日本語WSL/FT設定
-- `Sentence-Sarashina-Bi-EN-3B/pt-bs16384.json` / `Sentence-Sarashina-Bi-EN-3B/ft-bs2048.json` - Sarashina-Bi-3Bの英語WSL/FT設定
+- `Sentence-Sarashina-Bi-JP-1B/pt.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-JP-1B/pt-bs8192.json` / `Sentence-Sarashina-Bi-JP-1B/ft.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-JP-1B/ft-bs1024.json` - Sarashina-Bi-1Bの日本語WSL/FT設定
+- `Sentence-Sarashina-Bi-EN-1B/pt.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-EN-1B/pt-bs8192.json` / `Sentence-Sarashina-Bi-EN-1B/ft.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-EN-1B/ft-bs1024.json` - Sarashina-Bi-1Bの英語WSL/FT設定
+- `Sentence-Sarashina-Bi-JP-3B/pt.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-JP-3B/pt-bs16384.json` / `Sentence-Sarashina-Bi-JP-3B/ft.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-JP-3B/ft-bs2048.json` - Sarashina-Bi-3Bの日本語WSL/FT設定
+- `Sentence-Sarashina-Bi-EN-3B/pt.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-EN-3B/pt-bs16384.json` / `Sentence-Sarashina-Bi-EN-3B/ft.json` (total batch matched to 0.5B) / `Sentence-Sarashina-Bi-EN-3B/ft-bs2048.json` - Sarashina-Bi-3Bの英語WSL/FT設定
