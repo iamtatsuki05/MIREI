@@ -4,6 +4,6 @@
   "task_type": "lm",
   "output_dir": "./data/misc/json",
   "push_to_hub": true,
-  "repo_id": "iamtatsuki05/Llama-Bi-EN-3B-PT-stage2",
+  "repo_id": "iamtatsuki05/Llama-Bi-EN-3B-PT-stage2-bs2048",
   "private": true
 }

@@ -24,13 +24,13 @@ PAIRS = [
     ('Sentence-Sarashina-Bi-JP-1B-PT-bs8192@final', 'Sentence-Sarashina-Bi-JP-1B-bs1024@final'),
     ('sarashina2.2-Bi-1b@base-ja', 'Sentence-Sarashina-Bi-JP-1B-PT-bs8192@final'),
     ('ModernBERT-JP-1B-PT-stage2-bs1024@base-ja', 'Sentence-ModernBERT-JP-1B-bs1024@final'),
-    ('Llama-Bi-JP-1B-PT-stage2@base-ja', 'Sentence-Llama-Bi-JP-1B-bs1024@final'),
+    ('Llama-Bi-JP-1B-PT-stage2-bs1024@base-ja', 'Sentence-Llama-Bi-JP-1B-bs1024@final'),
     ('Sentence-ModernBERT-EN-1B-bs1024@final', 'Sentence-Sarashina-Bi-EN-1B-bs1024@final'),
     ('Sentence-Llama-Bi-EN-1B-bs1024@final', 'Sentence-Sarashina-Bi-EN-1B-bs1024@final'),
     ('Sentence-Sarashina-Bi-EN-1B-PT-bs8192@final', 'Sentence-Sarashina-Bi-EN-1B-bs1024@final'),
     ('sarashina2.2-Bi-1b@base-en', 'Sentence-Sarashina-Bi-EN-1B-PT-bs8192@final'),
     ('ModernBERT-EN-1B-PT-stage2-bs1024@base-en', 'Sentence-ModernBERT-EN-1B-bs1024@final'),
-    ('Llama-Bi-EN-1B-PT-stage2@base-en', 'Sentence-Llama-Bi-EN-1B-bs1024@final'),
+    ('Llama-Bi-EN-1B-PT-stage2-bs1024@base-en', 'Sentence-Llama-Bi-EN-1B-bs1024@final'),
 ]
 
 

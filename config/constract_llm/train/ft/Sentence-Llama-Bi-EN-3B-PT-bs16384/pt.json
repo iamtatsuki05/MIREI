@@ -1,5 +1,5 @@
 {
-  "model_name_or_path": "iamtatsuki05/Llama-Bi-EN-3B-PT-stage2",
+  "model_name_or_path": "iamtatsuki05/Llama-Bi-EN-3B-PT-stage2-bs2048",
   "trust_remote_code": true,
   "dataset_name": null,
   "use_all_subset": false,
