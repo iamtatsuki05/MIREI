@@ -42,7 +42,7 @@
 すべてのランチャーは [Google Fire](https://github.com/google/python-fire) を利用した CLI を公開しており、JSON/YAML/TOML の設定ファイルを受け取ります。
 
 ```bash
-python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B-PT-stage1/stage1.json
+python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/ModernBERT-JP-0.5B/stage1.json
 ```
 
 マルチ GPU の場合は `uv run torchrun --standalone --nnodes 1 --nproc-per-node $NUM_GPU` をコマンド前に付けて実行してください。
@@ -52,27 +52,27 @@ python scripts/constract_llm/train/pt/run_mlm.py config/constract_llm/train/pt/M
 設定テンプレートは `config/constract_llm/train/` 配下に用意されています。
 
 - 事前学習（`pt/`）：
-  - `Llama-JP-0.5B-PT-stage1/stage1.json`
-  - `Llama-JP-0.5B-PT-stage2/stage2.json`
-  - `Llama-JP-3B-PT-stage1-bs16384/stage1.json`
-  - `Llama-JP-3B-PT-stage2-bs2048/stage2.json`
-  - `ModernBERT-JP-0.5B-PT-stage1/stage1.json`
-  - `ModernBERT-JP-0.5B-PT-stage2/stage2.json`
-  - `ModernBERT-JP-3B-PT-stage1-bs16384/stage1.json`
-  - `ModernBERT-JP-3B-PT-stage2-bs2048/stage2.json`
+  - `Llama-JP-0.5B/stage1.json`
+  - `Llama-JP-0.5B/stage2.json`
+  - `Llama-JP-3B/stage1-bs16384.json`
+  - `Llama-JP-3B/stage2-bs2048.json`
+  - `ModernBERT-JP-0.5B/stage1.json`
+  - `ModernBERT-JP-0.5B/stage2.json`
+  - `ModernBERT-JP-3B/stage1-bs16384.json`
+  - `ModernBERT-JP-3B/stage2-bs2048.json`
 - ファインチューニング（`ft/`）：
-  - `Sentence-Llama-Bi-JP-0.5B-PT/pt.json`
+  - `Sentence-Llama-Bi-JP-0.5B/pt.json`
   - `Sentence-Llama-Bi-JP-0.5B/ft.json`
-  - `Sentence-Llama-Bi-JP-3B-PT-bs16384/pt.json`
-  - `Sentence-Llama-Bi-JP-3B-bs2048/ft.json`
-  - `Sentence-ModernBERT-JP-0.5B-PT/pt.json`
+  - `Sentence-Llama-Bi-JP-3B/pt-bs16384.json`
+  - `Sentence-Llama-Bi-JP-3B/ft-bs2048.json`
+  - `Sentence-ModernBERT-JP-0.5B/pt.json`
   - `Sentence-ModernBERT-JP-0.5B/ft.json`
-  - `Sentence-ModernBERT-JP-3B-PT-bs16384/pt.json`
-  - `Sentence-ModernBERT-JP-3B-bs2048/ft.json`
-  - `Sentence-Sarashina-Bi-0.5B-PT/pt.json`
+  - `Sentence-ModernBERT-JP-3B/pt-bs16384.json`
+  - `Sentence-ModernBERT-JP-3B/ft-bs2048.json`
+  - `Sentence-Sarashina-Bi-0.5B/pt.json`
   - `Sentence-Sarashina-Bi-0.5B/ft.json`
-  - `Sentence-Sarashina-Bi-JP-3B-PT-bs16384/pt.json`
-  - `Sentence-Sarashina-Bi-JP-3B-bs2048/ft.json`
+  - `Sentence-Sarashina-Bi-JP-3B/pt-bs16384.json`
+  - `Sentence-Sarashina-Bi-JP-3B/ft-bs2048.json`
 - DeepSpeed 設定: `config/constract_llm/train/ds_config/`
 
 テンプレートをコピーしてハイパーパラメータを調整し、対応するランチャーに渡してください。
