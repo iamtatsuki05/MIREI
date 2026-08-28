@@ -80,6 +80,17 @@ class DataTrainingArguments:
         },
     )
 
+    universal_checkpoint_resume: bool = Field(
+        False,
+        description=(
+            'One-shot resume from a DeepSpeed Universal Checkpoint (converted with '
+            'scripts/constract_llm/train/tools/convert_zero_checkpoint_to_universal.py) so the run '
+            'can continue on a different number of GPUs. Injects checkpoint.load_universal into the '
+            'DeepSpeed config; adjust gradient_accumulation_steps inversely to keep the global batch, '
+            'and disable this flag again after the first successful resume.'
+        ),
+    )
+
     def __post_init__(self):
         if self.streaming:
             require_version('datasets>=2.0.0', 'The streaming feature requires `datasets>=2.0.0`')
