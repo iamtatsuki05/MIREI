@@ -116,6 +116,8 @@ class DataTrainingArguments:
             )
         if self.packing and not self.line_by_line:
             raise ValueError('packing requires line_by_line=True (documents must be tokenized individually)')
+        if self.packing and self.pad_to_max_length:
+            raise ValueError('packing cannot be combined with pad_to_max_length (padding inside a packed row)')
         if self.streaming:
             require_version('datasets>=2.0.0', 'The streaming feature requires `datasets>=2.0.0`')
         if (

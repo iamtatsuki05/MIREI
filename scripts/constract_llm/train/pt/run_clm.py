@@ -57,7 +57,11 @@ from mirei.constract_llm.train.language_model.clm.data_class.data_training_argum
 from mirei.constract_llm.train.language_model.clm.data_class.model_arguments import (
     ModelArguments,
 )
-from mirei.constract_llm.train.language_model.packing import PackedCausalLMCollator, pack_tokenized_dataset
+from mirei.constract_llm.train.language_model.packing import (
+    PackedCausalLMCollator,
+    check_packing_requirements,
+    pack_tokenized_dataset,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -333,6 +337,9 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         if data_args.streaming:
             raise ValueError('packing is not supported with streaming datasets')
         packing_seq_length = data_args.packing_seq_length or max_seq_length
+        if packing_seq_length > max_seq_length:
+            raise ValueError(f'packing_seq_length={packing_seq_length} exceeds max_seq_length={max_seq_length}')
+        check_packing_requirements(model_args.attn_implementation)
         with training_args.main_process_first(desc='packing documents'):
             lm_datasets = pack_tokenized_dataset(
                 tokenized_datasets,
@@ -402,7 +409,8 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         data_collator = PackedCausalLMCollator(
             pad_token_id=pad_token_id, mask_document_starts=data_args.packing_mask_document_starts
         )
-        # transformers only derives the block-diagonal mask from position_ids when no KV cache is in play
+        # sdpa / eager derive the block-diagonal mask from position_ids only when no KV cache is in play.
+        # This is persisted in the saved config.json; re-enable use_cache for generation if needed.
         model.config.use_cache = False
     else:
         data_collator = default_data_collator

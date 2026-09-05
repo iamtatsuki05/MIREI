@@ -91,10 +91,14 @@ document, so results match per-document training while GPU utilisation improves 
 | `packing_encoder_mode` (MLM) | `auto` | `unpad`: rows are split back into documents and ModernBERT re-packs them with `cu_seqlens` (true packing with `flash_attention_2`); `mask`: 3D block-diagonal attention mask + per-document `position_ids` for BERT-style encoders; `auto` picks `unpad` for ModernBERT and `mask` otherwise. |
 | `packing_mask_document_starts` (CLM) | `true` | Exclude the first token of every document from the causal LM loss. |
 
-Decoders receive per-document `position_ids` and no `attention_mask`; transformers (>= 4.53) builds the
-block-diagonal mask for `flash_attention_2`, `sdpa` and `eager`, and the script sets `use_cache=false` because a KV
-cache disables that detection. With packing enabled a "batch" is a number of packed rows, i.e. roughly
-`per_device_train_batch_size x packing_seq_length` tokens per micro-batch.
+Decoders receive per-document `position_ids`, the FlashAttention varlen kwargs (`cu_seq_lens_q/k`, `max_length_q/k`)
+and no `attention_mask`. `flash_attention_2` uses the varlen kwargs directly; `sdpa` / `eager` rely on transformers
+(>= 4.53, torch >= 2.6) deriving the block-diagonal mask from the `position_ids` restarts, which requires
+`use_cache=false` (the script sets it, and it is persisted in the saved `config.json`; re-enable it for generation).
+Older libraries are rejected at start-up instead of silently training without boundaries. With `wrapped` no
+boundary handling happens at all. With packing enabled a "batch" is a number of packed rows, i.e. roughly
+`per_device_train_batch_size x packing_seq_length` tokens per micro-batch; `packing_seq_length` must not exceed
+`max_seq_length`, and MLM packing cannot be combined with `pad_to_max_length`.
 
 ## Configuration Files
 

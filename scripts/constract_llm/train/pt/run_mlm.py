@@ -57,6 +57,7 @@ from mirei.constract_llm.train.language_model.mlm.data_class.model_arguments imp
 )
 from mirei.constract_llm.train.language_model.packing import (
     PackedMaskedLMCollator,
+    check_packing_requirements,
     pack_tokenized_dataset,
     select_encoder_packing_mode,
 )
@@ -359,6 +360,9 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         if data_args.streaming:
             raise ValueError('packing is not supported with streaming datasets')
         packing_seq_length = data_args.packing_seq_length or max_seq_length
+        if packing_seq_length > max_seq_length:
+            raise ValueError(f'packing_seq_length={packing_seq_length} exceeds max_seq_length={max_seq_length}')
+        check_packing_requirements(model_args.attn_implementation)
         with training_args.main_process_first(desc='packing documents'):
             tokenized_datasets = pack_tokenized_dataset(
                 tokenized_datasets,

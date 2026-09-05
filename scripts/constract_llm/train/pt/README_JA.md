@@ -91,10 +91,13 @@ uv run torchrun \
 | `packing_encoder_mode`（MLM） | `auto` | `unpad`: 行を文書に分け直し、ModernBERT が `cu_seqlens` で再度詰める（`flash_attention_2` で本来の packing）。`mask`: 3D のブロック対角 attention mask と文書ごとの `position_ids` を渡す（BERT 系向け）。`auto` は ModernBERT なら `unpad`、それ以外は `mask`。 |
 | `packing_mask_document_starts`（CLM） | `true` | 各文書の先頭トークンを CLM の損失から除外する。 |
 
-decoder には文書ごとに振り直した `position_ids` を渡し、`attention_mask` は渡しません。transformers（4.53 以降）が
-`flash_attention_2` / `sdpa` / `eager` それぞれでブロック対角マスクを組み立てます。KV cache があるとこの検出が無効になるため、
-スクリプトは packing 時に `use_cache=false` を設定します。packing 時の「バッチ」は詰めた行の数なので、マイクロバッチあたり
-おおよそ `per_device_train_batch_size × packing_seq_length` トークンになります。
+decoder には文書ごとに振り直した `position_ids` と FlashAttention の varlen 引数（`cu_seq_lens_q/k`、`max_length_q/k`）を渡し、
+`attention_mask` は渡しません。`flash_attention_2` は varlen 引数をそのまま使い、`sdpa` / `eager` は transformers（4.53 以降、
+torch 2.6 以降）が `position_ids` の折り返しからブロック対角マスクを組み立てます。後者は KV cache があると無効になるため、
+スクリプトは packing 時に `use_cache=false` を設定します（保存される `config.json` にも残るので、生成時に必要なら戻してください）。
+古いライブラリでは境界なしで黙って学習せず、起動時にエラーにします。`wrapped` では境界処理は一切行いません。packing 時の
+「バッチ」は詰めた行の数なので、マイクロバッチあたりおおよそ `per_device_train_batch_size × packing_seq_length` トークンになり、
+`packing_seq_length` は `max_seq_length` 以下、MLM の packing は `pad_to_max_length` と併用不可です。
 
 ## 設定ファイル
 
