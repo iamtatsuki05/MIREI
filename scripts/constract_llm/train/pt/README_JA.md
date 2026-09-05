@@ -77,6 +77,28 @@ uv run torchrun \
 
 詳細なパラメータ情報については、`src/mirei/constract_llm/train/language_model/mntp/data_class/`のデータクラスを参照してください。
 
+## Sequence Packing（文書境界を守る packing）
+
+`run_mlm.py` と `run_clm.py` は共通の packing オプションを受け付けます（実装は
+`src/mirei/constract_llm/train/language_model/packing.py`）。文書境界を越える注意は発生しないため、文書単位で学習した場合と
+結果が一致したまま、短い文書が多いデータで GPU 利用率を上げられます。
+
+| パラメータ | 既定値 | 説明 |
+|---|---|---|
+| `packing` | `false` | 複数の文書を 1 行に詰める（`trl.data_utils.pack_dataset` を使用）。MLM では `line_by_line: true` が必要。 |
+| `packing_strategy` | `bfd` | `bfd` は文書を分断しない（best-fit decreasing。行より長い文書は切り詰め）。`wrapped` は `group_texts` と同じ連結・分割（境界情報なし）。 |
+| `packing_seq_length` | `max_seq_length` | 1 行のトークン数。 |
+| `packing_encoder_mode`（MLM） | `auto` | `unpad`: 行を文書に分け直し、ModernBERT が `cu_seqlens` で再度詰める（`flash_attention_2` で本来の packing）。`mask`: 3D のブロック対角 attention mask と文書ごとの `position_ids` を渡す（BERT 系向け）。`auto` は ModernBERT なら `unpad`、それ以外は `mask`。 |
+| `packing_mask_document_starts`（CLM） | `true` | 各文書の先頭トークンを CLM の損失から除外する。 |
+
+decoder には文書ごとに振り直した `position_ids` と FlashAttention の varlen 引数（`cu_seq_lens_q/k`、`max_length_q/k`）を渡し、
+`attention_mask` は渡しません。`flash_attention_2` は varlen 引数をそのまま使い、`sdpa` / `eager` は transformers（4.53 以降、
+torch 2.6 以降）が `position_ids` の折り返しからブロック対角マスクを組み立てます。後者は KV cache があると無効になるため、
+スクリプトは packing 時に `use_cache=false` を設定します（保存される `config.json` にも残るので、生成時に必要なら戻してください）。
+古いライブラリでは境界なしで黙って学習せず、起動時にエラーにします。`wrapped` では境界処理は一切行いません。packing 時の
+「バッチ」は詰めた行の数なので、マイクロバッチあたりおおよそ `per_device_train_batch_size × packing_seq_length` トークンになり、
+`packing_seq_length` は `max_seq_length` 以下、MLM の packing は `pad_to_max_length` と併用不可です。
+
 ## 設定ファイル
 
 事前学習の設定ファイルは`config/constract_llm/train/pt/`に格納されています：

@@ -45,6 +45,27 @@ class DataTrainingArguments:
         ),
     )
     streaming: bool = Field(False, description='Enable streaming mode')
+    packing: bool = Field(
+        False,
+        description=(
+            'Pack multiple documents into one row of `packing_seq_length` tokens without letting attention cross '
+            'document boundaries (see mirei.constract_llm.train.language_model.packing).'
+        ),
+    )
+    packing_strategy: str = Field(
+        'bfd',
+        description=(
+            "'bfd' packs whole documents (best-fit decreasing); 'wrapped' concatenates and chunks like group_texts "
+            '(documents are split, no boundary information).'
+        ),
+    )
+    packing_seq_length: int | None = Field(
+        None, description='Row length used for packing. Defaults to `max_seq_length`.'
+    )
+    packing_mask_document_starts: bool = Field(
+        True,
+        description='When packing, exclude the first token of every document from the causal LM loss.',
+    )
     max_seq_length: int | None = Field(
         default=None,
         description={
@@ -89,6 +110,10 @@ class DataTrainingArguments:
     )
 
     def __post_init__(self):
+        if self.packing_strategy not in ('bfd', 'wrapped'):
+            raise ValueError(f"packing_strategy must be 'bfd' or 'wrapped', got {self.packing_strategy!r}")
+        if self.packing_seq_length is not None and self.packing_seq_length <= 0:
+            raise ValueError('packing_seq_length must be a positive integer')
         if self.streaming:
             require_version('datasets>=2.0.0', 'The streaming feature requires `datasets>=2.0.0`')
         if (

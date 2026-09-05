@@ -58,6 +58,11 @@ from mirei.constract_llm.train.language_model.clm.data_class.data_training_argum
 from mirei.constract_llm.train.language_model.clm.data_class.model_arguments import (
     ModelArguments,
 )
+from mirei.constract_llm.train.language_model.packing import (
+    PackedCausalLMCollator,
+    check_packing_requirements,
+    pack_tokenized_dataset,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -331,20 +336,38 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         result['labels'] = result['input_ids'].copy()
         return result
 
-    with training_args.main_process_first(desc='grouping texts together'):
-        if not data_args.streaming:
-            lm_datasets = tokenized_datasets.map(
-                group_texts,
-                batched=True,
+    if data_args.packing:
+        if data_args.streaming:
+            raise ValueError('packing is not supported with streaming datasets')
+        packing_seq_length = data_args.packing_seq_length or max_seq_length
+        if packing_seq_length > max_seq_length:
+            raise ValueError(f'packing_seq_length={packing_seq_length} exceeds max_seq_length={max_seq_length}')
+        check_packing_requirements(model_args.attn_implementation)
+        with training_args.main_process_first(desc='packing documents'):
+            lm_datasets = pack_tokenized_dataset(
+                tokenized_datasets,
+                seq_length=packing_seq_length,
+                strategy=data_args.packing_strategy,
                 num_proc=data_args.preprocessing_num_workers,
                 load_from_cache_file=not data_args.overwrite_cache,
-                desc=f'Grouping texts in chunks of {max_seq_length}',
             )
-        else:
-            lm_datasets = tokenized_datasets.map(
-                group_texts,
-                batched=True,
-            )
+        # `seq_lengths` is consumed by the collator, not by the model; the Trainer must not drop it.
+        training_args.remove_unused_columns = False
+    else:
+        with training_args.main_process_first(desc='grouping texts together'):
+            if not data_args.streaming:
+                lm_datasets = tokenized_datasets.map(
+                    group_texts,
+                    batched=True,
+                    num_proc=data_args.preprocessing_num_workers,
+                    load_from_cache_file=not data_args.overwrite_cache,
+                    desc=f'Grouping texts in chunks of {max_seq_length}',
+                )
+            else:
+                lm_datasets = tokenized_datasets.map(
+                    group_texts,
+                    batched=True,
+                )
 
     if training_args.do_train:
         if 'train' not in tokenized_datasets:
@@ -377,7 +400,23 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
             # by preprocess_logits_for_metrics but we need to shift the labels
             labels = labels[:, 1:].reshape(-1)
             preds = preds[:, :-1].reshape(-1)
-            return metric.compute(predictions=preds, references=labels)
+            # ignored positions (padding / document starts when packing)
+            mask = labels != -100
+            return metric.compute(predictions=preds[mask], references=labels[mask])
+
+    if data_args.packing:
+        pad_token_id = tokenizer.pad_token_id if tokenizer.pad_token_id is not None else tokenizer.eos_token_id
+        if pad_token_id is None:
+            raise ValueError('packing needs a pad or eos token id to pad the last row of a batch')
+        logger.info(f'packing enabled: strategy={data_args.packing_strategy} pad_token_id={pad_token_id}')
+        data_collator = PackedCausalLMCollator(
+            pad_token_id=pad_token_id, mask_document_starts=data_args.packing_mask_document_starts
+        )
+        # sdpa / eager derive the block-diagonal mask from position_ids only when no KV cache is in play.
+        # This is persisted in the saved config.json; re-enable use_cache for generation if needed.
+        model.config.use_cache = False
+    else:
+        data_collator = default_data_collator
 
     # Initialize our Trainer
     trainer = Trainer(
@@ -387,7 +426,7 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
         eval_dataset=eval_dataset if training_args.do_eval else None,
         processing_class=tokenizer,
         # Data collator will default to DataCollatorWithPadding, so we change it.
-        data_collator=default_data_collator,
+        data_collator=data_collator,
         compute_metrics=(compute_metrics if training_args.do_eval and not is_torch_xla_available() else None),
         preprocess_logits_for_metrics=(
             preprocess_logits_for_metrics if training_args.do_eval and not is_torch_xla_available() else None
