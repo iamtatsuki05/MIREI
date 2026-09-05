@@ -55,6 +55,11 @@ from mirei.constract_llm.train.language_model.mlm.data_class.data_training_argum
 from mirei.constract_llm.train.language_model.mlm.data_class.model_arguments import (
     ModelArguments,
 )
+from mirei.constract_llm.train.language_model.packing import (
+    PackedMaskedLMCollator,
+    pack_tokenized_dataset,
+    select_encoder_packing_mode,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -350,6 +355,21 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
                     batched=True,
                 )
 
+    if data_args.packing:
+        if data_args.streaming:
+            raise ValueError('packing is not supported with streaming datasets')
+        packing_seq_length = data_args.packing_seq_length or max_seq_length
+        with training_args.main_process_first(desc='packing documents'):
+            tokenized_datasets = pack_tokenized_dataset(
+                tokenized_datasets,
+                seq_length=packing_seq_length,
+                strategy=data_args.packing_strategy,
+                num_proc=data_args.preprocessing_num_workers,
+                load_from_cache_file=not data_args.overwrite_cache,
+            )
+        # `seq_lengths` is consumed by the collator, not by the model; the Trainer must not drop it.
+        training_args.remove_unused_columns = False
+
     if training_args.do_train:
         if 'train' not in tokenized_datasets:
             raise ValueError('--do_train requires a train dataset')
@@ -391,11 +411,21 @@ def main(config_file_path: str | Path, **kwargs: Any) -> None:
     # Data collator
     # This one will take care of randomly masking the tokens.
     pad_to_multiple_of_8 = data_args.line_by_line and training_args.fp16 and not data_args.pad_to_max_length
-    data_collator = DataCollatorForLanguageModeling(
-        tokenizer=tokenizer,
-        mlm_probability=data_args.mlm_probability,
-        pad_to_multiple_of=8 if pad_to_multiple_of_8 else None,
-    )
+    if data_args.packing:
+        encoder_mode = select_encoder_packing_mode(getattr(config, 'model_type', None), data_args.packing_encoder_mode)
+        logger.info(f'packing enabled: strategy={data_args.packing_strategy} encoder_mode={encoder_mode}')
+        data_collator = PackedMaskedLMCollator(
+            tokenizer=tokenizer,
+            mlm_probability=data_args.mlm_probability,
+            mode=encoder_mode,
+            pad_to_multiple_of=8 if pad_to_multiple_of_8 else None,
+        )
+    else:
+        data_collator = DataCollatorForLanguageModeling(
+            tokenizer=tokenizer,
+            mlm_probability=data_args.mlm_probability,
+            pad_to_multiple_of=8 if pad_to_multiple_of_8 else None,
+        )
 
     # Initialize our Trainer
     trainer = Trainer(

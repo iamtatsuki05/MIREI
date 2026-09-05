@@ -77,6 +77,25 @@ uv run torchrun \
 
 For detailed parameter information, refer to the data classes in `src/mirei/constract_llm/train/language_model/mntp/data_class/`.
 
+## Sequence Packing
+
+Both `run_mlm.py` and `run_clm.py` accept the same packing options (see `packing.py` in
+`src/mirei/constract_llm/train/language_model/`). Packing keeps document boundaries: attention never crosses a
+document, so results match per-document training while GPU utilisation improves for short documents.
+
+| Parameter | Default | Description |
+|---|---|---|
+| `packing` | `false` | Pack several documents into one row (`trl.data_utils.pack_dataset`). MLM requires `line_by_line: true`. |
+| `packing_strategy` | `bfd` | `bfd` keeps documents whole (best-fit decreasing, documents longer than the row are truncated); `wrapped` concatenates and chunks like `group_texts` (no boundaries). |
+| `packing_seq_length` | `max_seq_length` | Row length in tokens. |
+| `packing_encoder_mode` (MLM) | `auto` | `unpad`: rows are split back into documents and ModernBERT re-packs them with `cu_seqlens` (true packing with `flash_attention_2`); `mask`: 3D block-diagonal attention mask + per-document `position_ids` for BERT-style encoders; `auto` picks `unpad` for ModernBERT and `mask` otherwise. |
+| `packing_mask_document_starts` (CLM) | `true` | Exclude the first token of every document from the causal LM loss. |
+
+Decoders receive per-document `position_ids` and no `attention_mask`; transformers (>= 4.53) builds the
+block-diagonal mask for `flash_attention_2`, `sdpa` and `eager`, and the script sets `use_cache=false` because a KV
+cache disables that detection. With packing enabled a "batch" is a number of packed rows, i.e. roughly
+`per_device_train_batch_size x packing_seq_length` tokens per micro-batch.
+
 ## Configuration Files
 
 Configuration files for pre-training are stored in `config/constract_llm/train/pt/`:
