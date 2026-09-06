@@ -9,11 +9,11 @@ from transformers import AutoModelForQuestionAnswering, PreTrainedModel
 
 logger = logging.getLogger(__name__)
 
-HEAD_PREFIX = 'qa_outputs.'
 
-
-def _backbone_missing_keys(loading_info: dict[str, Any]) -> list[str]:
-    return [key for key in loading_info.get('missing_keys', []) if not key.startswith(HEAD_PREFIX)]
+def _backbone_missing_keys(loading_info: dict[str, Any], base_model_prefix: str) -> list[str]:
+    """Missing keys that belong to the backbone (``<base_model_prefix>.*``); task-head keys are expected to be new."""
+    prefix = f'{base_model_prefix}.'
+    return [key for key in loading_info.get('missing_keys', []) if key.startswith(prefix)]
 
 
 def load_question_answering_model(model_name_or_path: str, **kwargs: Any) -> PreTrainedModel:
@@ -28,9 +28,9 @@ def load_question_answering_model(model_name_or_path: str, **kwargs: Any) -> Pre
     model, loading_info = AutoModelForQuestionAnswering.from_pretrained(
         model_name_or_path, output_loading_info=True, **kwargs
     )
-    missing = _backbone_missing_keys(loading_info)
     model_cls = type(model)
-    if missing and getattr(model_cls, 'base_model_prefix', None) == 'transformer':
+    missing = _backbone_missing_keys(loading_info, model_cls.base_model_prefix)
+    if missing and model_cls.base_model_prefix == 'transformer':
         logger.warning(
             '%s dropped %d backbone tensors (base_model_prefix="transformer"); reloading with base_model_prefix="model"',
             model_cls.__name__,
@@ -40,7 +40,7 @@ def load_question_answering_model(model_name_or_path: str, **kwargs: Any) -> Pre
         model, loading_info = AutoModelForQuestionAnswering.from_pretrained(
             model_name_or_path, output_loading_info=True, **kwargs
         )
-        missing = _backbone_missing_keys(loading_info)
+        missing = _backbone_missing_keys(loading_info, model_cls.base_model_prefix)
     if missing:
         raise RuntimeError(
             f'{model_cls.__name__}: {len(missing)} backbone tensors were not loaded from {model_name_or_path} '

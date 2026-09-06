@@ -2,7 +2,7 @@ import pytest
 import torch
 from transformers import AutoModelForQuestionAnswering, LlamaConfig, LlamaForCausalLM
 
-from mirei.constract_llm.eval.qa.model_loading import load_question_answering_model
+from mirei.constract_llm.eval.qa.model_loading import _backbone_missing_keys, load_question_answering_model
 
 
 @pytest.fixture(scope='module')
@@ -42,3 +42,31 @@ def test_plain_auto_class_reports_missing_backbone_when_prefix_is_transformer(ti
     if cls.base_model_prefix != 'transformer':
         pytest.skip('this transformers version loads the backbone with the default prefix')
     assert any(not k.startswith('qa_outputs.') for k in info['missing_keys'])
+
+
+def test_task_head_keys_are_not_backbone_keys():
+    info = {'missing_keys': ['classifier.weight', 'classifier.bias', 'head.dense.weight', 'qa_outputs.weight']}
+    assert _backbone_missing_keys(info, 'model') == []
+    info = {'missing_keys': ['transformer.embed_tokens.weight', 'qa_outputs.weight']}
+    assert _backbone_missing_keys(info, 'transformer') == ['transformer.embed_tokens.weight']
+
+
+def test_encoder_with_extra_head_parameters_loads(tmp_path):
+    modernbert = pytest.importorskip('transformers.models.modernbert.modeling_modernbert')
+    config = modernbert.ModernBertConfig(
+        vocab_size=64,
+        hidden_size=16,
+        intermediate_size=32,
+        num_hidden_layers=2,
+        num_attention_heads=4,
+        max_position_embeddings=32,
+        reference_compile=False,
+        pad_token_id=0,
+        bos_token_id=1,
+        eos_token_id=2,
+        sep_token_id=2,
+        cls_token_id=1,
+    )
+    modernbert.ModernBertForMaskedLM(config).save_pretrained(tmp_path)
+    model = load_question_answering_model(str(tmp_path), torch_dtype=torch.float32)
+    assert type(model).__name__ == 'ModernBertForQuestionAnswering'
