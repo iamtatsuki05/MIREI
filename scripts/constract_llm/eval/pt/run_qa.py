@@ -31,7 +31,6 @@ from pydantic import Field
 from pydantic.dataclasses import dataclass
 from transformers import (
     AutoConfig,
-    AutoModelForQuestionAnswering,
     AutoTokenizer,
     DataCollatorWithPadding,
     EvalPrediction,
@@ -45,6 +44,7 @@ from transformers.trainer_utils import get_last_checkpoint
 
 from mirei.common.utils.cli_utils import load_cli_config
 from mirei.constract_llm.eval.jglue.data_class.model_arguments import ModelArguments
+from mirei.constract_llm.eval.qa.model_loading import load_question_answering_model
 from mirei.constract_llm.eval.qa.trainer_qa import QuestionAnsweringTrainer
 from mirei.constract_llm.eval.qa.utils_qa import postprocess_qa_predictions
 
@@ -189,9 +189,8 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             logger.info('force_add_bos_token: no BOS available; prepending EOS as the dedicated first token')
         else:
             logger.warning('force_add_bos_token requested but the tokenizer does not support it; ignoring')
-    model = AutoModelForQuestionAnswering.from_pretrained(
+    model = load_question_answering_model(
         model_args.model_name_or_path,
-        from_tf=bool('.ckpt' in model_args.model_name_or_path),
         config=config,
         cache_dir=model_args.cache_dir,
         revision=model_args.model_revision,
