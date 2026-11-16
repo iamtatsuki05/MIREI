@@ -32,7 +32,10 @@ issue #55 の「必須」の実験に使う config の一覧と実行順です�
 
 ## 2. 事前学習量の比較
 
-stage1 の約 25% / 約 50% の時点の checkpoint から、stage2 を通さずに文埋め込みを学習する。0.5B で以前に行った比較 (`e3-scaling`) と同じ手順。step は保存間隔 (100 step) に丸めている。
+stage1 の約 25% / 約 50% / 100% の時点の checkpoint から、stage2 を通さずに文埋め込みを学習する。step は保存間隔 (100 step) に丸めている。
+
+- 100% の点も stage2 を通さない (`*-PT-stage1` の Hugging Face リポジトリから学習する)。既存の本番モデル (stage2 あり) は、stage2 の効果を見る参考の行として別に並べる。
+- 0.5B で以前に行った比較 (`/project/nlp-mire2/tatsuki-o/e3-scaling/`) は、25% / 50% が stage1 の checkpoint、100% が既存の本番モデル (stage2 あり、別の学習 run) で、100% の点だけ条件が違っていた。今回はこれを揃える。
 
 | モデル | 100% とした step | 25% | 50% |
 |---|---|---|---|
@@ -42,8 +45,9 @@ stage1 の約 25% / 約 50% の時点の checkpoint から、stage2 を通さず
 | Llama-EN-3B | 13700 | 3400 | 6900 |
 | ModernBERT-EN-3B | 13893 | 3500 | 6900 |
 
-- Llama は、`config/constract_llm/model/save_custom_model/llama_bi_*_pt_stage1_ckpt*.json` で双方向モデルに変換してから学習する。
-- 文埋め込みの config は `Sentence-{Llama-Bi,ModernBERT}-*-PT-stage1-ckpt<step>`。
+- Llama は、`config/constract_llm/model/save_custom_model/llama_bi_*_pt_stage1{_ckpt<step>,}.json` で双方向モデルに変換してから学習する。
+- 文埋め込みの config は、25% / 50% が `Sentence-{Llama-Bi,ModernBERT}-*-PT-stage1-ckpt<step>`、100% が `Sentence-{Llama-Bi,ModernBERT}-*-PT-stage1`。
+- `*-PT-stage1` のリポジトリが表の「100% とした step」の checkpoint と同じかは、まだ確認していない。
 
 ## 3. MNTP を stage2 の学習目的にする
 
