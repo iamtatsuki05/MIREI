@@ -527,7 +527,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     model.save_pretrained(training_args.output_dir)
 
     # Evaluation
-    if training_args.do_eval:
+    if training_args.do_eval and evaluator is not None:
         logger.info('*** Evaluate ***')
         final_score = evaluator(model)
         logger.info(f'Final evaluation score: {final_score}')
