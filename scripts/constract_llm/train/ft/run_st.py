@@ -35,6 +35,7 @@ from transformers.trainer_utils import get_last_checkpoint
 from mirei.common.utils.cli_utils import load_cli_config
 from mirei.constract_llm.train.st.data_class.data_training_arguments import DataTrainingArguments
 from mirei.constract_llm.train.st.data_class.model_arguments import ModelArguments
+from mirei.constract_llm.train.st.pooling import check_special_tokens, replace_pooling
 
 logger = logging.getLogger(__name__)
 
@@ -366,6 +367,10 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     torch_dtype = (
         model_args.torch_dtype if model_args.torch_dtype in ('auto', None) else getattr(torch, model_args.torch_dtype)
     )
+    tokenizer_kwargs: dict[str, Any] = {'use_fast': model_args.use_fast_tokenizer}
+    for key in ('add_bos_token', 'add_eos_token'):
+        if getattr(model_args, key) is not None:
+            tokenizer_kwargs[key] = getattr(model_args, key)
     model = SentenceTransformer(
         model_args.model_name_or_path,
         model_kwargs={
@@ -373,9 +378,12 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
             'attn_implementation': model_args.attn_implementation,
             'low_cpu_mem_usage': model_args.low_cpu_mem_usage,
         },
-        tokenizer_kwargs={'use_fast': model_args.use_fast_tokenizer},
+        tokenizer_kwargs=tokenizer_kwargs,
         **common_kwargs,
     )
+    check_special_tokens(model, model_args.add_bos_token, model_args.add_eos_token)
+    if model_args.pooling_mode is not None:
+        replace_pooling(model, model_args.pooling_mode)
     if data_args.max_seq_length is not None:
         model.max_seq_length = data_args.max_seq_length
     logger.info(f'SentenceTransformer model:\n{model}')
@@ -519,7 +527,7 @@ def main(config_file_path: str | Path | None = None, **kwargs: Any) -> None:
     model.save_pretrained(training_args.output_dir)
 
     # Evaluation
-    if training_args.do_eval:
+    if training_args.do_eval and evaluator is not None:
         logger.info('*** Evaluate ***')
         final_score = evaluator(model)
         logger.info(f'Final evaluation score: {final_score}')

@@ -69,6 +69,23 @@ class ModelArguments:
             'choices': ['eager', 'sdpa', 'flash_attention_2'],
         },
     )
+    pooling_mode: str | None = Field(
+        default=None,
+        metadata={
+            'help': (
+                'Replace the pooling of a plain HF checkpoint (cls, lasttoken, max, mean, mean_sqrt_len_tokens, '
+                'weightedmean). Leave None to keep the pooling that SentenceTransformer loads.'
+            )
+        },
+    )
+    add_bos_token: bool | None = Field(
+        default=None,
+        metadata={'help': 'Override the tokenizer add_bos_token setting (e.g. for cls pooling). None keeps it.'},
+    )
+    add_eos_token: bool | None = Field(
+        default=None,
+        metadata={'help': 'Override the tokenizer add_eos_token setting (e.g. for lasttoken pooling). None keeps it.'},
+    )
     # Optional
     loss_cache_mini_batch_size: int | None = Field(
         default=None,
