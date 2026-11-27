@@ -157,6 +157,8 @@ def save_custom_model(
     config_path = out_dir / 'config.json'
     if config_path.exists():
         cfg_json = json.loads(config_path.read_text(encoding='utf-8'))
+        # Without a repo id the modeling file is resolved from the model directory itself.
+        repo_prefix = f'{repo_id}--' if repo_id else ''
 
         def make_value(cls: type) -> str:
             if cls is None:
@@ -165,7 +167,7 @@ def save_custom_model(
             if is_transformers_class(cls):
                 return ''
             else:
-                return f'{repo_id}--{src.stem}.{name}'
+                return f'{repo_prefix}{src.stem}.{name}'
 
         config_cls = cfg['config_class']
         base_cls = cfg['base_class']
